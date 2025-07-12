@@ -14,7 +14,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "next lint --fix --file",
+      "eslint --max-warnings=0 --fix",
       "prettier --write"
     ],
     "*.{json,md,css,scss}": [
