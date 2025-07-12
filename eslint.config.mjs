@@ -63,6 +63,12 @@ export default [
   eslintConfigPrettier,
 
   {
-    ignores: ['node_modules', 'dist', '.next', 'eslint.config.mjs'],
+    ignores: [
+      'node_modules/**',
+      'dist/**',
+      '.next/**',
+      'eslint.config.mjs',
+      '.husky/**',
+    ],
   },
 ];
