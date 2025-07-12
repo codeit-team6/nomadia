@@ -15,7 +15,7 @@ const TestComponent = () => {
 
   // accessibility issue - div with click without keyboard support
   const handleClick = () => {
-    setCount(count + 1);
+    setCount(count + 2);
   };
 
   // improper formatting and unused variable
