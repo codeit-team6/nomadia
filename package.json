@@ -14,7 +14,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "pnpm lint:fix",
+      "next lint --fix --file",
       "prettier --write"
     ],
     "*.{json,md,css,scss}": [
