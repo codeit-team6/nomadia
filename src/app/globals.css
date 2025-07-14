@@ -3,11 +3,6 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* 브레이크포인트 */
-  /* 기본(모바일): 375~767
-  md: 768~1023
-  lg: 1024~ */
-
   /* Primary Colors */
   --color-main: oklch(0.649 0.192 253.09); /* #188FFF */
   --color-sub: oklch(0.9681 0.0183 232.5); /* #e9f7ff */
