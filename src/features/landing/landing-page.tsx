@@ -112,7 +112,6 @@ const LandingPage = () => {
   const ExperienceCard = ({ experience }: { experience: Experience }) => (
     <div className="bg-background overflow-hidden rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105">
       <div className="relative h-48">
-        {/* 체험 썸네일 이미지 - 배경에 꽉 차게 렌더링 */}
         <Image
           src={experience.image}
           alt={experience.title}
@@ -122,7 +121,7 @@ const LandingPage = () => {
           loading="lazy"
           priority={false}
         />
-        {/* 어두운 오버레이로 텍스트 가독성 향상 */}
+
         <div className="bg-opacity-20 absolute inset-0"></div>
       </div>
       <div className="p-6">
@@ -154,10 +153,8 @@ const LandingPage = () => {
       <div className="bg-background">
         <div className="mx-auto max-w-6xl px-4 py-16">
           {/* 메인 컨텐츠 */}
+
           <div className="mb-16 text-center">
-            {/* <h1 className="mb-6 text-[2.4rem] font-bold text-gray-950 md:text-[3.2rem]">
-              새로운 취미, 특별한 체험을 한 곳에서
-            </h1> */}
             <h1 className="mb-6 text-[2.4rem] leading-tight font-black tracking-tight md:text-[4rem]">
               <span className="bg-gradient-to-r from-[oklch(0.682_0.153_248.5)] via-[oklch(0.6_0.18_260)] to-[oklch(0.72_0.14_235)] bg-clip-text text-transparent">
                 새로운 취미, 특별한 체험을
@@ -166,9 +163,6 @@ const LandingPage = () => {
               <span className="text-gray-900">한 곳에서</span>
             </h1>
 
-            {/* <p className="mb-12 text-[1.8rem] text-gray-900 md:text-[2.4rem]">
-              체험을 찾는 사람도, 만드는 사람도 될 수 있는 플랫폼
-            </p> */}
             <div className="relative mb-12">
               <p className="text-[1.6rem] leading-relaxed font-medium text-gray-700 md:text-[2.2rem]">
                 체험을
@@ -184,10 +178,10 @@ const LandingPage = () => {
             </div>
 
             <div className="mb-16 flex justify-center space-x-4">
-              <button className="bg-main rounded-full px-8 py-3 text-[1.6rem] text-white transition-colors hover:opacity-90 md:text-[2rem]">
+              <button className="bg-main max-w-xs flex-1 rounded-full px-8 py-3 text-[1.4rem] text-white transition-colors hover:opacity-90 md:text-[1.8rem]">
                 체험 찾기
               </button>
-              <button className="bg-sub text-main rounded-full px-8 py-3 text-[1.6rem] transition-colors hover:opacity-80 md:text-[2rem]">
+              <button className="bg-sub text-main max-w-xs flex-1 rounded-full px-8 py-3 text-[1.4rem] transition-colors hover:opacity-80 md:text-[1.8rem]">
                 호스트 되기
               </button>
             </div>
@@ -234,13 +228,6 @@ const LandingPage = () => {
       {/* CTA Section */}
       <div className="bg-white py-20">
         <div className="mx-auto w-full px-4 text-center">
-          {/* <h2 className="mb-6 text-[2.8rem] font-bold text-gray-900 md:text-[3.2rem]">
-            어떻게 시작하나요?
-          </h2>
-
-          <p className="text-main mb-16 text-[1.6rem] md:text-[1.8rem]">
-            간단한 3단계로 새로운 경험을 시작하세요
-          </p> */}
           <div className="relative mb-16">
             <h2 className="mb-4 text-[2.8rem] leading-tight font-black md:text-[4rem]">
               <span className="bg-gradient-to-r from-[oklch(0.682_0.153_248.5)] to-[oklch(0.72_0.14_235)] bg-clip-text text-transparent">
@@ -312,7 +299,7 @@ const LandingPage = () => {
           </div>
 
           {/* CTA Button */}
-          <button className="bg-main rounded-full px-12 py-4 text-[1.8rem] text-white transition-colors hover:opacity-90">
+          <button className="bg-main w-[24rem] rounded-full px-12 py-4 text-[1.8rem] text-white transition-colors hover:opacity-90 md:w-[34rem] lg:w-[40rem]">
             시작 하기
           </button>
         </div>
