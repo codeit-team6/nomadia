@@ -1,102 +1,25 @@
 'use client';
 
-import {
-  Award,
-  Calendar,
-  ChevronLeft,
-  ChevronRight,
-  Search,
-} from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import { formatPrice } from '@/shared/utils/format-price';
 
-interface Experience {
-  id: number;
-  title: string;
-  rating: number;
-  reviewCount: number;
-  price: number;
-  image: string;
-}
+import { experiences } from './data';
+import { steps } from './data';
+import { StepCard } from './step-card';
+import type { Experience } from './types';
 
 const LandingPage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  const experiences: Experience[] = [
-    {
-      id: 1,
-      title: '피오르 체험',
-      rating: 3.9,
-      reviewCount: 108,
-      price: 42800,
-      image: '/images/experiences/exp_1.png',
-    },
-    {
-      id: 2,
-      title: '해안 여행',
-      rating: 2.9,
-      reviewCount: 67,
-      price: 80000,
-      image: '/images/experiences/exp_2.png',
-    },
-    {
-      id: 3,
-      title: '갈대숲 체험',
-      rating: 4.0,
-      reviewCount: 113,
-      price: 32000,
-      image: '/images/experiences/exp_3.png',
-    },
-    {
-      id: 4,
-      title: '자전거 여행',
-      rating: 3.9,
-      reviewCount: 108,
-      price: 42800,
-      image: '/images/experiences/exp_4.png',
-    },
-    {
-      id: 5,
-      title: '열대어 체험',
-      rating: 4.3,
-      reviewCount: 18,
-      price: 12000,
-      image: '/images/experiences/exp_5.png',
-    },
-    {
-      id: 6,
-      title: '석양 힐링 체험',
-      rating: 4.2,
-      reviewCount: 78,
-      price: 9500,
-      image: '/images/experiences/exp_6.png',
-    },
-    {
-      id: 7,
-      title: '숲 힐링 체험',
-      rating: 4.1,
-      reviewCount: 111,
-      price: 18000,
-      image: '/images/experiences/exp_7.png',
-    },
-    {
-      id: 8,
-      title: '열기구 체험',
-      rating: 4.1,
-      reviewCount: 85,
-      price: 35000,
-      image: '/images/experiences/exp_8.png',
-    },
-  ];
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % (experiences.length - 2));
     }, 4000);
     return () => clearInterval(timer);
-  }, [experiences.length]);
+  }, []);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % (experiences.length - 2));
@@ -116,7 +39,7 @@ const LandingPage = () => {
           src={experience.image}
           alt={experience.title}
           fill
-          style={{ objectFit: 'cover' }}
+          className="object-cover"
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
           priority={false}
@@ -246,56 +169,9 @@ const LandingPage = () => {
 
           {/* Steps */}
           <div className="mb-16 flex w-full flex-col gap-4 sm:flex-row sm:flex-nowrap sm:gap-4">
-            <div className="flex min-w-0 flex-1 basis-0 flex-col items-center">
-              <div className="bg-sub mb-4 flex h-16 w-16 items-center justify-center rounded-2xl md:h-20 md:w-20">
-                <Search className="text-main h-8 w-8 md:h-10 md:w-10" />
-              </div>
-              <div className="text-main mb-2 text-[1.6rem] font-bold md:text-[2rem]">
-                STEP 1
-              </div>
-              <h3 className="mb-3 text-[2rem] font-bold md:text-[2.4rem]">
-                관심 체험 찾기
-              </h3>
-              <p className="text-[1.6rem] leading-[1.8] text-gray-700 md:text-[1.8rem]">
-                내 취향과 위치에 맞는
-                <br />
-                체험을 찾아보세요
-              </p>
-            </div>
-
-            <div className="flex min-w-0 flex-1 basis-0 flex-col items-center">
-              <div className="bg-sub mb-4 flex h-16 w-16 items-center justify-center rounded-2xl md:h-20 md:w-20">
-                <Calendar className="text-main h-8 w-8 md:h-10 md:w-10" />
-              </div>
-              <div className="text-main mb-2 text-[1.6rem] font-bold md:text-[2rem]">
-                STEP 2
-              </div>
-              <h3 className="mb-3 text-[2rem] font-bold md:text-[2.4rem]">
-                간편 예약 하기
-              </h3>
-              <p className="text-[1.6rem] leading-[1.8] text-gray-700 md:text-[1.8rem]">
-                원하는 날짜와 시간을
-                <br />
-                선택하고 바로 예약
-              </p>
-            </div>
-
-            <div className="flex min-w-0 flex-1 basis-0 flex-col items-center">
-              <div className="bg-sub mb-4 flex h-16 w-16 items-center justify-center rounded-2xl md:h-20 md:w-20">
-                <Award className="text-main h-8 w-8 md:h-10 md:w-10" />
-              </div>
-              <div className="text-main mb-2 text-[1.6rem] font-bold md:text-[2rem]">
-                STEP 3
-              </div>
-              <h3 className="mb-3 text-[2rem] font-bold md:text-[2.4rem]">
-                체험 & 리뷰
-              </h3>
-              <p className="text-[1.6rem] leading-[1.8] text-gray-700 md:text-[1.8rem]">
-                새로운 경험을 즐기고
-                <br />
-                다른 사람들과 공유
-              </p>
-            </div>
+            {steps.map((step, idx) => (
+              <StepCard key={idx} {...step} />
+            ))}
           </div>
 
           {/* CTA Button */}
