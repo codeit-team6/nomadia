@@ -3,13 +3,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* 커스텀 브레이크포인트 */
-  /* --breakpoint-tablet: 376px;
-  --breakpoint-desktop: 745px; */
-
   /* Primary Colors */
-  --color-main: oklch(0.682 0.153 248.5); /* #3D9EF2 */
-  --color-sub: oklch(0.957 0.022 243.9); /* #E5F3FF */
+  --color-main: oklch(0.649 0.192 253.09); /* #188FFF */
+  --color-sub: oklch(0.9681 0.0183 232.5); /* #e9f7ff */
+  --color-sub-300: oklch(0.8816 0.0619 245.59); /* #b7ddff */
 
   /* Base Colors */
   --color-white: oklch(1 0 0); /* white */
@@ -29,11 +26,9 @@
   --color-gray-900: oklch(0.319 0 0); /* #323236 */
   --color-gray-950: oklch(0.241 0 0); /* #1F1F22 */
 
-  /* Background Colors */
-  --color-background: oklch(0.979 0 0); /* #FBFAF8 */
-
   /* Warning Colors */
   --color-red-500: oklch(0.641 0.245 27.7); /* #FF2727 */
+  --color-red-100: oklch(0.97 0.01557 2.6636); /* #fff1f4 */
 
   /* shadcn/ui 필수 변수들 */
   --font-sans:
@@ -186,6 +181,18 @@
 @layer utilities {
   .flex-center {
     @apply flex items-center justify-center;
+  }
+
+  /* #E9F7FF -> #FFFFFF */
+  .bg-background {
+    background-image: linear-gradient(
+      to bottom,
+      oklch(0.9681 0.0183 232.5) 0%,
+      oklch(1 0 0) 52%,
+      oklch(1 0 0) 100%
+    );
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   /* 텍스트 관련 유틸리티 - 타이포그래피 */
