@@ -26,10 +26,10 @@ export default function Footer() {
         </div>
 
         <div className="flex justify-end items-center gap-[16px]">
-          <img src="/images/icon_facebook.png" alt="facebook" className="w-[20px] h-[20px]" />
-          <img src="/images/icon_instagram.png" alt="instagram" className="w-[20px] h-[20px]" />
-          <img src="/images/icon_youtube.png" alt="youtube" className="w-[20px] h-[20px]" />
-          <img src="/images/icon_x.png" alt="x" className="w-[20px] h-[20px]" />
+          <img src="/images/icons/facebook.svg" alt="facebook" className="w-[20px] h-[20px]" />
+          <img src="/images/icons/instagram.svg" alt="instagram" className="w-[20px] h-[20px]" />
+          <img src="/images/icons/youtube.svg" alt="youtube" className="w-[20px] h-[20px]" />
+          <img src="/images/icons/x.svg" alt="x" className="w-[20px] h-[20px]" />
         </div>
 
       </div>
