@@ -10,6 +10,8 @@ import {
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
+import { formatPrice } from '@/shared/utils/format-price';
+
 interface Experience {
   id: number;
   title: string;
@@ -104,10 +106,6 @@ const LandingPage = () => {
     setCurrentSlide(
       (prev) => (prev - 1 + experiences.length - 2) % (experiences.length - 2),
     );
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('ko-KR').format(price);
   };
 
   // 체험 카드 컴포넌트
