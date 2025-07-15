@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-import { formatPrice } from '@/shared/utils/format-price';
+import { formatPrice } from '@/shared/libs/utils/format-price';
 
 import { experiences } from './data';
 import { steps } from './data';
