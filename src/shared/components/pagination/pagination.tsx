@@ -45,13 +45,14 @@ type PaginationProps = {
  */
 
 const Pagination = ({ totalPages, currentPage, setPage }: PaginationProps) => {
+  if (totalPages <= 0) return null;
+
   const PAGE_GROUP_SIZE = 5;
   const pageGroupNum = Math.ceil(currentPage / PAGE_GROUP_SIZE);
   const startPage = pageGroupNum * PAGE_GROUP_SIZE - PAGE_GROUP_SIZE + 1; //-4
   const endPage = Math.min(totalPages, startPage + PAGE_GROUP_SIZE - 1); //+4
 
   const pageRange = [];
-
   for (let i = startPage; i <= endPage; i++) {
     pageRange.push(i);
   }
@@ -62,10 +63,11 @@ const Pagination = ({ totalPages, currentPage, setPage }: PaginationProps) => {
   return (
     <div className="flex">
       <button
-        disabled={leftDisable}
         onClick={() => {
           setPage((pageGroupNum - 1) * PAGE_GROUP_SIZE);
         }}
+        disabled={leftDisable}
+        aria-label="이전 페이지 그룹으로"
         className="flex-center size-[4rem]"
       >
         <ChevronLeft
@@ -78,22 +80,25 @@ const Pagination = ({ totalPages, currentPage, setPage }: PaginationProps) => {
       {pageRange.map((page) => (
         <button
           key={page}
+          onClick={() => setPage(page)}
+          aria-label={`${page}페이지 ${page === currentPage ? '(현재 페이지)' : ''}`}
+          aria-current={page === currentPage ? 'page' : undefined}
           className={cn(
             'size-[4rem] text-[1.4rem] font-medium text-gray-300',
             page === currentPage &&
               'border-b-main border-b-2 font-bold text-gray-950',
           )}
-          onClick={() => setPage(page)}
         >
           {page}
         </button>
       ))}
 
       <button
-        disabled={rightDisable}
         onClick={() => {
           setPage(pageGroupNum * PAGE_GROUP_SIZE + 1);
         }}
+        disabled={rightDisable}
+        aria-label="다음 페이지 그룹으로"
         className="flex-center size-[4rem]"
       >
         <ChevronRight
