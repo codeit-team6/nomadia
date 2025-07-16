@@ -2,6 +2,7 @@
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { formatPrice } from '@/shared/libs/utils/format-price';
@@ -13,6 +14,7 @@ import type { Experience } from './types';
 
 const LandingPage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -47,7 +49,7 @@ const LandingPage = () => {
 
         <div className="bg-opacity-20 absolute inset-0"></div>
       </div>
-      {/* 카드 컨텐츠에 하단 패딩 추가로 잘림 방지 */}
+
       <div className="p-6 pb-6">
         <h3 className="mb-2 text-[1.4rem] font-bold text-gray-900 md:text-[1.8rem]">
           {experience.title}
@@ -102,10 +104,16 @@ const LandingPage = () => {
             </div>
 
             <div className="mb-16 flex justify-center space-x-4">
-              <button className="bg-main max-w-xs flex-1 rounded-full px-8 py-3 text-[1.4rem] font-semibold text-white transition-colors hover:opacity-90 md:text-[1.8rem]">
+              <button
+                className="bg-main max-w-xs flex-1 rounded-full px-8 py-3 text-[1.4rem] font-semibold text-white transition-colors hover:opacity-90 md:text-[1.8rem]"
+                onClick={() => router.push('/activities')}
+              >
                 체험 찾기
               </button>
-              <button className="bg-sub text-main max-w-xs flex-1 rounded-full px-8 py-3 text-[1.4rem] font-semibold transition-colors hover:opacity-80 md:text-[1.8rem]">
+              <button
+                className="bg-sub text-main max-w-xs flex-1 rounded-full px-8 py-3 text-[1.4rem] font-semibold transition-colors hover:opacity-80 md:text-[1.8rem]"
+                onClick={() => router.push('/activities')}
+              >
                 호스트 되기
               </button>
             </div>
@@ -160,7 +168,6 @@ const LandingPage = () => {
               <span className="text-gray-900"> 시작하나요?</span>
             </h2>
 
-            {/* 강조된 서브타이틀 */}
             <div className="inline-block">
               <p className="rounded-2xl bg-[oklch(0.957_0.022_243.9)] px-6 py-3 text-[1.6rem] font-semibold text-[oklch(0.682_0.153_248.5)] shadow-md md:text-[2rem]">
                 간단한 3단계로 새로운 경험을 시작하세요
@@ -176,7 +183,10 @@ const LandingPage = () => {
           </div>
 
           {/* CTA Button */}
-          <button className="bg-main w-[24rem] rounded-full px-12 py-4 text-[1.8rem] font-semibold text-white transition-colors hover:opacity-90 md:w-[34rem] lg:w-[40rem]">
+          <button
+            className="bg-main w-[24rem] rounded-full px-12 py-4 text-[1.8rem] font-semibold text-white transition-colors hover:opacity-90 md:w-[34rem] lg:w-[40rem]"
+            onClick={() => router.push('/activities')}
+          >
             시작하기
           </button>
         </div>
