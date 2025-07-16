@@ -1,10 +1,11 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
-    <footer className="w-[375px] md:w-[744px] lg:w-[1920px] max-w-[1920px] mx-auto h-[116px] md:h-[140px] py-[30px] px-[24px] md:px-[40px] lg:px-[200px] text-gray-600 bg-white border-t border-gray-100 txt-13-medium">
+    <footer className="w-full max-w-[192rem] mx-auto h-[11.6rem] md:h-[14rem] py-[3rem] px-[2.4rem] md:px-[4rem] lg:px-[20rem] text-gray-600 bg-white border-t border-gray-100 txt-13-medium">
       
       {/* 모바일 사이즈: 위에 보일 Privacy Policy · FAQ */}
       <div className="flex justify-center gap-7 mb-4 md:hidden">
@@ -16,7 +17,7 @@ export default function Footer() {
       <div className="flex flex-row justify-between items-center md:grid md:grid-cols-3 md:items-center">
         
         <div className="text-gray-400 text-left">
-          ©codeit - 2025
+          ©nomadia - 2025
         </div>
 
         <div className="hidden md:flex justify-center gap-4">
@@ -25,11 +26,31 @@ export default function Footer() {
           <a href="/faq">FAQ</a>
         </div>
 
-        <div className="flex justify-end items-center gap-[16px]">
-          <img src="/images/icons/facebook.svg" alt="facebook" className="w-[20px] h-[20px]" />
-          <img src="/images/icons/instagram.svg" alt="instagram" className="w-[20px] h-[20px]" />
-          <img src="/images/icons/youtube.svg" alt="youtube" className="w-[20px] h-[20px]" />
-          <img src="/images/icons/x.svg" alt="x" className="w-[20px] h-[20px]" />
+        <div className="flex justify-end items-center gap-[1.6rem]">
+          <Image
+            src="/images/icons/facebook.svg"
+            alt="facebook"
+            width={20}
+            height={20}
+          />
+          <Image
+            src="/images/icons/instagram.svg"
+            alt="instagram"
+            width={20}
+            height={20}
+          />
+          <Image
+            src="/images/icons/youtube.svg"
+            alt="youtube"
+            width={20}
+            height={20}
+          />
+          <Image
+            src="/images/icons/x.svg"
+            alt="x"
+            width={20}
+            height={20}
+          />
         </div>
 
       </div>
