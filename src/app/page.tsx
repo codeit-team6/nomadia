@@ -6,10 +6,12 @@ import Footer from '@/shared/components/footer';
 
 export default function Page() {
   return (
+    <>
+    <Header />
     <main>
-      <Header />
       <LandingPage />
-      <Footer />
     </main>
+    <Footer />
+    </>
   );
 }
