@@ -14,7 +14,7 @@ const BannerCarousel = () => {
     getActListApi({
       sort: 'most_reviewed',
       page: 1,
-      size: 3,
+      size: 8,
     }).then((res) => {
       setBanners(res.activities);
     });
