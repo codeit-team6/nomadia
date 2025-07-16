@@ -11,7 +11,7 @@ const Header: React.FC = () => {
      
       <div className="text-main txt-20-bold cursor-pointer md:flex md:gap-3">
         <Image
-          src="images/icons/logo.svg"
+          src="/images/icons/logo.svg"
           alt="Logo"
           width={29}
           height={24}
