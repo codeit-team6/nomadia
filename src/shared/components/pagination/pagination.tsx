@@ -1,7 +1,11 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { cn } from '@/shared/libs/cn';
-
+/**
+ * @property totalPages 전체 페이지 수 (예: API 응답으로부터 추출)
+ * @property currentPage 현재 페이지 번호 (page)
+ * @property setPage 페이지 상태를 변경하는 함수 (setPage)
+ */
 type PaginationProps = {
   totalPages: number;
   currentPage: number;
@@ -9,33 +13,33 @@ type PaginationProps = {
 };
 
 /**
- * 페이지네이션 버튼 UI를 렌더링 함.  
- * 페이지 버튼을 클릭하면 setPage를 호출하여 상위 컴포넌트에서 선언한 page 상태값을 업데이트 함  
- * 
- * 좌측 화살표: 이전 페이지 그룹으로 이동, currentPage를 페이지 그룹의 마지막 요소로 업데이트, 현재페이지가 페이지 그룹 사이즈보다 작으면 비활성화  
- * 우측 화살표: 다음 페이지 그룹으로 이동, currentPage를 페이지 그룹의 첫번째 요소로 업데이트, 페이지 그룹의 마지막 요소가 totalPages와 같거나 더 크면 비활성화  
-
+ * 페이지네이션 컴포넌트입니다.
+ * 페이지 버튼 클릭 시 `setPage`를 호출해 상위 컴포넌트의 `page` 상태를 업데이트합니다.
  *
- * @param {number} totalPages - 전체 페이지 수
- * @param {number} currentPage - 현재 페이지
- * @param {function} setPage - 현재 페이지를 변경하는 함수 (React 상태 업데이트 함수)
+ * 좌측 화살표:
+ *   - 이전 페이지 그룹으로 이동합니다.
+ *   - `currentPage`를 페이지 그룹의 마지막 요소로 업데이트합니다.
+ *   - 현재 페이지가 페이지 그룹 크기보다 작으면 비활성화됩니다.
  *
- * @example
+ * 우측 화살표:
+ *   - 다음 페이지 그룹으로 이동합니다.
+ *   - `currentPage`를 페이지 그룹의 첫 번째 요소로 업데이트합니다.
+ *   - 페이지 그룹의 마지막 요소가 `totalPages`와 같거나 크면 비활성화됩니다.
+ *
+ * ### 사용 예시 코드
  * ```tsx
  * 'use client';
- * import { useState } from 'react';
+ * import { useState, useEffect } from 'react';
  * import Pagination from '@/shared/components/pagination/pagination';
  *
  * export default function Page() {
- *   const [page, setPage] = useState(1); //Pagination 컴포넌트의 프롭으로 넘겨주세요
+ *   const [page, setPage] = useState(1);
  *
  *   useEffect(() => {
- *     fetchData(page); // 페이지 변경 시 API 호출 등
+ *     fetchData({ page }); // 페이지 변경 시 API 호출
  *   }, [page]);
  *
- *   return (
- *     <Pagination totalPages={33} currentPage={page} setPage={setPage} />
- *   );
+ *   return <Pagination totalPages={33} currentPage={page} setPage={setPage} />;
  * }
  * ```
  */
@@ -88,7 +92,7 @@ const Pagination = ({ totalPages, currentPage, setPage }: PaginationProps) => {
       <button
         disabled={rightDisable}
         onClick={() => {
-          if (currentPage) setPage((pageGroupNum + 1) * PAGE_GROUP_SIZE - 4);
+          setPage(pageGroupNum * PAGE_GROUP_SIZE + 1);
         }}
         className="flex-center size-[4rem]"
       >
