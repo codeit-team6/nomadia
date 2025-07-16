@@ -47,7 +47,8 @@ const LandingPage = () => {
 
         <div className="bg-opacity-20 absolute inset-0"></div>
       </div>
-      <div className="p-6">
+      {/* 카드 컨텐츠에 하단 패딩 추가로 잘림 방지 */}
+      <div className="p-6 pb-6">
         <h3 className="mb-2 text-[1.4rem] font-bold text-gray-900 md:text-[1.8rem]">
           {experience.title}
         </h3>
@@ -101,10 +102,10 @@ const LandingPage = () => {
             </div>
 
             <div className="mb-16 flex justify-center space-x-4">
-              <button className="bg-main max-w-xs flex-1 rounded-full px-8 py-3 text-[1.4rem] text-white transition-colors hover:opacity-90 md:text-[1.8rem]">
+              <button className="bg-main max-w-xs flex-1 rounded-full px-8 py-3 text-[1.4rem] font-semibold text-white transition-colors hover:opacity-90 md:text-[1.8rem]">
                 체험 찾기
               </button>
-              <button className="bg-sub text-main max-w-xs flex-1 rounded-full px-8 py-3 text-[1.4rem] transition-colors hover:opacity-80 md:text-[1.8rem]">
+              <button className="bg-sub text-main max-w-xs flex-1 rounded-full px-8 py-3 text-[1.4rem] font-semibold transition-colors hover:opacity-80 md:text-[1.8rem]">
                 호스트 되기
               </button>
             </div>
@@ -132,13 +133,13 @@ const LandingPage = () => {
               </div>
             </div>
 
-            <div className="overflow-hidden">
+            <div className="overflow-hidden px-4">
               <div
-                className="flex transition-transform duration-500 ease-in-out"
+                className="-mx-4 flex pb-2 transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateX(-${currentSlide * 33.333}%)` }}
               >
                 {experiences.map((experience) => (
-                  <div key={experience.id} className="w-1/3 flex-shrink-0 px-2">
+                  <div key={experience.id} className="w-1/3 flex-shrink-0 px-4">
                     <ExperienceCard experience={experience} />
                   </div>
                 ))}
@@ -175,8 +176,8 @@ const LandingPage = () => {
           </div>
 
           {/* CTA Button */}
-          <button className="bg-main w-[24rem] rounded-full px-12 py-4 text-[1.8rem] text-white transition-colors hover:opacity-90 md:w-[34rem] lg:w-[40rem]">
-            시작 하기
+          <button className="bg-main w-[24rem] rounded-full px-12 py-4 text-[1.8rem] font-semibold text-white transition-colors hover:opacity-90 md:w-[34rem] lg:w-[40rem]">
+            시작하기
           </button>
         </div>
       </div>
