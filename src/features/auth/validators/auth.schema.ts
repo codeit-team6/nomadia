@@ -19,5 +19,5 @@ export const loginSchema = z.object({
   password: z.string().min(8, { message: '비밀번호를 8자 이상 입력해주세요' }),
 });
 
-export type SignupSchema = z.infer<typeof signupSchema>;
-export type LoginSchema = z.infer<typeof loginSchema>;
+export type SignupFormType = z.infer<typeof signupSchema>;
+export type LoginFormType = z.infer<typeof loginSchema>;
