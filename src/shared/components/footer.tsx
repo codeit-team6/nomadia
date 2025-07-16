@@ -23,45 +23,49 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="flex items-center justify-end gap-[1.6rem]">
-          <Image
-            src="/images/icons/facebook.svg"
-            alt="facebook"
-            width={20}
-            height={20}
-          />
           <a
             href="https://www.facebook.com/"
             target="_blank"
             rel="noopener noreferrer"
-          ></a>
-          <Image
-            src="/images/icons/instagram.svg"
-            alt="instagram"
-            width={20}
-            height={20}
-          />
+          >
+            <Image
+              src="/images/icons/facebook.svg"
+              alt="facebook"
+              width={20}
+              height={20}
+            />
+          </a>
           <a
             href="https://www.instagram.com/"
             target="_blank"
             rel="noopener noreferrer"
-          ></a>
-          <Image
-            src="/images/icons/youtube.svg"
-            alt="youtube"
-            width={20}
-            height={20}
-          />
+          >
+            <Image
+              src="/images/icons/instagram.svg"
+              alt="instagram"
+              width={20}
+              height={20}
+            />
+          </a>
           <a
             href="https://www.youtube.com/"
             target="_blank"
             rel="noopener noreferrer"
-          ></a>
-          <Image src="/images/icons/x.svg" alt="x" width={20} height={20} />
+          >
+            <Image
+              src="/images/icons/youtube.svg"
+              alt="youtube"
+              width={20}
+              height={20}
+            />
+          </a>
           <a
             href="https://twitter.com/"
             target="_blank"
             rel="noopener noreferrer"
-          ></a>
+          >
+            <Image src="/images/icons/x.svg" alt="x" width={20} height={20} />
+          </a>
         </div>
       </div>
     </footer>
