@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Header: React.FC = () => {
   const isLoggedIn = false; // 임시코드 (로그인, 비로그인 확인용)
@@ -47,10 +48,10 @@ const Header: React.FC = () => {
           <>
             {/* 비로그인 상태일 때 */}
         <li>
-          <a href="/login" className="">로그인</a>
+          <Link href="/login" className="">로그인</Link>
         </li>
         <li>
-          <a href="/signup" className="">회원가입</a>
+          <Link href="/signup" className="">회원가입</Link>
         </li>
         </>
         )}
