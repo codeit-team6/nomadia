@@ -12,6 +12,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { ActivityCard } from '@/features/activities/components/activity-card';
 import useActivity from '@/shared/libs/hooks/useActivityQuery';
 
+/**
+ * 인기 체험 컴포넌트
+ * @author 김영현
+ * @returns 인기 체험 컴포넌트
+ */
 const BestActivities = () => {
   const swiperRef = useRef<SwiperType | null>(null);
 
@@ -101,7 +106,10 @@ const BestActivities = () => {
         >
           {activities.map((activity) => (
             <SwiperSlide key={activity.id}>
-              <ActivityCard activity={activity} />
+              <ActivityCard
+                activity={activity}
+                className="mb-[2.4rem] md:mb-[8rem]"
+              />
             </SwiperSlide>
           ))}
         </Swiper>
