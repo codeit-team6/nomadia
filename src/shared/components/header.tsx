@@ -30,7 +30,7 @@ const Header: React.FC = () => {
         <Image src="/images/icons/logo.svg" alt="Logo" width={29} height={24} />
         <Image
           src="/images/icons/nomadia.svg"
-          alt="홈페이지 이름"
+          alt="Logo Name"
           width={102}
           height={29}
           className="hidden md:block"
