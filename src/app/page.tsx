@@ -1,17 +1,15 @@
 'use client';
 
-import LandingPage from '@/features/landing/landing-page';
-import Header from '@/shared/components/header';
-import Footer from '@/shared/components/footer';
+import LandingPage from '@/features/landing/components/landing-page';
 
-export default function Page() {
+
+const Page = () => {
   return (
-    <>
-    <Header />
     <main>
       <LandingPage />
     </main>
-    <Footer />
-    </>
   );
-}
+};
+
+export default Page;
+
