@@ -5,28 +5,38 @@ import 'swiper/css/navigation';
 
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import type { Swiper as SwiperType } from 'swiper';
 import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { getActListApi } from '@/features/activities/libs/api/getActListApi';
-import type { Activity } from '@/features/activities/libs/types/activity';
+import useActivity from '@/shared/libs/hooks/useActivityQuery';
 import { formatPrice } from '@/shared/libs/utils/format-price';
 
 const BestActivities = () => {
-  const [activities, setActivities] = useState<Activity[]>([]);
   const swiperRef = useRef<SwiperType | null>(null);
 
-  useEffect(() => {
-    getActListApi({
-      sort: 'most_reviewed',
-      page: 1,
-      size: 8,
-    }).then((res) => {
-      setActivities(res.activities);
-    });
-  }, []);
+  const { data, isLoading, isError } = useActivity({
+    sort: 'most_reviewed',
+    page: 1,
+    size: 8,
+  });
+
+  // 로딩 상태 처리 -> 추후 로딩 관련 스피너 추가 필요
+  if (isLoading) {
+    return <div className="py-12 text-center text-gray-400">로딩 중...</div>;
+  }
+
+  // 에러 상태 처리 -> 추후 에러 상태 관련 컴포넌트 추가 필요
+  if (isError) {
+    return (
+      <div className="py-12 text-center text-red-500">
+        데이터를 불러오는 중 오류가 발생했습니다.
+      </div>
+    );
+  }
+
+  const activities = data?.activities ?? [];
 
   const handlePrevSlide = () => {
     swiperRef.current?.slidePrev();
