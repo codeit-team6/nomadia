@@ -30,6 +30,9 @@
   --color-red-500: oklch(0.641 0.245 27.7); /* #FF2727 */
   --color-red-100: oklch(0.97 0.01557 2.6636); /* #fff1f4 */
 
+  /* Yellow Colors */
+  --color-yellow: oklch(0.848 0.1563 82.44); /* #FFC23D*/
+
   /* shadcn/ui 필수 변수들 */
   --font-sans:
     -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
