@@ -25,7 +25,7 @@ export interface GetActListApiResponse {
 export interface GetActListApiParams {
   category?: string;
   keyword?: string;
-  sort?: 'most_reviewed' | 'price_asc' | 'price_desc' | 'lastest';
+  sort?: 'most_reviewed' | 'price_asc' | 'price_desc' | 'latest';
   page?: number;
   size?: number;
 }
