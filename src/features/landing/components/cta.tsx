@@ -25,8 +25,8 @@ const Cta = ({ steps, router }: CtaProps) => (
       </div>
       {/* Steps */}
       <div className="mb-16 flex w-full flex-col gap-4 sm:flex-row sm:flex-nowrap sm:gap-4">
-        {steps.map((step, idx) => (
-          <StepCard key={idx} {...step} />
+        {steps.map((step) => (
+          <StepCard key={step.step} {...step} />
         ))}
       </div>
       {/* CTA Button */}

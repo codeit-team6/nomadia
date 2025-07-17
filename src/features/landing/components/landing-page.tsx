@@ -36,6 +36,7 @@ const LandingPage = () => {
       </div>
     );
   }
+
   const activities = data?.activities ?? [];
 
   return (

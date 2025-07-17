@@ -4,6 +4,7 @@ import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import type { Activity } from '@/features/activities/libs/types/activity';
+import { convertActivityToExperience } from '@/features/landing/libs/utils/convertActToExp';
 
 import type { Experience } from '../libs/types/types';
 
@@ -57,7 +58,7 @@ const Hero = ({ activities, swiperRef, ExperienceCard, router }: HeroProps) => (
       <div className="relative">
         <div className="mb-6 flex items-center justify-between">
           <p className="flex items-center gap-2 text-[1.8rem] font-bold text-gray-950 md:text-[3rem]">
-            <span role="img" aria-label="fire">
+            <span role="img" aria-label="인기 체험을 나타내는 불 아이콘">
               🔥
             </span>{' '}
             인기 체험
@@ -105,10 +106,7 @@ const Hero = ({ activities, swiperRef, ExperienceCard, router }: HeroProps) => (
             {activities.map((activity) => (
               <SwiperSlide key={activity.id} className="px-[0.5rem] pb-[1rem]">
                 <ExperienceCard
-                  experience={{
-                    ...activity,
-                    image: activity.bannerImageUrl,
-                  }}
+                  experience={convertActivityToExperience(activity)}
                 />
               </SwiperSlide>
             ))}
