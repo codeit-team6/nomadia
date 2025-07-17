@@ -34,6 +34,16 @@ const BannerCarousel = () => {
     );
   }
 
+  // 배너 데이터가 비어있는 경우 안내 메시지 렌더링 (early return)
+  // 사용자 혼란 방지를 위해 명확한 안내 제공
+  if (!banners.length) {
+    return (
+      <div className="py-12 text-center text-gray-400">
+        현재 표시할 배너가 없습니다.
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto mt-[3.2rem] w-full max-w-[112rem] px-[2.4rem] md:mt-[5rem] md:px-[3rem] lg:mt-[7rem] lg:px-[4rem]">
       <Swiper
