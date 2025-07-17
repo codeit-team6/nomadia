@@ -13,6 +13,7 @@ interface ActivityCardProps {
 
 /**
  * 액티비티 카드 컴포넌트
+ * @author 김영현
  * @param activity - 액티비티 데이터
  * @param className - 추가 스타일 클래스
  */
@@ -20,8 +21,12 @@ export const ActivityCard = ({
   activity,
   className = '',
 }: ActivityCardProps) => (
+  // <Link
+  //   href={`/activities/${activity.id}`}
+  //   aria-label={`${activity.title} 상세 페이지로 이동`}
+  // >
   <div
-    className={`mb-[2.4rem] flex h-[24.3rem] w-full flex-col overflow-hidden rounded-3xl bg-white shadow-lg md:mb-[8rem] ${className}`}
+    className={`flex h-[24.3rem] w-full flex-col overflow-hidden rounded-3xl bg-white shadow-lg ${className}`}
   >
     {/* 이미지 영역 */}
     <div className="relative aspect-[4/3] w-full overflow-hidden">
@@ -61,4 +66,5 @@ export const ActivityCard = ({
       </div>
     </div>
   </div>
+  // </Link>
 );
