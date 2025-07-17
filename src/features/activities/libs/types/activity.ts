@@ -13,7 +13,7 @@ export interface Activity {
   rating: number;
   reviewCount: number;
   createdAt: Date;
-  updateAt: Date;
+  updatedAt: Date;
 }
 
 export interface GetActListApiResponse {
