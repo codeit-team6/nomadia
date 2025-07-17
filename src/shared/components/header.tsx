@@ -11,10 +11,7 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
-      ) {
+      if (!dropdownRef.current?.contains(e.target as Node)) {
         setOpenDropdown(false);
       }
     };
@@ -31,12 +28,16 @@ const Header: React.FC = () => {
     <nav className="bg-sub mx-auto flex h-[4.8rem] w-full items-center justify-between px-[2.4rem] py-[0.6rem] md:h-[6rem] md:px-[3rem] md:py-[1rem] lg:px-[20rem]">
       <div className="text-main txt-20-bold cursor-pointer md:flex md:gap-3">
         <Image src="/images/icons/logo.svg" alt="Logo" width={29} height={24} />
-        <span className="txt-20-bold hidden text-[#188FFF] md:block">
-          NOMADIA
-        </span>
+        <Image
+          src="/images/icons/nomadia.svg"
+          alt="홈페이지 이름"
+          width={102}
+          height={29}
+          className="hidden md:block"
+        />
       </div>
 
-      <ul className="txt-14-medium flex space-x-12 text-gray-950">
+      <ul className="txt-14-medium flex items-center space-x-12 text-gray-950">
         {isLoggedIn ? (
           <>
             {/* 로그인 상태일 때 */}
@@ -44,8 +45,8 @@ const Header: React.FC = () => {
               <Image
                 src="/images/icons/alarm.svg"
                 alt="알람"
-                width={16}
-                height={19}
+                width={24}
+                height={24}
               />
             </li>
 
@@ -59,10 +60,10 @@ const Header: React.FC = () => {
               >
                 <Image
                   src="/images/icons/profile.svg"
-                  alt="프로필"
-                  width={24}
-                  height={24}
-                  className="h-6 w-6 rounded-full"
+                  alt="프로필사진"
+                  width={30}
+                  height={30}
+                  className="rounded-full"
                 />
                 <span className="txt-14-medium text-gray-950">정만철</span>
               </button>
