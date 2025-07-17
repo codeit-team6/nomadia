@@ -1,4 +1,4 @@
-import type { StepCardProps } from './types';
+import type { StepCardProps } from '../libs/types/types';
 
 /**
  * 랜딩 페이지 3단계 안내 등에서 사용하는 StepCard UI 컴포넌트
