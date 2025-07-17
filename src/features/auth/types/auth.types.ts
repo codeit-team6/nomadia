@@ -1,8 +1,8 @@
 // User 는 shared로 옮길 수 있음
 export interface User {
   id: string;
+  nickname: string;
   email: string;
-  password: string;
 }
 
 export interface LoginRequest {

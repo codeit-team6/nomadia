@@ -3,12 +3,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import {
   LoginFormType,
   loginSchema,
-  SignupFormType,
 } from '@/features/auth/validators/auth.schema';
 
 import { login as apiLogin } from '../../api/auth.api';
@@ -18,7 +18,7 @@ export const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignupFormType>({
+  } = useForm<LoginFormType>({
     resolver: zodResolver(loginSchema),
   });
 
@@ -29,11 +29,11 @@ export const LoginForm = () => {
     try {
       const response = await apiLogin(data);
       storeLogin(response);
-      alert('로그인 성공');
+      toast.success('로그인 성공');
       router.push('/');
     } catch (error) {
       console.error('로그인 실패', error);
-      alert('로그인에 실패했습니다');
+      toast.error('로그인에 실패했습니다');
     }
   };
 
@@ -42,7 +42,7 @@ export const LoginForm = () => {
       <div>
         <label htmlFor="email">이메일</label>
         <input id="email" type="email" {...register('email')} />
-        {errors.email && <p className="text-red">{errors.email.message}</p>}
+        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
       </div>
       <div>
         <label htmlFor="password">비밀번호</label>

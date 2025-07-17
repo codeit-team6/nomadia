@@ -55,14 +55,14 @@ export const SignupForm = () => {
       </div>
       <div>
         <label htmlFor="password">비밀번호</label>
-        <input id="password" type="passwrod" {...register('password')} />
+        <input id="password" type="password" {...register('password')} />
         {errors.password && <p>{errors.password.message}</p>}
       </div>
       <div>
-        <label htmlFor="confrimPassword">비밀번호 확인</label>
+        <label htmlFor="confirmPassword">비밀번호 확인</label>
         <input
-          id="confrimPassword"
-          type="text"
+          id="confirmPassword"
+          type="password"
           {...register('confirmPassword')}
         />
         {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}

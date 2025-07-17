@@ -1,4 +1,5 @@
 import api from '../../../shared/libs/api/axios';
+import { apiForRefresh } from '../../../shared/libs/api/axios';
 import type {
   LoginRequest,
   LoginResponse,
@@ -17,8 +18,12 @@ export const signup = async (data: SignupRequest): Promise<void> => {
 };
 
 //리프레시 토큰을 통한 accessToken 재발급
-export const refreshToken = async (token: string) => {
-  const response = await api.post('/auth/tokens', { refreshToken: token });
+export const refreshToken = async (refreshToken: string) => {
+  const response = await apiForRefresh.post('/auth/tokens', null, {
+    headers: {
+      Authorization: `Bearer ${refreshToken}`,
+    },
+  });
   return response.data;
 };
 

@@ -3,9 +3,15 @@ import axios from 'axios';
 import { refreshToken as apiRefreshToken } from '@/features/auth/api/auth.api';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+// refresh용 api 호출
+export const apiForRefresh = axios.create({
+  baseURL,
+});
+
 const api = axios.create({
-  // 추후 baseURL: process.env.000000 설정
-  baseURL: 'https://sp-globalnomad-api.vercel.app/15-6',
+  baseURL,
 });
 
 api.interceptors.request.use(
