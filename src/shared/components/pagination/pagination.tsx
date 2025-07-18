@@ -10,6 +10,7 @@ type PaginationProps = {
   totalPages: number;
   currentPage: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
+  className?: string;
 };
 
 /**
@@ -44,7 +45,12 @@ type PaginationProps = {
  * ```
  */
 
-const Pagination = ({ totalPages, currentPage, setPage }: PaginationProps) => {
+const Pagination = ({
+  totalPages,
+  currentPage,
+  setPage,
+  className = '',
+}: PaginationProps) => {
   if (totalPages <= 0) return null;
 
   const PAGE_GROUP_SIZE = 5;
@@ -61,7 +67,7 @@ const Pagination = ({ totalPages, currentPage, setPage }: PaginationProps) => {
   const rightDisable = pageGroupNum * PAGE_GROUP_SIZE >= totalPages;
 
   return (
-    <div className="flex">
+    <div className={cn('flex', className)}>
       <button
         onClick={() => {
           setPage((pageGroupNum - 1) * PAGE_GROUP_SIZE);

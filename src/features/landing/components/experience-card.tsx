@@ -7,6 +7,7 @@ import type { Experience } from '../libs/types/types';
 
 /**
  * 체험 카드 UI 컴포넌트
+ * @author 김영현
  * @param experience - 체험 정보 객체
  */
 const ExperienceCard = ({ experience }: { experience: Experience }) => (

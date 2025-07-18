@@ -5,10 +5,12 @@ import BestActivities from '@/features/activities/components/best-activities';
 const ActivitiesPage = () => {
   return (
     <main className="bg-background flex w-full flex-col gap-10">
-      <BannerCarousel />
-      {/* <Search /> */}
-      <BestActivities />
-      <AllActivities />
+      <div className="mx-auto w-full max-w-[120rem]">
+        <BannerCarousel />
+        {/* <Search /> */}
+        <BestActivities />
+        <AllActivities />
+      </div>
     </main>
   );
 };

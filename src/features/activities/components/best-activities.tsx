@@ -12,6 +12,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { ActivityCard } from '@/features/activities/components/activity-card';
 import useActivity from '@/shared/libs/hooks/useActivityQuery';
 
+/**
+ * 인기 체험 컴포넌트
+ * @author 김영현
+ * @returns 인기 체험 컴포넌트
+ */
 const BestActivities = () => {
   const swiperRef = useRef<SwiperType | null>(null);
 
@@ -46,7 +51,7 @@ const BestActivities = () => {
   };
 
   return (
-    <div className="px-[2.4rem] md:px-[3rem] lg:px-[4rem]">
+    <div className="mt-[4rem] px-[2.4rem] md:mt-[6rem] md:px-[3rem] lg:px-[4rem]">
       <div className="mb-[4rem] flex items-center justify-between md:mb-[1.6rem] lg:mb-[2rem]">
         <p className="flex items-center gap-2 text-[1.8rem] font-bold text-gray-950 md:text-[3.2rem]">
           <span role="img" aria-label="fire">
@@ -101,7 +106,10 @@ const BestActivities = () => {
         >
           {activities.map((activity) => (
             <SwiperSlide key={activity.id}>
-              <ActivityCard activity={activity} />
+              <ActivityCard
+                activity={activity}
+                className="mb-[2.4rem] md:mb-[8rem]"
+              />
             </SwiperSlide>
           ))}
         </Swiper>
