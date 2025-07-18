@@ -11,6 +11,12 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import useActivity from '@/shared/libs/hooks/useActivityQuery';
 
+/**
+ * 배너 캐러셀 컴포넌트
+ * @author 김영현
+ * @returns 배너 캐러셀 컴포넌트
+ * @description 배너 캐러셀을 표시하는 컴포넌트입니다.
+ */
 const BannerCarousel = () => {
   const swiperRef = useRef<SwiperType | null>(null);
   const { data, isLoading, isError } = useActivity({
@@ -34,8 +40,6 @@ const BannerCarousel = () => {
     );
   }
 
-  // 배너 데이터가 비어있는 경우 안내 메시지 렌더링 (early return)
-  // 사용자 혼란 방지를 위해 명확한 안내 제공
   if (!banners.length) {
     return (
       <div className="py-12 text-center text-gray-400">

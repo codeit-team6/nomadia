@@ -2,10 +2,12 @@
 
 import LandingPage from '@/features/landing/components/landing-page';
 
-export const Page = () => {
+const Page = () => {
   return (
     <main>
       <LandingPage />
     </main>
   );
 };
+
+export default Page;

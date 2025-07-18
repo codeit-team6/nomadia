@@ -4,6 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { FormInput } from '@/shared/components/form-input/form-input';
+
 import { signup as apiSignup } from '../../api/auth.api';
 import { SignupFormType, signupSchema } from '../../validators/auth.schema';
 
@@ -20,8 +22,8 @@ export const SignupForm = () => {
 
   const onSubmit: SubmitHandler<SignupFormType> = async (data) => {
     try {
-      // const _response = await apiSignup(data);
-      await apiSignup(data);
+      const response = await apiSignup(data);
+      console.log(response);
       alert('회원가입 성공');
       router.push('./login');
     } catch (error) {
@@ -32,28 +34,22 @@ export const SignupForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor="email">이메일</label>
-        <input
-          id="email"
-          type="email"
-          {...register('email')}
-          className="border"
-          placeholder="이메일을 입력해주세요"
-        />
-        {/* 여러 input 속성을 한꺼번에 적용시킴 
-                    name: 'email',
-                    onChange: (e) => {},
-                    ref
-                    ...
-                */}
-        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
-      </div>
-      <div>
-        <label htmlFor="nickname">닉네임</label>
-        <input id="nickname" type="text" {...register('nickname')} />
-        {errors.nickname && <p>{errors.nickname.message}</p>}
-      </div>
+      <FormInput
+        label="이메일"
+        name="email"
+        type="text"
+        placeholder="email을 입력해주세요."
+        register={register}
+        error={errors.email}
+      />
+      <FormInput
+        label="닉네임"
+        name="nickname"
+        type="text"
+        placeholder="닉네임을 입력해주세요."
+        register={register}
+        error={errors.nickname}
+      />
       <div>
         <label htmlFor="password">비밀번호</label>
         <input id="password" type="password" {...register('password')} />
