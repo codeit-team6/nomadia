@@ -41,7 +41,7 @@ export const ActivityCard = ({
       {/* 제목과 별점 그룹 */}
       <div className="flex flex-col gap-[0.4rem] md:mt-[1.4rem] md:gap-[0.6rem]">
         {/* 제목 */}
-        <h3 className="text-gray-900md:overflow-hidden line-clamp-1 text-[1.4rem] leading-[1.8rem] font-semibold md:text-[1.8rem] md:text-ellipsis md:whitespace-nowrap">
+        <h3 className="line-clamp-1 text-[1.4rem] leading-[1.8rem] font-semibold text-gray-900 md:overflow-hidden md:text-[1.8rem] md:text-ellipsis md:whitespace-nowrap">
           {activity.title}
         </h3>
         {/* 별점과 리뷰 */}
