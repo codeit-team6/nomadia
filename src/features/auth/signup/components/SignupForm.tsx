@@ -20,7 +20,8 @@ export const SignupForm = () => {
 
   const onSubmit: SubmitHandler<SignupFormType> = async (data) => {
     try {
-      const response = await apiSignup(data);
+      // const _response = await apiSignup(data);
+      await apiSignup(data);
       alert('회원가입 성공');
       router.push('./login');
     } catch (error) {

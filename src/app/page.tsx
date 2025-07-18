@@ -2,7 +2,6 @@
 
 import LandingPage from '@/features/landing/components/landing-page';
 
-
 const Page = () => {
   return (
     <main>
@@ -12,4 +11,3 @@ const Page = () => {
 };
 
 export default Page;
-
