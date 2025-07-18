@@ -10,7 +10,7 @@ import { useModalStore } from '@/shared/libs/stores/useModalStore';
  * 색상에 따라 스타일이 달라지며, 클릭 시 동작을 전달받을 수 있습니다.
  *
  * @example
- *   <Modal.Button color="white" ariaLabel="취소" onCLick={closeModal}>취소</Modal.Button>
+ *   <Modal.Button color="white" ariaLabel="취소" onClick={closeModal}>취소</Modal.Button>
  *
  * @param {'white' | 'blue'} props.color - 버튼 색상
  * @param {string} props.ariaLabel - 접근성 레이블

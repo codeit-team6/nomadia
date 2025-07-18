@@ -8,7 +8,7 @@ import { ReactNode } from 'react';
  *
  * @example
  * <Modal.Footer>
- *   <Modal.Button color="white" ariaLabel="취소" onCLick={closeModal}>취소</Modal.Button>
+ *   <Modal.Button color="white" ariaLabel="취소" onClick={closeModal}>취소</Modal.Button>
  *   <Modal.Button color="blue" ariaLabel="확인" onClick={...}>확인</Modal.Button>
  * </Modal.Footer>
  *

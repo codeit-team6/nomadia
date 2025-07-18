@@ -61,7 +61,7 @@ export default function Page() {
           </Modal.Header>
 
           <Modal.Footer>
-            <Modal.Button color="white" ariaLabel="확인" onClick={closeModal}>
+            <Modal.Button color="white" ariaLabel="취소" onClick={closeModal}>
               취소
             </Modal.Button>
             <Modal.Button
