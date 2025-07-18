@@ -31,7 +31,7 @@ export const FormInput = <T extends FieldValues>({
   ...rest
 }: FormInputProps<T>) => {
   return (
-    <div className="mb-5 flex flex-col">
+    <div className="mb-6 flex flex-col">
       <label htmlFor={name} className="txt-16-medium mb-3">
         {label}
       </label>
@@ -39,7 +39,9 @@ export const FormInput = <T extends FieldValues>({
         id={name}
         {...rest}
         {...register(name)} // type, placeholder 등을 여기에 적용
-        className="txt-14-medium mb-1.5 h-13.5 w-full max-w-[328px] rounded-lg border px-3 md:max-w-[640px]"
+        className={`txt-14-medium mb-1.5 h-[54px] w-full rounded-xl border px-4 ${
+          error ? 'border-red-500' : 'border-gray-200'
+        } `}
       />
       {error && <p className="txt-12-medium text-red-500">{error.message}</p>}
     </div>

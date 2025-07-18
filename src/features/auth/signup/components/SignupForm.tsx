@@ -13,9 +13,10 @@ export const SignupForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<SignupFormType>({
     resolver: zodResolver(signupSchema),
+    mode: 'onChange',
   });
 
   const router = useRouter();
@@ -33,12 +34,15 @@ export const SignupForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="mb-6 flex w-full flex-col"
+    >
       <FormInput
         label="이메일"
         name="email"
         type="text"
-        placeholder="email을 입력해주세요."
+        placeholder="nomad@google.com"
         register={register}
         error={errors.email}
       />
@@ -50,24 +54,26 @@ export const SignupForm = () => {
         register={register}
         error={errors.nickname}
       />
-      <div>
-        <label htmlFor="password">비밀번호</label>
-        <input id="password" type="password" {...register('password')} />
-        {errors.password && <p>{errors.password.message}</p>}
-      </div>
-      <div>
-        <label htmlFor="confirmPassword">비밀번호 확인</label>
-        <input
-          id="confirmPassword"
-          type="password"
-          {...register('confirmPassword')}
-        />
-        {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
-      </div>
+      <FormInput
+        label="비밀번호"
+        name="password"
+        type="password"
+        placeholder="비밀번호를 8자 이상 입력해주세요."
+        register={register}
+        error={errors.password}
+      />
+      <FormInput
+        label="비밀번호 확인"
+        name="confirmPassword"
+        type="password"
+        placeholder="비밀번호를 8자 이상 입력해주세요."
+        register={register}
+        error={errors.confirmPassword}
+      />
       <button
         type="submit"
-        disabled={isSubmitting}
-        className="background border"
+        disabled={isSubmitting || !isValid}
+        className={`txt-16-bold mt-10 h-[54px] w-full cursor-pointer rounded-xl text-gray-50 transition-colors ${isValid ? 'bg-main hover:bg-blue-500' : 'bg-gray-200'} `}
       >
         {isSubmitting ? '가입 중 ...' : '회원가입'}
       </button>
