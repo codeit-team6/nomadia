@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { FormInput } from '@/shared/components/form-input/form-input';
 
@@ -25,11 +26,11 @@ export const SignupForm = () => {
     try {
       const response = await apiSignup(data);
       console.log(response);
-      alert('회원가입 성공');
+      toast.success('회원가입 성공');
       router.push('./login');
     } catch (error) {
       console.log('회원가입 실패', error);
-      alert('회원가입 실패');
+      toast.error('회원가입 실패');
     }
   };
 
@@ -50,7 +51,7 @@ export const SignupForm = () => {
         label="닉네임"
         name="nickname"
         type="text"
-        placeholder="닉네임을 입력해주세요."
+        placeholder="닉네임을 입력해 주세요"
         register={register}
         error={errors.nickname}
       />
@@ -58,7 +59,7 @@ export const SignupForm = () => {
         label="비밀번호"
         name="password"
         type="password"
-        placeholder="비밀번호를 8자 이상 입력해주세요."
+        placeholder="비밀번호를 8자 이상 입력해 주세요"
         register={register}
         error={errors.password}
       />
@@ -66,7 +67,7 @@ export const SignupForm = () => {
         label="비밀번호 확인"
         name="confirmPassword"
         type="password"
-        placeholder="비밀번호를 8자 이상 입력해주세요."
+        placeholder="비밀번호를 8자 이상 입력해 주세요"
         register={register}
         error={errors.confirmPassword}
       />
