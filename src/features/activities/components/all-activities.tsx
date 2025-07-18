@@ -150,6 +150,7 @@ const AllActivities = () => {
         totalPages={totalPages}
         currentPage={page}
         setPage={setPage}
+        className="flex-center mt-[2.4rem] mb-[16.5rem] md:mt-[3rem] md:mb-[27.7rem] lg:mb-[27.1rem]"
       />
     </div>
   );
