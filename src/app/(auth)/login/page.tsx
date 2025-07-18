@@ -7,7 +7,7 @@ const Login = () => {
   return (
     <div className="mx-6 mt-9 mb-10 flex w-full flex-col items-center md:max-w-[640px]">
       <Image
-        src="/images/icons/logo_desktop.png"
+        src="/images/icons/logo-desktop.png"
         alt="Signup logo image"
         width={86}
         height={71}

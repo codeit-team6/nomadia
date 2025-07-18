@@ -1,3 +1,5 @@
+import Image from 'next/image';
+import { useState } from 'react';
 import {
   FieldError,
   FieldValues,
@@ -30,19 +32,49 @@ export const FormInput = <T extends FieldValues>({
   error,
   ...rest
 }: FormInputProps<T>) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const isPasswordField = rest.type === 'password';
   return (
     <div className="mb-6 flex flex-col">
       <label htmlFor={name} className="txt-16-medium mb-3">
         {label}
       </label>
-      <input
-        id={name}
-        {...rest}
-        {...register(name)} // type, placeholder 등을 여기에 적용
-        className={`txt-14-medium mb-1.5 h-[54px] w-full rounded-xl border px-4 ${
-          error ? 'border-red-500' : 'border-gray-200'
-        } `}
-      />
+      <div className="relative">
+        <input
+          id={name}
+          {...rest}
+          type={
+            isPasswordField ? (showPassword ? 'text' : 'password') : rest.type
+          }
+          {...register(name)} // type, placeholder 등을 여기에 적용
+          className={`txt-14-medium mb-1.5 h-[54px] w-full rounded-xl border px-4 ${
+            error ? 'border-red-500' : 'border-gray-200'
+          } `}
+        />
+        {isPasswordField && (
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute inset-y-0 right-6 flex items-center pr-3"
+          >
+            {showPassword ? (
+              <Image
+                src="/images/icons/eye-on.png"
+                alt="eye-on"
+                width={24}
+                height={24}
+              />
+            ) : (
+              <Image
+                src="/images/icons/eye-off.png"
+                alt="eye-on"
+                width={24}
+                height={24}
+              />
+            )}
+          </button>
+        )}
+      </div>
       {error && <p className="txt-12-medium text-red-500">{error.message}</p>}
     </div>
   );
