@@ -20,14 +20,23 @@ const useResActivitiesQuery = (params: ResponsiveParams) => {
   const [size, setSize] = useState(6);
 
   useEffect(() => {
-    const width = window.innerWidth;
-    if (width < 768) {
-      setSize(6);
-    } else if (width < 1024) {
-      setSize(4);
-    } else {
-      setSize(8);
-    }
+    if (typeof window === 'undefined') return;
+
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setSize(6);
+      } else if (width < 1024) {
+        setSize(4);
+      } else {
+        setSize(8);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const queryResult = useQuery<GetActListApiResponse>({
