@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-import Dropdown from '@/features/activities/components/dropdown';
+import Dropdown from '@/shared/components/dropdown';
 
 const Header: React.FC = () => {
   const isLoggedIn = true; // 임시코드 (로그인, 비로그인 확인용)
