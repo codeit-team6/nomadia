@@ -34,7 +34,7 @@ export const FormInput = ({
         id={name}
         {...register(name)} // type, placeholder 등을 여기에 적용
         {...rest}
-        className="mb-1.5 h-11 rounded-lg border px-3"
+        className="txt-14-medium mb-1.5 h-13.5 w-full max-w-[328px] rounded-lg border px-3 md:max-w-[640px]"
       />
       {error && <p className="txt-12-medium text-red-500">{error.message}</p>}
     </div>
