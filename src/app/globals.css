@@ -75,6 +75,8 @@
   --color-sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --color-sidebar-border: oklch(0.92 0.004 286.32);
   --color-sidebar-ring: oklch(0.705 0.015 286.067);
+  --color-gray-border: oklch(0.8822 0 0); /* #d8d8d8 */
+  --color-gray-hover: oklch(0.3211 0 0); /* #333333 */
 
   /* radius 변수들 */
   --radius-sm: calc(var(--radius) - 4px);
@@ -184,6 +186,15 @@
 @layer utilities {
   .flex-center {
     @apply flex items-center justify-center;
+  }
+
+  /* 카테고리 스크롤바 숨기기 */
+  .category-scroll {
+    -ms-overflow-style: none; /* IE, Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .category-scroll::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
   }
 
   /* #E9F7FF -> #FFFFFF */
