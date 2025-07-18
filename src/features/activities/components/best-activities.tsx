@@ -51,7 +51,7 @@ const BestActivities = () => {
   };
 
   return (
-    <div className="px-[2.4rem] md:px-[3rem] lg:px-[4rem]">
+    <div className="mt-[4rem] px-[2.4rem] md:mt-[6rem] md:px-[3rem] lg:px-[4rem]">
       <div className="mb-[4rem] flex items-center justify-between md:mb-[1.6rem] lg:mb-[2rem]">
         <p className="flex items-center gap-2 text-[1.8rem] font-bold text-gray-950 md:text-[3.2rem]">
           <span role="img" aria-label="fire">
