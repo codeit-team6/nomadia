@@ -17,8 +17,10 @@ const useActivity = (params: GetActListApiParams) => {
   return useQuery<GetActListApiResponse>({
     queryKey: ['activities', params],
     queryFn: () => getActListApi(params),
-    staleTime: 1000 * 60,
+    staleTime: 1000 * 60 * 5,
     retry: 1,
+    refetchOnWindowFocus: false,
+    placeholderData: (previousData) => previousData,
   });
 };
 
