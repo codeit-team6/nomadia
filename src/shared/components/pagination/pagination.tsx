@@ -59,23 +59,26 @@ const Pagination = ({ totalPages, currentPage, setPage }: PaginationProps) => {
 
   const leftDisable = currentPage <= PAGE_GROUP_SIZE;
   const rightDisable = pageGroupNum * PAGE_GROUP_SIZE >= totalPages;
+  const showButton = totalPages <= PAGE_GROUP_SIZE;
 
   return (
     <div className="flex">
-      <button
-        onClick={() => {
-          setPage((pageGroupNum - 1) * PAGE_GROUP_SIZE);
-        }}
-        disabled={leftDisable}
-        aria-label="이전 페이지 그룹으로"
-        className="flex-center size-[4rem]"
-      >
-        <ChevronLeft
-          size={17}
-          strokeWidth={3}
-          color={leftDisable ? '#B3B4BC' : '#1F1F22'}
-        />
-      </button>
+      {!showButton && (
+        <button
+          onClick={() => {
+            setPage((pageGroupNum - 1) * PAGE_GROUP_SIZE);
+          }}
+          disabled={leftDisable}
+          aria-label="이전 페이지 그룹으로"
+          className="flex-center size-[4rem]"
+        >
+          <ChevronLeft
+            size={17}
+            strokeWidth={3}
+            color={leftDisable ? '#B3B4BC' : '#1F1F22'}
+          />
+        </button>
+      )}
 
       {pageRange.map((page) => (
         <button
@@ -92,21 +95,22 @@ const Pagination = ({ totalPages, currentPage, setPage }: PaginationProps) => {
           {page}
         </button>
       ))}
-
-      <button
-        onClick={() => {
-          setPage(pageGroupNum * PAGE_GROUP_SIZE + 1);
-        }}
-        disabled={rightDisable}
-        aria-label="다음 페이지 그룹으로"
-        className="flex-center size-[4rem]"
-      >
-        <ChevronRight
-          size={17}
-          strokeWidth={3}
-          color={rightDisable ? '#B3B4BC' : '#1F1F22'}
-        />
-      </button>
+      {!showButton && (
+        <button
+          onClick={() => {
+            setPage(pageGroupNum * PAGE_GROUP_SIZE + 1);
+          }}
+          disabled={rightDisable}
+          aria-label="다음 페이지 그룹으로"
+          className="flex-center size-[4rem]"
+        >
+          <ChevronRight
+            size={17}
+            strokeWidth={3}
+            color={rightDisable ? '#B3B4BC' : '#1F1F22'}
+          />
+        </button>
+      )}
     </div>
   );
 };

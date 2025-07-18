@@ -6,8 +6,6 @@ import { getApi } from '@/app/(test)/test-scroll/getApi';
 import { useItemInfiniteQuery } from '@/shared/libs/hooks/infiniteScroll/useInfiniteQuery';
 import { useInfiniteScroll } from '@/shared/libs/hooks/infiniteScroll/useInfiniteScroll';
 
-// 할일 : 페이지네이션: 5개 이하는  <,> 버튼 안보이게 해야겠다.
-
 export default function Page() {
   // ✅ 무한 데이터 호출 함수 사용법(useInfiniteQuery 호출)
   // useItemInfiniteQuery로부터 { data, fetchNextPage, hasNextPage, isLoading, isError } 데이터를 받아와서 활용함.
