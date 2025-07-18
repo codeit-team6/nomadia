@@ -1,3 +1,5 @@
+//테스트용으로 작성한 get 호출 함수 파일입니다. 무시해주세요~
+
 import axios from 'axios';
 
 import { GetActListApiResponse } from '@/features/activities/libs/types/activity';
@@ -15,7 +17,7 @@ const instance = axios.create({
 
 //---------------------------------------------------------------------------------
 interface GetActListApiParams {
-  cursorId?: number; // 이걸 필수로 작성해주시고~
+  cursorId?: number; // 커서 항목 필수
   category?: string;
   keyword?: string;
   sort?: 'most_reviewed' | 'price_asc' | 'price_desc' | 'lastest';
@@ -28,7 +30,3 @@ export const getApi = async (
   const { data } = await instance.get('activities?method=cursor', { params });
   return data;
 };
-
-//계속 get 요청에서 400에러 발생: 파라미터 불일치 문제
-//const { data } = await instance.get('activities?method=cursorId', { params });
-//위의 코드에서 cursorId가 아닌 cursor이어야 했음... ㅅㅂ
