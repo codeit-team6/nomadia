@@ -36,6 +36,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         tabIndex={0}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
             setIsOpen((prev) => !prev);
           }
         }}
