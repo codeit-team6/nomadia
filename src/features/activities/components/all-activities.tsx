@@ -15,10 +15,20 @@ import useResActivitiesQuery from '@/features/activities/libs/hooks/useResActivi
 import Pagination from '@/shared/components/pagination/pagination';
 import { Button } from '@/shared/libs/shadcn/components/ui/button';
 
+const CATEGORIES = [
+  { name: '문화 · 예술', icon: Music },
+  { name: '식음료', icon: Soup },
+  { name: '스포츠', icon: Volleyball },
+  { name: '투어', icon: Binoculars },
+  { name: '관광', icon: BusFront },
+  { name: '웰빙', icon: Leaf },
+];
+
 /**
  * 모든 체험 컴포넌트
  * @author 김영현
  * @returns 모든 체험 컴포넌트
+ * @description 모든 체험 목록을 표시하는 컴포넌트입니다.
  */
 const AllActivities = () => {
   const [active, setActive] = useState('문화 · 예술');
@@ -66,77 +76,20 @@ const AllActivities = () => {
       </div>
 
       <div className="category-scroll -mx-[2.4rem] mb-[2.4rem] flex flex-nowrap gap-[0.8rem] overflow-x-auto px-[2.4rem] whitespace-nowrap md:mb-[3rem] md:gap-[2rem]">
-        <Button
-          variant={active === '문화 · 예술' ? 'selected' : 'default'}
-          size="sm"
-          className="group"
-          onClick={() => handleCategoryChange('문화 · 예술')}
-        >
-          <Music
-            className={`size-[1.7rem] ${active === '문화 · 예술' ? 'text-white' : 'text-gray-950'}`}
-          />{' '}
-          문화 · 예술
-        </Button>
-
-        <Button
-          variant={active === '식음료' ? 'selected' : 'default'}
-          size="sm"
-          className="group"
-          onClick={() => handleCategoryChange('식음료')}
-        >
-          <Soup
-            className={`size-[1.7rem] ${active === '식음료' ? 'text-white' : 'text-gray-950'}`}
-          />{' '}
-          식음료
-        </Button>
-
-        <Button
-          variant={active === '스포츠' ? 'selected' : 'default'}
-          size="sm"
-          className="group"
-          onClick={() => handleCategoryChange('스포츠')}
-        >
-          <Volleyball
-            className={`size-[1.7rem] ${active === '스포츠' ? 'text-white' : 'text-gray-950'}`}
-          />{' '}
-          스포츠
-        </Button>
-
-        <Button
-          variant={active === '투어' ? 'selected' : 'default'}
-          size="sm"
-          className="group"
-          onClick={() => handleCategoryChange('투어')}
-        >
-          <Binoculars
-            className={`size-[1.7rem] ${active === '투어' ? 'text-white' : 'text-gray-950'}`}
-          />{' '}
-          투어
-        </Button>
-
-        <Button
-          variant={active === '관광' ? 'selected' : 'default'}
-          size="sm"
-          className="group"
-          onClick={() => handleCategoryChange('관광')}
-        >
-          <BusFront
-            className={`size-[1.7rem] ${active === '관광' ? 'text-white' : 'text-gray-950'}`}
-          />{' '}
-          관광
-        </Button>
-
-        <Button
-          variant={active === '웰빙' ? 'selected' : 'default'}
-          size="sm"
-          className="group"
-          onClick={() => handleCategoryChange('웰빙')}
-        >
-          <Leaf
-            className={`size-[1.7rem] ${active === '웰빙' ? 'text-white' : 'text-gray-950'}`}
-          />{' '}
-          웰빙
-        </Button>
+        {CATEGORIES.map(({ name, icon: Icon }) => (
+          <Button
+            key={name}
+            variant={active === name ? 'selected' : 'default'}
+            size="sm"
+            className="group"
+            onClick={() => handleCategoryChange(name)}
+          >
+            <Icon
+              className={`size-[1.7rem] ${active === name ? 'text-white' : 'text-gray-950'}`}
+            />{' '}
+            {name}
+          </Button>
+        ))}
       </div>
 
       <div>
