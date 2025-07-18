@@ -20,7 +20,7 @@ export default function Page() {
       getFn: getApi,
       params: {
         sort: 'most_reviewed' as const,
-        size: 6,
+        size: 5,
       },
     });
 
@@ -54,17 +54,17 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex flex-col gap-2">
+      <div className="flex h-[50rem] w-2xl flex-col gap-2 overflow-scroll">
         {test?.map((t) => (
           <div key={t.id} className="rounded-2xl bg-amber-200 p-10">
             <div className="txt-16-medium">{t.title}</div>
             <div className="txt-16-medium">{t.price}</div>
           </div>
         ))}
-      </div>
 
-      {/* 스크롤 트리거 요소 등록: 이 요소가 뷰포트에 노출되면 fetchNextPage가 호출됩니다 */}
-      <div ref={loadMoreRef}></div>
+        {/* 스크롤 트리거 요소 등록: 이 요소가 뷰포트에 노출되면 fetchNextPage가 호출됩니다 */}
+        <div ref={loadMoreRef}></div>
+      </div>
     </>
   );
 }
