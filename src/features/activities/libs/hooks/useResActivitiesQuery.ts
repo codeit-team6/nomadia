@@ -33,7 +33,7 @@ const useResActivitiesQuery = (params: ResponsiveParams) => {
   const queryResult = useQuery<GetActListApiResponse>({
     queryKey: ['activities', { ...params, size }],
     queryFn: () => getActListApi({ ...params, size }),
-    staleTime: 1000 * 60,
+    staleTime: 1000 * 60 * 15,
     retry: 1,
   });
 
