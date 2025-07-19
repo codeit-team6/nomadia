@@ -46,7 +46,7 @@ const AllActivities = ({ keyword }: AllActivitiesProps) => {
   const [active, setActive] = useState('문화 · 예술');
   const [page, setPage] = useState(1);
   const [selectedSort, setSelectedSort] = useState<
-    'latest' | 'price_asc' | 'price_desc' | 'most_reviewed'
+    'latest' | 'price_asc' | 'price_desc'
   >('latest');
 
   const { data, isLoading, isError, size } = useResActivitiesQuery({
@@ -79,9 +79,7 @@ const AllActivities = ({ keyword }: AllActivitiesProps) => {
     setPage(1);
   };
 
-  const handleSortChange = (
-    value: 'latest' | 'price_asc' | 'price_desc' | 'most_reviewed',
-  ) => {
+  const handleSortChange = (value: 'latest' | 'price_asc' | 'price_desc') => {
     setSelectedSort(value);
     setPage(1);
   };
