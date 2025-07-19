@@ -16,6 +16,8 @@ export default function Page() {
   return (
     <div className="flex flex-col gap-2.5">
       <Pagination totalPages={33} currentPage={page} setPage={setPage} />
+      <Pagination totalPages={5} currentPage={page} setPage={setPage} />
+
       <Button
         className="text-2xl"
         onClick={() => {
