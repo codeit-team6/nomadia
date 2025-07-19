@@ -67,7 +67,7 @@ export const FormInput = <T extends FieldValues>({
             ) : (
               <Image
                 src="/images/icons/eye-off.png"
-                alt="eye-on"
+                alt="eye-off"
                 width={24}
                 height={24}
               />
