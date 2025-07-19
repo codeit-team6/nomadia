@@ -1,15 +1,31 @@
+'use client';
+
+import { useState } from 'react';
+
 import AllActivities from '@/features/activities/components/all-activities';
 import BannerCarousel from '@/features/activities/components/banner-carousel';
 import BestActivities from '@/features/activities/components/best-activities';
+import Search from '@/features/activities/components/search';
+import SearchResults from '@/features/activities/components/search-result';
 
 const ActivitiesPage = () => {
+  const [keyword, setKeyword] = useState('');
+  const isSearching = keyword.trim().length > 0;
+
   return (
     <main className="bg-background flex w-full flex-col gap-10">
       <div className="mx-auto w-full max-w-[120rem]">
         <BannerCarousel />
-        {/* <Search /> */}
-        <BestActivities />
-        <AllActivities />
+        <Search onSearch={setKeyword} />
+
+        {isSearching ? (
+          <SearchResults keyword={keyword} />
+        ) : (
+          <>
+            <BestActivities />
+            <AllActivities />
+          </>
+        )}
       </div>
     </main>
   );
