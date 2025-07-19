@@ -1,13 +1,35 @@
-import { Button } from '@/shared/shadcn/components/ui/button';
+<<<<<<< HEAD
+'use client';
 
-export default function Home() {
+import LandingPage from '@/features/landing/landing-page';
+
+export default function Page() {
   return (
-    <div>
-      <Button>shadcn button</Button>
-      <p className="txt-14-medium text-main md:txt-24-bold md:text-sub lg:txt-32-medium lg:text-red-500">
-        프리텐다드 폰트, 반응형, font-size:62.5%, 폴더구조,
-        LF설정(윈도우),settings.json,providers,프리티어,
-      </p>
+    <main>
+      <LandingPage />
+    </main>
+=======
+import { notFound } from 'next/navigation';
+
+
+type Props = {
+  params: { id: string };
+};
+
+export default async function ProductPage({ params }: Props) {
+  const res = await fetch(`https://sp-globalnomad-api.vercel.app/products/${params.id}`);
+
+  if (!res.ok) {
+    notFound(); // this triggers not-found.tsx
+  }
+
+  const product = await res.json();
+
+  return (
+    <div className="p-8">
+      <h1 className="text-3xl font-bold">{product.name}</h1>
+      <p className="mt-2 text-gray-600">{product.description}</p>
     </div>
+>>>>>>> a8f6d3f ([✨ Feat] 에러 페이지)
   );
 }

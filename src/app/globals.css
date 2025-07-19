@@ -134,4 +134,8 @@
   body {
     @apply bg-background text-foreground;
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> feat/error-page
