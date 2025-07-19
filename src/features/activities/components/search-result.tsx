@@ -6,13 +6,12 @@ import { ActivityCard } from '@/features/activities/components/activity-card';
 import useResActivitiesQuery from '@/features/activities/libs/hooks/useResActivitiesQuery';
 import Pagination from '@/shared/components/pagination/pagination';
 
-interface SearchResultsProps {
+interface SearchResultProps {
   keyword: string;
 }
 
-export default function SearchResults({ keyword }: SearchResultsProps) {
+const SearchResults = ({ keyword }: SearchResultProps) => {
   const [page, setPage] = useState(1);
-
   const PAGE_SIZE = 8;
 
   const { data, isLoading, isError } = useResActivitiesQuery({
@@ -20,8 +19,6 @@ export default function SearchResults({ keyword }: SearchResultsProps) {
     sort: 'latest',
     page,
   });
-
-  if (keyword.trim().length === 0) return null;
 
   const activities = data?.activities ?? [];
   const totalCount = data?.totalCount ?? 0;
@@ -66,4 +63,6 @@ export default function SearchResults({ keyword }: SearchResultsProps) {
       )}
     </section>
   );
-}
+};
+
+export default SearchResults;

@@ -1,25 +1,30 @@
 'use client';
 
 import { SearchIcon } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 interface SearchProps {
   variant?: 'main' | 'sub';
   placeholder?: string;
-  onSearch?: (keyword: string) => void;
 }
 
 const Search: React.FC<SearchProps> = ({
   variant = 'main',
   placeholder = '내가 원하는 체험은',
-  onSearch,
 }) => {
-  const [keyword, setKeyword] = useState('');
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const defaultValue = searchParams.get('search') ?? '';
+  const [keyword, setKeyword] = useState(defaultValue);
 
   const handleSearch = () => {
     const trimmed = keyword.trim();
-    if (!trimmed) return;
-    onSearch?.(trimmed);
+    if (!trimmed) {
+      router.push('/activities');
+    } else {
+      router.push(`/activities?search=${encodeURIComponent(trimmed)}`);
+    }
   };
 
   const variants = {
@@ -56,6 +61,11 @@ const Search: React.FC<SearchProps> = ({
           type="text"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSearch();
+            }
+          }}
           placeholder={placeholder}
           className={style.input}
         />
