@@ -10,6 +10,7 @@ import {
   LoginFormType,
   loginSchema,
 } from '@/features/auth/validators/auth.schema';
+import { FormInput } from '@/shared/components/form-input/form-input';
 
 import { login as apiLogin } from '../../api/auth.api';
 
@@ -17,9 +18,10 @@ export const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<LoginFormType>({
     resolver: zodResolver(loginSchema),
+    mode: 'onChange',
   });
 
   const storeLogin = useAuthStore((state) => state.login);
@@ -38,18 +40,32 @@ export const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor="email">이메일</label>
-        <input id="email" type="email" {...register('email')} />
-        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
-      </div>
-      <div>
-        <label htmlFor="password">비밀번호</label>
-        <input id="password" type="passwrod" {...register('password')} />
-        {errors.password && <p>{errors.password.message}</p>}
-      </div>
-      <button type="submit" disabled={isSubmitting}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="mb-6 flex w-full flex-col"
+    >
+      <FormInput
+        label="이메일"
+        name="email"
+        type="text"
+        placeholder="이메일을 입력해 주세요"
+        register={register}
+        error={errors.email}
+      />
+      <FormInput
+        label="비밀번호"
+        name="password"
+        type="password"
+        placeholder="비밀번호를 입력해 주세요"
+        register={register}
+        error={errors.password}
+      />
+
+      <button
+        type="submit"
+        disabled={isSubmitting || !isValid}
+        className={`txt-16-bold mt-10 h-[54px] w-full cursor-pointer rounded-xl text-gray-50 transition-colors ${isValid ? 'bg-main hover:bg-blue-500' : 'bg-gray-200'} `}
+      >
         {isSubmitting ? '로그인 중 ...' : '로그인'}
       </button>
     </form>
