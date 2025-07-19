@@ -5,7 +5,7 @@ import { LoginForm } from '@/features/auth/login/components/LoginForm';
 
 const Login = () => {
   return (
-    <div className="mx-6 mt-9 mb-10 flex w-full flex-col items-center md:max-w-[640px]">
+    <div className="mx-6 mt-9 mb-10 flex w-full max-w-[343px] flex-col items-center md:max-w-[460px]">
       <Image
         src="/images/icons/logo-desktop.png"
         alt="Signup logo image"
@@ -16,31 +16,33 @@ const Login = () => {
 
       <LoginForm />
 
-      <div className="my-6 flex w-full items-center">
-        <hr className="flex-1 border-gray-100" />
-        <span className="txt-16-medium mx-4 text-gray-500"> OR </span>
-        <hr className="flex-1 border-gray-100" />
-      </div>
-
-      <button
-        type="button"
-        className="txt-16-medium flex-center my-6 flex h-[54px] w-full cursor-pointer gap-2 rounded-xl border border-gray-200 text-gray-600 hover:bg-yellow-300"
-      >
-        <Image
-          src="/images/icons/kakao.png"
-          alt="kakao image"
-          width={24}
-          height={24}
-        />
-        <span>카카오 로그인</span>
-      </button>
-
-      <p className="txt-16-medium my-6 text-gray-400">
-        아직 회원이 아니신가요?{' '}
-        <Link href="/signup" className="cursor-pointer text-gray-600 underline">
-          회원가입하기
+      <p className="txt-16-medium mt-4 mb-12 text-gray-400">
+        아직 계정이 없으신가요?{' '}
+        <Link
+          href="/signup"
+          className="text-main txt-16-medium cursor-pointer underline"
+        >
+          가입하기
         </Link>
       </p>
+
+      <div className="my-6 flex w-full items-center">
+        <hr className="border-main flex-1" />
+        <span className="txt-16-medium text-main mx-4"> OR </span>
+        <hr className="border-main flex-1" />
+      </div>
+
+      <div className="flex w-full justify-between">
+        <p className="txt-16-medium text-gray-950">간편 로그인하기</p>
+        <button type="button" className="cursor-pointer">
+          <Image
+            src="/images/icons/logo-kakao.png"
+            alt="kakao image"
+            width={42}
+            height={42}
+          />
+        </button>
+      </div>
     </div>
   );
 };
