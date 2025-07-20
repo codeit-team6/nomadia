@@ -4,18 +4,15 @@ import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import type { Activity } from '@/features/activities/libs/types/activity';
-import { convertActivityToExperience } from '@/features/landing/libs/utils/convertActToExp';
-
-import type { Experience } from '../libs/types/types';
 
 interface HeroProps {
   activities: Activity[];
   swiperRef: React.MutableRefObject<SwiperType | null>;
-  ExperienceCard: React.FC<{ experience: Experience }>;
+  ActivityCard: React.FC<{ activity: Activity; className?: string }>;
   router: ReturnType<typeof import('next/navigation').useRouter>;
 }
 
-const Hero = ({ activities, swiperRef, ExperienceCard, router }: HeroProps) => (
+const Hero = ({ activities, swiperRef, ActivityCard, router }: HeroProps) => (
   <div className="bg-background">
     <div className="mx-auto max-w-[120rem] px-[1.6rem] py-[6.4rem]">
       {/* 메인 컨텐츠 */}
@@ -82,7 +79,7 @@ const Hero = ({ activities, swiperRef, ExperienceCard, router }: HeroProps) => (
           <Swiper
             modules={[Navigation, Autoplay]}
             spaceBetween={24}
-            slidesPerView={2}
+            slidesPerView={1}
             autoplay={{
               delay: 4000,
               disableOnInteraction: false,
@@ -105,8 +102,9 @@ const Hero = ({ activities, swiperRef, ExperienceCard, router }: HeroProps) => (
           >
             {activities.map((activity) => (
               <SwiperSlide key={activity.id} className="px-[0.5rem] pb-[1rem]">
-                <ExperienceCard
-                  experience={convertActivityToExperience(activity)}
+                <ActivityCard
+                  activity={activity}
+                  className="h-[24.3rem] md:h-[42.3rem] lg:h-[36.6rem]"
                 />
               </SwiperSlide>
             ))}
