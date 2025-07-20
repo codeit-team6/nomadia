@@ -12,9 +12,8 @@ interface SearchResultProps {
 
 const SearchResults = ({ keyword }: SearchResultProps) => {
   const [page, setPage] = useState(1);
-  const PAGE_SIZE = 8;
 
-  const { data, isLoading, isError } = useResActivitiesQuery({
+  const { data, isLoading, isError, size } = useResActivitiesQuery({
     keyword,
     sort: 'latest',
     page,
@@ -22,7 +21,7 @@ const SearchResults = ({ keyword }: SearchResultProps) => {
 
   const activities = data?.activities ?? [];
   const totalCount = data?.totalCount ?? 0;
-  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(totalCount / size));
 
   return (
     <section className="px-[2.4rem] md:px-[3rem] lg:px-[4rem]">
