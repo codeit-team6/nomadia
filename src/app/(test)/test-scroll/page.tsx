@@ -1,8 +1,9 @@
+//테스트 파일입니다. test-scroll
 'use client';
 
 import { useRef } from 'react';
 
-import { getApi } from '@/app/(test)/test-scroll/getApi';
+import { getTestApi } from '@/features/(test)/getTestApi';
 import { useItemInfiniteQuery } from '@/shared/libs/hooks/infiniteScroll/useInfiniteQuery';
 import { useInfiniteScroll } from '@/shared/libs/hooks/infiniteScroll/useInfiniteScroll';
 
@@ -17,7 +18,7 @@ export default function Page() {
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
     useItemInfiniteQuery({
       keyName: 'activities',
-      getFn: getApi,
+      getFn: getTestApi,
       params: {
         sort: 'most_reviewed' as const,
         size: 5,
