@@ -8,11 +8,11 @@ import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import type { Swiper as SwiperType } from 'swiper';
 
+import { ActivityCard } from '@/features/activities/components/activity-card';
 import useActivity from '@/shared/libs/hooks/useActivityQuery';
 
 import { steps } from '../libs/constants/data';
 import Cta from './cta';
-import ExperienceCard from './experience-card';
 import Hero from './hero';
 
 const LandingPage = () => {
@@ -44,7 +44,7 @@ const LandingPage = () => {
       <Hero
         activities={activities}
         swiperRef={swiperRef}
-        ExperienceCard={ExperienceCard}
+        ActivityCard={ActivityCard}
         router={router}
       />
       <Cta steps={steps} router={router} />
