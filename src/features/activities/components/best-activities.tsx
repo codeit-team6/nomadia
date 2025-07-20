@@ -78,7 +78,7 @@ const BestActivities = () => {
       </div>
 
       {/* Swiper 캐러셀 */}
-      <div>
+      <div className="overflow-hidden px-0">
         <Swiper
           modules={[Navigation, Autoplay]}
           autoplay={{ delay: 5000, disableOnInteraction: false }}
@@ -102,7 +102,7 @@ const BestActivities = () => {
               spaceBetween: 30,
             },
           }}
-          className="best-activities-swiper"
+          className="best-activities !overflow-visible !px-0"
         >
           {activities.map((activity) => (
             <SwiperSlide key={activity.id}>

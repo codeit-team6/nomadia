@@ -73,11 +73,11 @@ const BannerCarousel = () => {
             spaceBetween: 30,
           },
         }}
-        className="banner-carousel-swiper"
+        className="rounded-[1.2rem] md:rounded-[1.8rem] lg:rounded-[2.4rem]"
       >
         {banners.map((banner, idx) => (
           <SwiperSlide key={banner.id}>
-            <div className="relative h-[18.1rem] w-full overflow-hidden rounded-2xl shadow-lg md:h-[37.5rem] lg:h-[50rem]">
+            <div className="relative h-[18.1rem] w-full overflow-hidden rounded-[1.2rem] shadow-lg md:h-[37.5rem] md:rounded-[1.8rem] lg:h-[50rem] lg:rounded-[2.4rem]">
               <Image
                 src={banner.bannerImageUrl}
                 alt={banner.title}
