@@ -67,10 +67,8 @@ const BestActivities = () => {
       {/* 컨텐츠: 로딩/에러/데이터 분기 */}
       <div className="overflow-hidden px-0">
         {isLoading ? (
-          // <div className="flex-center h-[24.3rem] w-full">
           <LoadingSpinner />
-        ) : // </div>
-        isError ? (
+        ) : isError ? (
           <div className="text-red-500">
             데이터를 불러오는 중 오류가 발생했습니다.
           </div>
