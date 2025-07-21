@@ -47,7 +47,7 @@ export const FormInput = <T extends FieldValues>({
             isPasswordField ? (showPassword ? 'text' : 'password') : rest.type
           }
           {...register(name)} // type, placeholder 등을 여기에 적용
-          className={`mb-1.5 h-[4.4rem] w-full rounded-[1.2rem] border px-[1.6rem] text-[1.4rem] md:h-[4.8rem] md:text-[1.6rem] ${
+          className={`mb-[0.6rem] h-[4.4rem] w-full rounded-[1.2rem] border px-[1.6rem] text-[1.4rem] focus:outline-0 md:h-[4.8rem] md:text-[1.6rem] ${
             error ? 'border-red-500' : 'border-gray-200'
           } `}
         />
