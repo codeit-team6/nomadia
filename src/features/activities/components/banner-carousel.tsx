@@ -9,6 +9,7 @@ import type { Swiper as SwiperType } from 'swiper';
 import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import useActivity from '@/shared/libs/hooks/useActivityQuery';
 
 /**
@@ -25,28 +26,6 @@ const BannerCarousel = () => {
     size: 8,
   });
   const banners = data?.activities ?? [];
-
-  // 로딩 상태 처리 -> 추후 로딩 관련 스피너 추가 필요
-  if (isLoading) {
-    return <div className="py-12 text-center text-gray-400">로딩 중...</div>;
-  }
-
-  // 에러 상태 처리 -> 추후 에러 상태 관련 컴포넌트 추가 필요
-  if (isError) {
-    return (
-      <div className="py-12 text-center text-red-500">
-        데이터를 불러오는 중 오류가 발생했습니다.
-      </div>
-    );
-  }
-
-  if (!banners.length) {
-    return (
-      <div className="py-12 text-center text-gray-400">
-        현재 표시할 배너가 없습니다.
-      </div>
-    );
-  }
 
   return (
     <div className="mx-auto mt-[3.2rem] w-full max-w-[112rem] px-[2.4rem] md:mt-[5rem] md:px-[3rem] lg:mt-[7rem] lg:px-[4rem]">
@@ -75,28 +54,48 @@ const BannerCarousel = () => {
         }}
         className="rounded-[1.2rem] md:rounded-[1.8rem] lg:rounded-[2.4rem]"
       >
-        {banners.map((banner, idx) => (
-          <SwiperSlide key={banner.id}>
-            <div className="relative h-[18.1rem] w-full overflow-hidden rounded-[1.2rem] shadow-lg md:h-[37.5rem] md:rounded-[1.8rem] lg:h-[50rem] lg:rounded-[2.4rem]">
-              <Image
-                src={banner.bannerImageUrl}
-                alt={banner.title}
-                fill
-                className="object-cover"
-                priority={idx === 0}
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 112rem"
-              />
-              <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/90 to-transparent p-2 transition-opacity duration-700 md:p-8 lg:p-12">
-                <div className="mb-2 text-center text-[1.8rem] font-bold text-white drop-shadow-lg md:text-[2.4rem] lg:text-[3.2rem]">
-                  {banner.title || '제목 없음'}
-                </div>
-                <div className="pb-[2rem] text-center text-[1.4rem] font-bold text-white drop-shadow-lg md:pb-[4rem] md:text-[1.6rem] lg:text-[1.8rem]">
-                  이달의 인기체험 BEST 🔥
-                </div>
-              </div>
+        {isLoading ? (
+          <SwiperSlide>
+            <div className="flex h-[18.1rem] items-center justify-center md:h-[37.5rem] lg:h-[50rem]">
+              <LoadingSpinner />
             </div>
           </SwiperSlide>
-        ))}
+        ) : isError ? (
+          <SwiperSlide>
+            <div className="flex h-[18.1rem] items-center justify-center text-red-500 md:h-[37.5rem] lg:h-[50rem]">
+              데이터를 불러오는 중 오류가 발생했습니다.
+            </div>
+          </SwiperSlide>
+        ) : !banners.length ? (
+          <SwiperSlide>
+            <div className="flex h-[18.1rem] items-center justify-center text-gray-400 md:h-[37.5rem] lg:h-[50rem]">
+              현재 표시할 배너가 없습니다.
+            </div>
+          </SwiperSlide>
+        ) : (
+          banners.map((banner, idx) => (
+            <SwiperSlide key={banner.id}>
+              <div className="relative h-[18.1rem] w-full overflow-hidden rounded-[1.2rem] shadow-lg md:h-[37.5rem] md:rounded-[1.8rem] lg:h-[50rem] lg:rounded-[2.4rem]">
+                <Image
+                  src={banner.bannerImageUrl}
+                  alt={banner.title}
+                  fill
+                  className="object-cover"
+                  priority={idx === 0}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 112rem"
+                />
+                <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/90 to-transparent p-2 transition-opacity duration-700 md:p-8 lg:p-12">
+                  <div className="mb-2 text-center text-[1.8rem] font-bold text-white drop-shadow-lg md:text-[2.4rem] lg:text-[3.2rem]">
+                    {banner.title || '제목 없음'}
+                  </div>
+                  <div className="pb-[2rem] text-center text-[1.4rem] font-bold text-white drop-shadow-lg md:pb-[4rem] md:text-[1.6rem] lg:text-[1.8rem]">
+                    이달의 인기체험 BEST 🔥
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))
+        )}
       </Swiper>
     </div>
   );

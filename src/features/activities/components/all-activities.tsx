@@ -1,36 +1,19 @@
 'use client';
 
-import {
-  Binoculars,
-  BusFront,
-  ChevronDown,
-  Leaf,
-  Music,
-  Soup,
-  Volleyball,
-} from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
 import { ActivityCard } from '@/features/activities/components/activity-card';
 import useResActivitiesQuery from '@/features/activities/libs/hooks/useResActivitiesQuery';
 import Dropdown from '@/shared/components/dropdown';
+import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import Pagination from '@/shared/components/pagination/pagination';
 import { Button } from '@/shared/libs/shadcn/components/ui/button';
 
-const CATEGORIES = [
-  { name: '문화 · 예술', icon: Music },
-  { name: '식음료', icon: Soup },
-  { name: '스포츠', icon: Volleyball },
-  { name: '투어', icon: Binoculars },
-  { name: '관광', icon: BusFront },
-  { name: '웰빙', icon: Leaf },
-];
-
-const sortOptions = [
-  { label: '최신순', value: 'latest' },
-  { label: '낮은 가격순', value: 'price_asc' },
-  { label: '높은 가격순', value: 'price_desc' },
-];
+import {
+  CATEGORIES,
+  SORT_OPTIONS,
+} from '../libs/constants/activitiesConstants';
 
 interface AllActivitiesProps {
   keyword?: string;
@@ -38,7 +21,7 @@ interface AllActivitiesProps {
 
 /**
  * 모든 체험 컴포넌트
- * @author 김영현
+ * @author 김영현, 김준우
  * @returns 모든 체험 컴포넌트
  * @description 모든 체험 목록을 표시하는 컴포넌트입니다.
  */
@@ -55,20 +38,6 @@ const AllActivities = ({ keyword }: AllActivitiesProps) => {
     page,
     keyword,
   });
-
-  // 로딩 상태 처리 -> 추후 로딩 관련 스피너 추가 필요
-  if (isLoading) {
-    return <div className="py-12 text-center text-gray-400">로딩 중...</div>;
-  }
-
-  // 에러 상태 처리 -> 추후 에러 상태 관련 컴포넌트 추가 필요
-  if (isError) {
-    return (
-      <div className="py-12 text-center text-red-500">
-        데이터를 불러오는 중 오류가 발생했습니다.
-      </div>
-    );
-  }
 
   const activities = data?.activities ?? [];
   const totalCount = data?.totalCount ?? 0;
@@ -102,7 +71,7 @@ const AllActivities = ({ keyword }: AllActivitiesProps) => {
           dropdownClassName="absolute right-0"
         >
           <div className="border-sub-300 txt-16-medium h-[11rem] w-[11.2rem] overflow-hidden rounded-xl border-[0.1rem] bg-white">
-            {sortOptions.map(({ label, value }) => (
+            {SORT_OPTIONS.map(({ label, value }) => (
               <button
                 key={value}
                 onClick={() =>
@@ -139,10 +108,20 @@ const AllActivities = ({ keyword }: AllActivitiesProps) => {
       </div>
 
       <div>
-        <div className="grid grid-cols-2 gap-x-[1.8rem] gap-y-[2.4rem] md:gap-x-6 md:gap-y-[2.4rem] lg:grid-cols-4 lg:gap-x-[3rem] lg:gap-y-[2.4rem]">
-          {activities.map((activity) => (
-            <ActivityCard key={activity.id} activity={activity} />
-          ))}
+        <div className="grid min-h-[24.3rem] grid-cols-2 items-center justify-center gap-x-[1.8rem] gap-y-[2.4rem] md:gap-x-6 md:gap-y-[2.4rem] lg:grid-cols-4 lg:gap-x-[3rem] lg:gap-y-[2.4rem]">
+          {isLoading ? (
+            <div className="col-span-2 flex h-[16rem] items-center justify-center lg:col-span-4">
+              <LoadingSpinner />
+            </div>
+          ) : isError ? (
+            <div className="col-span-2 flex h-[16rem] items-center justify-center text-red-500 lg:col-span-4">
+              데이터를 불러오는 중 오류가 발생했습니다.
+            </div>
+          ) : (
+            activities.map((activity) => (
+              <ActivityCard key={activity.id} activity={activity} />
+            ))
+          )}
         </div>
       </div>
       <Pagination
