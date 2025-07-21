@@ -81,7 +81,7 @@ const Hero = ({ activities, swiperRef, ActivityCard, router }: HeroProps) => (
             spaceBetween={24}
             slidesPerView={1}
             autoplay={{
-              delay: 4000,
+              delay: 5000,
               disableOnInteraction: false,
             }}
             loop={true}
@@ -102,10 +102,12 @@ const Hero = ({ activities, swiperRef, ActivityCard, router }: HeroProps) => (
           >
             {activities.map((activity) => (
               <SwiperSlide key={activity.id} className="px-[0.5rem] pb-[1rem]">
-                <ActivityCard
-                  activity={activity}
-                  className="h-[24.3rem] md:h-[42.3rem] lg:h-[36.6rem]"
-                />
+                <div className="mx-auto max-w-[32.8rem] md:max-w-none">
+                  <ActivityCard
+                    activity={activity}
+                    className="h-[24.3rem] md:h-[42.3rem] lg:h-[36.6rem]"
+                  />
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>
