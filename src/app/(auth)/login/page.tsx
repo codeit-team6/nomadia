@@ -5,7 +5,7 @@ import { LoginForm } from '@/features/auth/login/components/LoginForm';
 
 const Login = () => {
   return (
-    <div className="mx-6 mt-[3.6rem] mb-10 flex w-full max-w-[343px] flex-col items-center md:mt-[10rem] md:max-w-[460px]">
+    <div className="mx-6 mt-[3.6rem] mb-10 flex w-full max-w-[34.3rem] flex-col items-center md:mt-[10rem] md:max-w-[46rem]">
       <Image
         src="/images/icons/logo-desktop.png"
         alt="Signup logo image"
