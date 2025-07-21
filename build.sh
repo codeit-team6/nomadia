@@ -1,10 +1,9 @@
-  
 #!/bin/sh
 
 cd ../
 
 mkdir output
 
-cp -R ./[nomadia]/* ./output
+cp -R ./nomadia/* ./output
 
-cp -R ./output ./[nomadia]/
+cp -R ./output ./nomadia/
