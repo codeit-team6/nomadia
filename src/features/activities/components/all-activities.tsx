@@ -24,13 +24,17 @@ const CATEGORIES = [
   { name: '웰빙', icon: Leaf },
 ];
 
+interface AllActivitiesProps {
+  keyword?: string;
+}
+
 /**
  * 모든 체험 컴포넌트
  * @author 김영현
  * @returns 모든 체험 컴포넌트
  * @description 모든 체험 목록을 표시하는 컴포넌트입니다.
  */
-const AllActivities = () => {
+const AllActivities = ({ keyword }: AllActivitiesProps) => {
   const [active, setActive] = useState('문화 · 예술');
   const [page, setPage] = useState(1);
 
@@ -38,6 +42,7 @@ const AllActivities = () => {
     sort: 'latest',
     category: active,
     page,
+    keyword,
   });
 
   // 로딩 상태 처리 -> 추후 로딩 관련 스피너 추가 필요
