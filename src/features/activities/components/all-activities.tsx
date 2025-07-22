@@ -27,7 +27,7 @@ interface AllActivitiesProps {
  * @description 모든 체험 목록을 표시하는 컴포넌트입니다.
  */
 const AllActivities = ({ keyword }: AllActivitiesProps) => {
-  const [active, setActive] = useState('문화 · 예술');
+  const [active, setActive] = useState('');
   const [page, setPage] = useState(1);
   const [selectedSort, setSelectedSort] = useState<
     'latest' | 'price_asc' | 'price_desc'
@@ -35,7 +35,7 @@ const AllActivities = ({ keyword }: AllActivitiesProps) => {
 
   const { data, isLoading, isError, size } = useResActivitiesQuery({
     sort: selectedSort,
-    category: active,
+    category: active || undefined,
     page,
     keyword,
   });
