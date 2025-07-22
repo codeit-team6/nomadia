@@ -9,6 +9,7 @@ import type { Swiper as SwiperType } from 'swiper';
 import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { ErrorMessage } from '@/shared/components/error-message/error-message';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import useActivity from '@/shared/libs/hooks/useActivityQuery';
 
@@ -62,9 +63,7 @@ const BannerCarousel = () => {
           </SwiperSlide>
         ) : isError ? (
           <SwiperSlide>
-            <div className="flex h-[18.1rem] items-center justify-center text-red-500 md:h-[37.5rem] lg:h-[50rem]">
-              데이터를 불러오는 중 오류가 발생했습니다.
-            </div>
+            <ErrorMessage message="배너를 불러오는 중 오류가 발생했습니다." />
           </SwiperSlide>
         ) : !banners.length ? (
           <SwiperSlide>

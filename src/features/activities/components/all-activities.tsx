@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { ActivityCard } from '@/features/activities/components/activity-card';
 import useResActivitiesQuery from '@/features/activities/libs/hooks/useResActivitiesQuery';
 import Dropdown from '@/shared/components/dropdown';
+import { ErrorMessage } from '@/shared/components/error-message/error-message';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import Pagination from '@/shared/components/pagination/pagination';
 import { Button } from '@/shared/libs/shadcn/components/ui/button';
@@ -114,9 +115,7 @@ const AllActivities = ({ keyword }: AllActivitiesProps) => {
               <LoadingSpinner />
             </div>
           ) : isError ? (
-            <div className="col-span-2 flex h-[16rem] items-center justify-center text-red-500 lg:col-span-4">
-              데이터를 불러오는 중 오류가 발생했습니다.
-            </div>
+            <ErrorMessage className="col-span-2 lg:col-span-4" />
           ) : (
             activities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />

@@ -4,6 +4,7 @@ import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import type { Activity } from '@/features/activities/libs/types/activity';
+import { ErrorMessage } from '@/shared/components/error-message/error-message';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import useActivity from '@/shared/libs/hooks/useActivityQuery';
 
@@ -90,9 +91,7 @@ const Hero = ({ swiperRef, ActivityCard, router }: HeroProps) => {
             {isLoading ? (
               <LoadingSpinner />
             ) : isError ? (
-              <div className="text-red-500">
-                데이터를 불러오는 중 오류가 발생했습니다.
-              </div>
+              <ErrorMessage />
             ) : (
               <Swiper
                 modules={[Navigation, Autoplay]}

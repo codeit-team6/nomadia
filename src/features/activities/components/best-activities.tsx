@@ -10,6 +10,7 @@ import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { ActivityCard } from '@/features/activities/components/activity-card';
+import { ErrorMessage } from '@/shared/components/error-message/error-message';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import useActivity from '@/shared/libs/hooks/useActivityQuery';
 
@@ -69,9 +70,7 @@ const BestActivities = () => {
         {isLoading ? (
           <LoadingSpinner />
         ) : isError ? (
-          <div className="text-red-500">
-            데이터를 불러오는 중 오류가 발생했습니다.
-          </div>
+          <ErrorMessage message="인기 체험을 불러오는 중 오류가 발생했습니다." />
         ) : (
           <Swiper
             modules={[Navigation, Autoplay]}
