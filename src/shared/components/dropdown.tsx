@@ -45,7 +45,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       </div>
       {isOpen && (
         <div
-          className={`absolute mt-[1.5rem] ${dropdownClassName} ${className} `}
+          className={`absolute z-[9999] mt-[1.5rem] ${dropdownClassName} ${className} `}
         >
           {children}
         </div>

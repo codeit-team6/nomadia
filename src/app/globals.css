@@ -209,6 +209,16 @@
     background-size: cover;
   }
 
+  /* 체험 카드 그림자 유틸리티 클래스 */
+  .shadow-experience-card {
+    box-shadow: 0 2.25px 13.5px 0 rgba(156, 180, 202, 0.2);
+  }
+
+  .best-activities .swiper-slide {
+    border-radius: 1.2rem;
+    overflow: hidden;
+  }
+
   /* 텍스트 관련 유틸리티 - 타이포그래피 */
   .txt-11-medium {
     font-size: 1.1rem;
