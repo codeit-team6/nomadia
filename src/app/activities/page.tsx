@@ -3,10 +3,11 @@
 import { Suspense } from 'react';
 
 import ActivitiesPageContent from '@/app/activities/page-content';
+import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 
 const ActivitiesPage = () => {
   return (
-    <Suspense fallback={<div>로딩 중...</div>}>
+    <Suspense fallback={<LoadingSpinner />}>
       <ActivitiesPageContent />
     </Suspense>
   );
