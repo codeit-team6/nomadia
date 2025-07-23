@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 
+import { modalHeaderClasses } from '@/shared/components/modal/libs/modalClasses';
 import { cn } from '@/shared/libs/cn';
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
 
@@ -21,9 +22,7 @@ export const Header = ({ children }: { children: ReactNode }) => {
     <p
       className={cn(
         'text-[1.6rem] font-semibold text-black md:text-[2rem]',
-        modalType === 'confirm' && 'mb-[1.4rem] md:mt-[0.6rem] md:mb-[1.6rem]',
-        modalType === 'warning' && 'mb-[2rem] md:mb-[2.4rem]',
-        modalType === 'custom' && 'mb-[1.2rem] md:mb-[1.6rem]',
+        modalHeaderClasses[modalType],
       )}
     >
       {children}
