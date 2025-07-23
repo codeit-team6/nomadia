@@ -32,7 +32,7 @@ export const LoginForm = () => {
       const response = await apiLogin(data);
       storeLogin(response);
       toast.success('로그인 성공');
-      router.push('/');
+      router.push('/activities');
     } catch (error) {
       console.error('로그인 실패', error);
       toast.error('로그인에 실패했습니다');
@@ -64,9 +64,9 @@ export const LoginForm = () => {
       <button
         type="submit"
         disabled={isSubmitting || !isValid}
-        className={`txt-16-bold mt-10 h-[54px] w-full cursor-pointer rounded-xl text-gray-50 transition-colors ${isValid ? 'bg-main hover:bg-blue-500' : 'bg-gray-200'} `}
+        className={`mt-10 h-[4.4rem] w-full cursor-pointer rounded-[1.2rem] text-[1.6rem] font-semibold text-gray-50 transition-colors md:h-[4.8rem] ${isValid ? 'bg-main hover:bg-blue-500' : 'bg-gray-200'} `}
       >
-        {isSubmitting ? '로그인 중 ...' : '로그인'}
+        로그인
       </button>
     </form>
   );

@@ -24,7 +24,8 @@ import { useRouter } from 'next/navigation';
  *
  * 🔍 참고:
  * - `notFound()` 함수는 `next/navigation` 모듈에서 import하여 사용할 수 있습니다.
- */ export default function NotFound() {
+ */
+const NotFound = () => {
   const router = useRouter();
 
   return (
@@ -61,4 +62,6 @@ import { useRouter } from 'next/navigation';
       </button>
     </div>
   );
-}
+};
+
+export default NotFound;

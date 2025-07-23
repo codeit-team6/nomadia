@@ -20,7 +20,7 @@ import { isAxiosError } from 'axios';
 
 import { testInstance } from '@/features/(test)/testInstance';
 
-async function fetchData() {
+const fetchData = async () => {
   try {
     const res = await testInstance.post('activities/7/reservations'); //401 에러
     // const res = await testInstance.get('https://api.example.com/data'); // 500 & undefined 에러
@@ -30,8 +30,10 @@ async function fetchData() {
       const status = error.response?.status;
       throw new Error(String(status));
     }
+    // 비-Axios 에러의 경우 일반적인 에러로 재발생
+    throw new Error('500');
   }
-}
+};
 
 export default async function Page() {
   const data = await fetchData();

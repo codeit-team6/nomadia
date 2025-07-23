@@ -2,15 +2,20 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
+import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import Dropdown from '@/shared/components/dropdown';
 
 const Header: React.FC = () => {
-  const isLoggedIn = true; // 임시코드 (로그인, 비로그인 확인용)
+  const { user, isLoggedIn } = useAuthStore();
+  const logout = useAuthStore((state) => state.logout);
+  const router = useRouter();
 
   const handleLogout = () => {
-    console.log('로그아웃 처리');
+    logout();
+    router.push('/activities');
   };
 
   return (
@@ -60,7 +65,11 @@ const Header: React.FC = () => {
                     height={30}
                     className="rounded-full"
                   />
-                  <span className="txt-14-medium text-gray-950">정만철</span>
+                  {isLoggedIn && user && (
+                    <span className="txt-14-medium text-gray-950">
+                      {user.nickname}
+                    </span>
+                  )}
                 </button>
               }
               dropdownClassName="absolute left-1/2 -translate-x-[55%]"

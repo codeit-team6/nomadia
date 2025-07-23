@@ -22,10 +22,10 @@ export const ActivityCard = ({
   className = '',
 }: ActivityCardProps) => (
   <div
-    className={`flex h-[24.3rem] w-full flex-col overflow-hidden rounded-3xl bg-white shadow-lg md:h-[42.3rem] md:rounded-[2.6rem] lg:h-[36.6rem] ${className}`}
+    className={`shadow-experience-card flex h-[24.3rem] w-full flex-col overflow-hidden rounded-[1.2rem] bg-white md:h-[42.3rem] md:rounded-[2.6rem] lg:h-[36.6rem] ${className}`}
   >
     {/* 이미지 영역 */}
-    <div className="relative aspect-[4/3] w-full overflow-hidden md:-mb-[2.6rem] md:aspect-11/10 lg:aspect-[3/4]">
+    <div className="relative aspect-[3/4] w-full overflow-hidden md:-mb-[2.6rem] md:aspect-11/10 lg:aspect-[3/4]">
       <Image
         src={activity.bannerImageUrl}
         alt={activity.title}
@@ -37,9 +37,9 @@ export const ActivityCard = ({
     </div>
 
     {/* 콘텐츠 영역 */}
-    <div className="flex flex-1 flex-col px-[1.7rem] py-[1.2rem] md:z-10 md:rounded-t-[2.6rem] md:bg-white md:px-[3rem] md:py-[1rem]">
+    <div className="flex flex-1 flex-col rounded-[1.2rem] px-[1.7rem] py-[1.2rem] md:z-10 md:rounded-t-[2.6rem] md:bg-white md:px-[3rem] md:py-[2rem] lg:px-[2.8rem] lg:py-[2.4rem]">
       {/* 제목과 별점 그룹 */}
-      <div className="flex flex-col gap-[0.4rem] md:mt-[1.4rem] md:gap-[0.6rem]">
+      <div className="mt-[0.5rem] flex flex-col gap-[0.6rem]">
         {/* 제목 */}
         <h3 className="line-clamp-1 text-[1.4rem] leading-[1.8rem] font-semibold text-gray-900 md:overflow-hidden md:text-[1.8rem] md:text-ellipsis md:whitespace-nowrap">
           {activity.title}

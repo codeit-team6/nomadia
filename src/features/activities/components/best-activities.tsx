@@ -4,12 +4,15 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 import { useRef } from 'react';
 import type { Swiper as SwiperType } from 'swiper';
 import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { ActivityCard } from '@/features/activities/components/activity-card';
+import { ErrorMessage } from '@/shared/components/error-message/error-message';
+import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import useActivity from '@/shared/libs/hooks/useActivityQuery';
 
 /**
@@ -26,20 +29,6 @@ const BestActivities = () => {
     size: 8,
   });
 
-  // 로딩 상태 처리 -> 추후 로딩 관련 스피너 추가 필요
-  if (isLoading) {
-    return <div className="py-12 text-center text-gray-400">로딩 중...</div>;
-  }
-
-  // 에러 상태 처리 -> 추후 에러 상태 관련 컴포넌트 추가 필요
-  if (isError) {
-    return (
-      <div className="py-12 text-center text-red-500">
-        데이터를 불러오는 중 오류가 발생했습니다.
-      </div>
-    );
-  }
-
   const activities = data?.activities ?? [];
 
   const handlePrevSlide = () => {
@@ -52,11 +41,16 @@ const BestActivities = () => {
 
   return (
     <div className="mt-[4rem] px-[2.4rem] md:mt-[6rem] md:px-[3rem] lg:px-[4rem]">
+      {/* 헤더: 항상 노출 */}
       <div className="mb-[4rem] flex items-center justify-between md:mb-[1.6rem] lg:mb-[2rem]">
         <p className="flex items-center gap-2 text-[1.8rem] font-bold text-gray-950 md:text-[3.2rem]">
-          <span role="img" aria-label="fire">
-            🔥
-          </span>{' '}
+          <Image
+            src="/images/icons/fire.svg"
+            alt="인기 체험"
+            width={18}
+            height={18}
+            className="size-[1.8rem] md:size-[3.2rem]"
+          />
           인기 체험
         </p>
         <div className="flex gap-2">
@@ -76,43 +70,48 @@ const BestActivities = () => {
           </button>
         </div>
       </div>
-
-      {/* Swiper 캐러셀 */}
-      <div>
-        <Swiper
-          modules={[Navigation, Autoplay]}
-          autoplay={{ delay: 5000, disableOnInteraction: false }}
-          spaceBetween={18} // gap-[1.8rem] = 18px
-          slidesPerView={2} // 모바일에서 2개씩 표시
-          slidesPerGroup={2} // 2개씩 그룹으로 슬라이드
-          loop={true}
-          speed={500}
-          onBeforeInit={(swiper) => {
-            swiperRef.current = swiper;
-          }}
-          breakpoints={{
-            768: {
-              slidesPerView: 2, // 태블릿 2개
-              slidesPerGroup: 2,
-              spaceBetween: 24,
-            },
-            1024: {
-              slidesPerView: 4, // 데스크톱 4개
-              slidesPerGroup: 2,
-              spaceBetween: 30,
-            },
-          }}
-          className="best-activities-swiper"
-        >
-          {activities.map((activity) => (
-            <SwiperSlide key={activity.id}>
-              <ActivityCard
-                activity={activity}
-                className="mb-[2.4rem] md:mb-[8rem]"
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+      {/* 컨텐츠: 로딩/에러/데이터 분기 */}
+      <div className="overflow-hidden px-0">
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : isError ? (
+          <ErrorMessage message="인기 체험을 불러오는 중 오류가 발생했습니다." />
+        ) : (
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            autoplay={{ delay: 5000, disableOnInteraction: false }}
+            spaceBetween={18} // gap-[1.8rem] = 18px
+            slidesPerView={2} // 모바일에서 2개씩 표시
+            slidesPerGroup={2} // 2개씩 그룹으로 슬라이드
+            loop={true}
+            speed={500}
+            onBeforeInit={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            breakpoints={{
+              768: {
+                slidesPerView: 2, // 태블릿 2개
+                slidesPerGroup: 2,
+                spaceBetween: 24,
+              },
+              1024: {
+                slidesPerView: 4, // 데스크톱 4개
+                slidesPerGroup: 2,
+                spaceBetween: 30,
+              },
+            }}
+            className="best-activities !overflow-visible !px-0"
+          >
+            {activities.map((activity) => (
+              <SwiperSlide key={activity.id}>
+                <ActivityCard
+                  activity={activity}
+                  className="mb-[2.4rem] md:mb-[8rem]"
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
       </div>
     </div>
   );

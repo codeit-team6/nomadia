@@ -35,8 +35,8 @@ export const FormInput = <T extends FieldValues>({
   const [showPassword, setShowPassword] = useState(false);
   const isPasswordField = rest.type === 'password';
   return (
-    <div className="mb-6 flex flex-col">
-      <label htmlFor={name} className="txt-16-medium mb-3">
+    <div className="mb-[2.4rem] flex flex-col">
+      <label htmlFor={name} className="txt-16-medium mb-[1.2rem] text-gray-950">
         {label}
       </label>
       <div className="relative">
@@ -47,7 +47,7 @@ export const FormInput = <T extends FieldValues>({
             isPasswordField ? (showPassword ? 'text' : 'password') : rest.type
           }
           {...register(name)} // type, placeholder 등을 여기에 적용
-          className={`txt-14-medium mb-1.5 h-[54px] w-full rounded-xl border px-4 ${
+          className={`mb-[0.6rem] h-[4.4rem] w-full rounded-[1.2rem] border px-[1.6rem] text-[1.4rem] focus:outline-0 md:h-[4.8rem] md:text-[1.6rem] ${
             error ? 'border-red-500' : 'border-gray-200'
           } `}
         />
@@ -55,7 +55,7 @@ export const FormInput = <T extends FieldValues>({
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-6 flex items-center pr-3"
+            className="absolute inset-y-0 right-3 flex items-center pr-3"
           >
             {showPassword ? (
               <Image

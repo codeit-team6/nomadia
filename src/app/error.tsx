@@ -76,7 +76,7 @@ import React from 'react';
  * - fetch()나 axios() 같은 클라이언트/서버 API 호출에서 생긴 에러는 예외(throw) 로 취급되며, try/catch 로 직접 잡지 않으면, 서버 컴포넌트일 경우 → 500 응답 반환함. → 클라이언트에서는 → 그냥 콘솔 에러 or ErrorBoundary 로 넘어가고 끝남
  */
 
-export default function Error({ error }: { error: Error }) {
+const Error = ({ error }: { error: Error }) => {
   const router = useRouter();
   const code = error.message;
   const messages: Record<string, string> = {
@@ -113,4 +113,6 @@ export default function Error({ error }: { error: Error }) {
       </button>
     </div>
   );
-}
+};
+
+export default Error;
