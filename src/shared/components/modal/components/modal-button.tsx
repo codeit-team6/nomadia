@@ -8,9 +8,9 @@ import { cn } from '@/shared/libs/cn';
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
 
 /**
- * Button
+ * @author 지윤
+ * @component Modal.Button
  *
- * 모달에서 사용하는 기본 버튼 컴포넌트입니다.
  * 색상에 따라 스타일이 달라지며, 클릭 시 동작을 전달받을 수 있습니다.
  *
  * @example
@@ -22,7 +22,6 @@ import { useModalStore } from '@/shared/libs/stores/useModalStore';
  * @param {string} props.extraClassName - 커스텀 클래스명 추가
  * @param {ReactNode} props.children - 버튼 내부 텍스트
  */
-
 export const Button = ({
   color,
   ariaLabel,

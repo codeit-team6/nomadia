@@ -5,7 +5,8 @@ import { cn } from '@/shared/libs/cn';
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
 
 /**
- * Modal.Header
+ * @author 지윤
+ * @component Modal.Header
  *
  * 모달의 제목 또는 안내 문구를 표시하는 영역입니다.
  *
@@ -14,7 +15,6 @@ import { useModalStore } from '@/shared/libs/stores/useModalStore';
  *
  * @param {ReactNode} props.children - 표시할 텍스트 또는 요소
  */
-
 export const Header = ({ children }: { children: ReactNode }) => {
   const { modalType } = useModalStore();
 

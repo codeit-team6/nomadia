@@ -15,14 +15,12 @@ const ModalContent = ({
   isCenter?: boolean;
   extraClassName?: string;
 }) => {
-  const { isModalOpen, closeModal, modalType } = useModalStore(); //모달을 중첨해서 여는 경우는 없어서, 전역상태로 관리
+  const { isModalOpen, closeModal, modalType } = useModalStore();
 
   if (!isModalOpen) return null;
   return createPortal(
     <>
-      {/* 모달을 중앙정렬 하기 위한 div 태그. 오버레이와 코드가 중복되지만, 
-    위치를 1/2 계산하여 중앙정렬하는 방식은,
-     화면 크기 변경 시 버벅 거리면서 렌더링 되는게 눈에 보여서, div로 또 싸더라도 flex-center로 정렬하는게 ux경험에 좋겠다고 판단함 */}
+      {/* 모달을 중앙정렬 하기 위한 div 태그*/}
       <div
         className={cn(
           isCenter && 'flex-center pointer-events-none fixed inset-0',

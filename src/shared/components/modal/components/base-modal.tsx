@@ -14,14 +14,10 @@ interface ModalProps {
 
 /**
  * @author 지윤
- * @component
- * 모달을 렌더링하는 공통 Modal 컴포넌트입니다.
+ * @component 모달을 렌더링하는 공통 Modal 컴포넌트입니다.
  *
- * - `type`에 따라 confirm/warning/custom 형태로 스타일이 적용되며,
- * - `type`에 따라 서브 컴포넌트 Header/Button의 스타일이 알맞게 적용됩니다.
- * - {children}에는 하위 컴포넌트를 직접 조합하여 사용할 수 있습니다.(Header/Button 또는 <div></div>등)
  * - 전역 상태 관리(`useModalStore`)에 의존하여 열림/닫힘, 모달 타입을 처리합니다.
- *
+ * - {children}으로 하위 컴포넌트를 직접 조합하여 사용할 수 있습니다.(Header/Button 또는 <div></div>등)
  *
  * @param {ReactNode} children - 모달 내부에 표시될 콘텐츠. 일반적으로 Header, Button 등의 서브 컴포넌트 포함.
  *
@@ -37,8 +33,7 @@ interface ModalProps {
  *
  * @param {boolean} [isCenter=true] - 모달 콘텐츠를 화면 가운데에 정렬할지 여부.
  *
- * @param {string} [extraClassName] - `ModalContent`에 전달되는 추가 클래스명.
- *    - 사용자 정의 스타일을 덧붙일 수 있음
+ * @param {string} [extraClassName] - `ModalContent`에 전달되는 추가 클래스명.(사용자 정의 스타일을 덧붙일 수 있음)
  *
  * @example
  * ```tsx
