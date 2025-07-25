@@ -82,7 +82,7 @@ const Header: React.FC = () => {
                   로그아웃
                 </button>
                 <Link
-                  href="/mypage"
+                  href="/my"
                   className="flex-center hover:bg-sub block h-[5.5rem] rounded-b-lg"
                   onClick={() => {}}
                 >
