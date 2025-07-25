@@ -1,13 +1,25 @@
+'use client';
+
 import { BOOKING_STATUS } from '@/features/booking-detail/libs/constants/bookingStatus';
 import { Button } from '@/shared/libs/shadcn/components/ui/button';
 
-// TODO: 예약 상세 필터 버튼 컴포넌트 추가 (예약 상세 페이지 내 필터 버튼)
-const FilterButtons = () => {
+interface FilterButtonProps {
+  active: string;
+  onChange: (status: string) => void;
+}
+
+const FilterButtons = ({ active, onChange }: FilterButtonProps) => {
   return (
-    <div className="category-scroll mx-[2.4rem] mb-[2.4rem] flex flex-nowrap gap-[0.8rem] overflow-x-auto whitespace-nowrap">
+    <div className="category-scroll mt-[1.4rem] mb-[2.4rem] flex flex-nowrap gap-[0.5rem] overflow-x-auto whitespace-nowrap">
       {BOOKING_STATUS.map(({ label, value }) => (
-        <Button key={label} size="sm" className="group">
-          {label} {value}
+        <Button
+          key={label}
+          variant={active === value ? 'selected' : 'default'}
+          size="sm"
+          className="group px-[1.1rem] py-[1.6rem]"
+          onClick={() => onChange(active === value ? '' : value)}
+        >
+          {label}
         </Button>
       ))}
     </div>
