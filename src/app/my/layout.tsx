@@ -11,20 +11,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (width && width >= 432 && pathname === '/my') {
+    if (width && width >= 450 && pathname === '/my') {
       router.push('/my/profile');
     }
   }, [width, pathname, router]);
 
-  const isMobile = width ? width < 432 : false;
+  const isMobile = width ? width < 450 : false;
   const isMyPageRoot = pathname === '/my';
 
   return (
-    <div className="flex justify-center px-[2.4rem] py-[3rem]">
+    <div className="mx-auto flex justify-center px-[2.4rem] py-[3rem] md:max-w-[68.4rem] md:gap-[3rem] lg:max-w-[98rem] lg:gap-[5rem]">
       <aside className={isMobile && !isMyPageRoot ? 'hidden' : ''}>
         <Sidebar />
       </aside>
-      <main className={isMobile && isMyPageRoot ? 'hidden' : ''}>
+      <main
+        className={`${isMobile && isMyPageRoot ? 'hidden' : ''} w-[32.7rem] md:w-[47.6rem] lg:w-[64rem]`}
+      >
         {children}
       </main>
     </div>

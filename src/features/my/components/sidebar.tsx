@@ -28,8 +28,8 @@ const Sidebar = () => {
 
   return (
     <div className="flex h-[45rem] w-[32.7rem] flex-col items-center rounded-[1.2rem] border border-gray-50 px-[1.4rem] py-[2.4rem] md:h-[34.2rem] md:w-[17.8rem] lg:h-[45rem] lg:w-[29rem]">
-      <div className="bg-main mb-[2.4rem] aspect-square w-[12rem] rounded-full md:mb-[1.2rem] md:w-[7rem]"></div>
-      <ul className="flex w-full flex-col gap-[1.4rem] md:gap-[1.2rem]">
+      <div className="bg-main mb-[2.4rem] aspect-square w-[12rem] rounded-full md:mb-[1.2rem] md:w-[7rem] lg:mb-[2.4rem] lg:w-[12rem]"></div>
+      <ul className="flex w-full flex-col gap-[1.4rem] md:gap-[1.2rem] lg:gap-[1.4rem]">
         {menus.map((menu) => {
           const isActive = pathname?.includes(menu.key);
           return (
@@ -37,7 +37,7 @@ const Sidebar = () => {
               key={menu.key}
               className={`flex h-[5.4rem] w-full items-center rounded-[1.4rem] px-[1.5rem] text-[1.6rem] font-medium ${
                 isActive ? 'bg-sub text-gray-950' : 'text-gray-600'
-              } md:h-[4.8rem]`}
+              } md:h-[4.8rem] lg:h-[5.4rem]`}
             >
               <div className="flex gap-[0.8rem]">
                 <Image
