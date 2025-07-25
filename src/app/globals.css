@@ -209,7 +209,7 @@
     background-size: cover;
   }
 
-  /* 체험 카드 그림자 유틸리티 클래스 */
+  /* 체험 카드 그림자 유틸리티 클래스 - Card Shadow Utility Class */
   .shadow-experience-card {
     box-shadow: 0 2.25px 13.5px 0 rgba(156, 180, 202, 0.2);
   }
