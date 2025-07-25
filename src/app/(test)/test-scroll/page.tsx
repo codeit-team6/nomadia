@@ -4,7 +4,6 @@
 import { useRef } from 'react';
 
 import { getTestApi } from '@/features/(test)/getTestApi';
-import Calendar from '@/shared/components/calendar/calendar';
 import { useItemInfiniteQuery } from '@/shared/libs/hooks/infiniteScroll/useInfiniteQuery';
 import { useInfiniteScroll } from '@/shared/libs/hooks/infiniteScroll/useInfiniteScroll';
 
@@ -67,7 +66,6 @@ export default function Page() {
         {/* 스크롤 트리거 요소 등록: 이 요소가 뷰포트에 노출되면 fetchNextPage가 호출됩니다 */}
         <div ref={loadMoreRef}></div>
       </div>
-      <Calendar />
     </>
   );
 }
