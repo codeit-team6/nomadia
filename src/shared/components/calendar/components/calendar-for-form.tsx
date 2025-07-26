@@ -67,7 +67,7 @@ const CalendarForForm = ({
       </div>
       {/* 이번달 날짜*/}
       <DaysOfMonth
-        inactiveCellStyle={cn(defaultCellStyle, cellStyle)}
+        inactiveCellStyle={cn('flex-center', defaultCellStyle, cellStyle)}
         dayOfWeekStyle={dayOfWeekStyle}
       >
         {/* children */}
@@ -86,6 +86,7 @@ const CalendarForForm = ({
               }
               onClick={() => handleClick(day, hasSchedule)}
               className={cn(
+                'flex-center',
                 defaultCellStyle,
                 cellStyle,
                 hasSchedule && 'text-main',
