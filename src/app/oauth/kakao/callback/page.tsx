@@ -11,7 +11,12 @@ const KakaoCallbackPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
-  const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI!;
+  const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+  if (!redirectUri) {
+    throw new Error(
+      'NEXT_PUBLIC_KAKAO_REDIRECT_URI 환경 변수가 설정되지 않았습니다.',
+    );
+  }
 
   const doLogin = useAuthStore((state) => state.login);
 

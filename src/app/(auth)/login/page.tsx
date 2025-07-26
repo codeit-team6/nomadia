@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import handleKakaoLogin from '@/features/activities/components/kakao-login-handle';
 import { LoginForm } from '@/features/auth/login/components/LoginForm';
+import handleKakaoLogin from '@/features/auth/utils/kakao-login-handler';
 
 const Login = () => {
   return (
