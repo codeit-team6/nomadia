@@ -7,9 +7,12 @@ import React from 'react';
 
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import Dropdown from '@/shared/components/dropdown';
+import useHydration from '@/shared/libs/hooks/useHydration';
 
-const Header: React.FC = () => {
-  const { user, isLoggedIn } = useAuthStore();
+const Header = () => {
+  const hydrated = useHydration();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
   const router = useRouter();
 
@@ -17,6 +20,8 @@ const Header: React.FC = () => {
     logout();
     router.push('/activities');
   };
+
+  if (!hydrated) return null;
 
   return (
     <nav className="bg-sub mx-auto flex h-[4.8rem] w-full items-center justify-between px-[2.4rem] py-[0.6rem] md:h-[6rem] md:px-[3rem] md:py-[1rem] lg:px-[20rem]">
