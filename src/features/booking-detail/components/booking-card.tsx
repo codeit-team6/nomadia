@@ -1,5 +1,13 @@
+import { X } from 'lucide-react';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
+import { toast } from 'sonner';
+
+import StarRating from '@/features/booking-detail/components/star-rating';
+import { useCancelMutation } from '@/features/booking-detail/libs/hooks/useCancelMutation';
+import { usePostReviewMutation } from '@/features/booking-detail/libs/hooks/usePostReviewMutation';
+import Modal from '@/shared/components/modal/components';
+import { useModalStore } from '@/shared/libs/stores/useModalStore';
 
 import {
   BOOKING_STATUS,
@@ -16,6 +24,7 @@ interface BookingCardProps {
 const getStatusLabel = (status: string) => {
   return BOOKING_STATUS.find((s) => s.value === status)?.label || status;
 };
+
 // 상태 색상 클래스 반환 함수
 const getStatusColorClass = (status: string) => {
   return STATUS_COLOR_MAP[status];
@@ -35,6 +44,65 @@ const BookingCard = ({ reservation }: BookingCardProps) => {
   const peopleCount = reservation.headCount;
   const imageUrl = reservation.activity.bannerImageUrl;
   const date = reservation.date;
+
+  const { isModalOpen, activeReservationId, openModal, closeModal } =
+    useModalStore();
+
+  // 현재 카드의 모달인지 확인
+  // activeReservationId가 없으면 기존처럼 모든 카드에서 모달이 열림 (기존 호환성 유지)
+  const isCurrentCardModal =
+    isModalOpen &&
+    (activeReservationId === undefined ||
+      activeReservationId === reservation.id);
+
+  // 예약 취소 버튼 클릭 시 현재 예약 ID와 함께 모달 열기
+  const handleCancelClick = () => {
+    openModal(reservation.id); // 예약 ID를 전달
+  };
+
+  // 예약 취소 모달에서 확인 버튼 클릭 시
+  const handleModalCancelBooking = () => {
+    // activeReservationId가 있으면 그것을 사용하고, 없으면 현재 카드의 ID 사용
+    const targetReservationId = activeReservationId || reservation.id;
+    cancelBooking(targetReservationId);
+    closeModal();
+  };
+
+  // 리뷰 작성 모달에서 작성하기 버튼 클릭 시
+  const handleModalPostReview = () => {
+    if (reviewRating === 0) {
+      toast.error('별점을 선택해주세요.');
+      return;
+    }
+
+    const targetReservationId = activeReservationId || reservation.id;
+    postReview({
+      reservationId: targetReservationId,
+      rating: reviewRating,
+      content: review,
+    });
+    closeModal();
+  };
+
+  // 예약 취소 mutation
+  const { mutate: cancelBooking, isPending } = useCancelMutation();
+
+  // 리뷰 작성 mutation
+  const { mutate: postReview, isPending: isPostingReview } =
+    usePostReviewMutation();
+
+  // 리뷰 입력 상태 관리 (textarea)
+  const [review, setReview] = useState('');
+  const maxLength = 100;
+
+  // 리뷰 입력 핸들러
+  const handleReviewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.target.value.length <= maxLength) {
+      setReview(e.target.value);
+    }
+  };
+
+  const [reviewRating, setReviewRating] = useState(0);
 
   return (
     <div className="flex flex-col gap-[1.2rem]">
@@ -86,15 +154,111 @@ const BookingCard = ({ reservation }: BookingCardProps) => {
           </div>
         </div>
       </div>
-      {statusLabel === '예약 완료' && (
+
+      {statusLabel === '예약 신청' && (
         <button
           type="button"
-          className="flex-center w-full cursor-pointer gap-[0.4rem] rounded-[0.8rem] bg-gray-50 p-[1rem] text-[1.4rem] font-medium text-gray-600 hover:bg-gray-100"
+          className="flex-center w-full cursor-pointer gap-[0.4rem] rounded-[0.8rem] bg-gray-50 p-[1rem] text-[1.4rem] font-medium text-gray-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+          onClick={handleCancelClick}
         >
           예약 취소
         </button>
       )}
+
+      {statusLabel === '체험 완료' && !reservation.reviewSubmitted && (
+        <button
+          type="button"
+          className="flex-center bg-main w-full cursor-pointer gap-[0.4rem] rounded-[0.8rem] p-[1rem] text-[1.4rem] font-medium text-white hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
+          onClick={handleCancelClick}
+        >
+          후기 작성
+        </button>
+      )}
+
+      {statusLabel === '체험 완료' && reservation.reviewSubmitted && (
+        <div className="flex-center w-full gap-[0.4rem] rounded-[0.8rem] bg-gray-50 p-[1rem] text-[1.4rem] font-medium text-gray-600">
+          후기 작성 완료
+        </div>
+      )}
+
       <div className="mt-[3rem] h-[1px] w-full bg-gray-50" />
+
+      {isCurrentCardModal && (
+        <Modal
+          type={statusLabel === '예약 신청' ? 'warning' : 'custom'}
+          extraClassName={
+            statusLabel === '체험 완료' ? 'w-full h-[47.9rem] mx-[2.4rem]' : ''
+          }
+        >
+          {statusLabel === '예약 신청' ? (
+            <>
+              <Modal.Header>예약을 취소하시겠어요?</Modal.Header>
+              <div className="flex gap-[0.8rem] md:gap-[1.2rem]">
+                <Modal.Button
+                  color="white"
+                  ariaLabel="취소"
+                  onClick={closeModal}
+                >
+                  아니오
+                </Modal.Button>
+                <Modal.Button
+                  color="blue"
+                  ariaLabel="확인"
+                  onClick={handleModalCancelBooking}
+                >
+                  {isPending ? '처리 중...' : '취소하기'}
+                </Modal.Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex justify-end">
+                <X
+                  className="text-gray-850 size-[2rem] cursor-pointer"
+                  onClick={closeModal}
+                />
+              </div>
+              <div className="flex-center mb-[2rem] flex-col gap-[0.6rem]">
+                <p className="text-[1.6rem] font-bold text-gray-950 md:text-[1.8rem]">
+                  {title}
+                </p>
+                <p className="text-[1.3rem] font-medium text-gray-500 md:text-[1.4rem]">
+                  {`${date} / ${time}`}
+                </p>
+                <StarRating onRatingChange={setReviewRating} />
+              </div>
+              <div className="flex flex-col gap-[0.8rem]">
+                <Modal.Header>
+                  <span className="text-[1.8rem] font-bold text-gray-950">
+                    소중한 경험을 들려주세요
+                  </span>
+                </Modal.Header>
+                <div className="mb-[1rem] flex w-full flex-col gap-[0.8rem]">
+                  <textarea
+                    className="focus:border-main shadow-experience-card h-[17.9rem] w-full resize-none rounded-[1.2rem] border border-gray-200 bg-white p-[2rem] text-[1.6rem] text-gray-800 outline-none placeholder:text-gray-400"
+                    placeholder="체험에서 느낀 경험을 자유롭게 남겨주세요"
+                    value={review}
+                    onChange={handleReviewChange}
+                    maxLength={maxLength}
+                  ></textarea>
+                  <span className="text-right text-[1.3rem] font-medium text-gray-600 md:text-[1.4rem]">
+                    {review.length}/{maxLength}
+                  </span>
+                </div>
+              </div>
+              <div>
+                <Modal.Button
+                  color="blue"
+                  ariaLabel="작성하기 버튼"
+                  onClick={isPostingReview ? undefined : handleModalPostReview}
+                >
+                  {isPostingReview ? '작성 중...' : '작성하기'}
+                </Modal.Button>
+              </div>
+            </>
+          )}
+        </Modal>
+      )}
     </div>
   );
 };
