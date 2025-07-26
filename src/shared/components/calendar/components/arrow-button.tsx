@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 
 import { cn } from '@/shared/libs/cn';
@@ -35,18 +36,20 @@ const ArrowButton = ({
   };
 
   return (
-    <Image
-      src="/images/icons/arrow.svg"
-      alt="arrow"
-      width={24}
-      height={24}
-      className={cn(
-        type === 'right' && 'scale-x-[-1] transform',
-        extraClassName,
-      )}
+    <button
       onClick={handleClick}
-      tabIndex={0}
-    />
+      onKeyDown={(e) => e.key === 'Enter' && handleClick()}
+      className={cn('focus:outline-none', extraClassName)}
+      aria-label={`${type === 'left' ? '이전' : '다음'} 달로 이동`}
+    >
+      <Image
+        src="/images/icons/arrow.svg"
+        alt="arrow button"
+        width={24}
+        height={24}
+        className={cn(type === 'right' && 'scale-x-[-1] transform')}
+      />
+    </button>
   );
 };
 export default ArrowButton;

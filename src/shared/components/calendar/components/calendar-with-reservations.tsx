@@ -66,7 +66,7 @@ const CalendarWithReservations = ({
         <div className="flex-center h-[4.4rem] w-full gap-10 text-[1.6rem] font-bold">
           <ArrowButton type="left" />
           <div>
-            {year}년 {month}월
+            {year}년 {month + 1}월
           </div>
           <ArrowButton type="right" />
         </div>
@@ -92,7 +92,7 @@ const CalendarWithReservations = ({
             return (
               <button
                 key={day}
-                onKeyDown={(e) => e.key === 'enter' && handleClick(day)}
+                onKeyDown={(e) => e.key === 'Enter' && handleClick(day)}
                 onClick={() => handleClick(day)}
                 // 이번달 날짜 칸 스타일
                 className={cn(

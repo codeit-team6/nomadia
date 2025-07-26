@@ -24,7 +24,7 @@ export const mockReservationData = [
     },
   },
   {
-    date: '2025-07-2',
+    date: '2025-07-02',
     reservations: {
       completed: 0,
       confirmed: 0,
