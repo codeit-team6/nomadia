@@ -1,6 +1,6 @@
 export const mockReservationData = [
   {
-    date: '2024-01-09',
+    date: '2025-07-09',
     reservations: {
       completed: 1,
       confirmed: 0,
@@ -8,7 +8,7 @@ export const mockReservationData = [
     },
   },
   {
-    date: '2024-01-10',
+    date: '2025-07-21',
     reservations: {
       completed: 0,
       confirmed: 2,
@@ -16,7 +16,7 @@ export const mockReservationData = [
     },
   },
   {
-    date: '2024-01-11',
+    date: '2025-07-11',
     reservations: {
       completed: 2,
       confirmed: 1,
@@ -24,7 +24,7 @@ export const mockReservationData = [
     },
   },
   {
-    date: '2024-01-12',
+    date: '2025-07-2',
     reservations: {
       completed: 0,
       confirmed: 0,
@@ -32,7 +32,7 @@ export const mockReservationData = [
     },
   },
   {
-    date: '2024-01-13',
+    date: '2025-07-23',
     reservations: {
       completed: 1,
       confirmed: 1,
@@ -40,3 +40,5 @@ export const mockReservationData = [
     },
   },
 ];
+//2 9 11 21 23
+//completed: 23 11 9
