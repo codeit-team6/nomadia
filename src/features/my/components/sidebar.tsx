@@ -15,7 +15,7 @@ const Sidebar = () => {
       imgae: '/images/icons/icon-list.png',
     },
     {
-      key: 'my-experience',
+      key: 'my-activities',
       label: '내 체험 관리',
       imgae: '/images/icons/icon-setting.png',
     },
@@ -42,7 +42,7 @@ const Sidebar = () => {
               <div className="flex gap-[0.8rem]">
                 <Image
                   src={menu.imgae}
-                  alt="Signup logo image"
+                  alt={`${menu.key}-image`}
                   width={24}
                   height={24}
                 />

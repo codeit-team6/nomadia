@@ -11,12 +11,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (width && width >= 450 && pathname === '/my') {
+    if (width && width >= 768 && pathname === '/my') {
       router.push('/my/profile');
     }
   }, [width, pathname, router]);
 
-  const isMobile = width ? width < 450 : false;
+  const isMobile = width ? width < 768 : false;
   const isMyPageRoot = pathname === '/my';
 
   return (
