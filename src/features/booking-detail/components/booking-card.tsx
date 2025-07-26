@@ -15,6 +15,12 @@ import {
 } from '../libs/constants/bookingStatus';
 import { Reservation } from '../libs/types/booking';
 
+interface BookingCardProps {
+  reservation: Reservation;
+  showDate?: boolean;
+  showDivider?: boolean;
+}
+
 // 예약 카드에 필요한 데이터 타입 정의
 interface BookingCardProps {
   reservation: Reservation;
@@ -34,7 +40,11 @@ const getStatusColorClass = (status: string) => {
  * 예약 상세 카드 컴포넌트
  * @param props BookingCardProps
  */
-const BookingCard = ({ reservation }: BookingCardProps) => {
+const BookingCard = ({
+  reservation,
+  showDate = true,
+  showDivider = true,
+}: BookingCardProps) => {
   // 상태 라벨 및 색상, 시간 등 파생 데이터는 내부에서 계산
   const statusLabel = getStatusLabel(reservation.status);
   const statusColorClass = getStatusColorClass(reservation.status);
@@ -106,25 +116,27 @@ const BookingCard = ({ reservation }: BookingCardProps) => {
 
   return (
     <div className="flex flex-col gap-[1.2rem]">
-      <div className="text-[1.6rem] font-bold text-gray-800 md:text-[1.8rem]">
-        {date}
-      </div>
+      {showDate && (
+        <div className="text-[1.6rem] font-bold text-gray-800 md:text-[1.8rem]">
+          {date}
+        </div>
+      )}
 
-      <div className="relative h-[13.6rem] w-full overflow-hidden rounded-[2.4rem] md:h-[14rem]">
+      <div className="shadow-experience-card relative h-[13.6rem] w-full overflow-hidden rounded-[2.4rem] md:h-[14rem] lg:h-[18.1rem]">
         {/* 배경 이미지 */}
-        <div className="absolute top-0 right-0 h-full w-[13.6rem] md:w-[14rem]">
+        <div className="absolute top-0 right-0 h-full w-[13.6rem] md:w-[14rem] lg:w-[18.1rem]">
           <Image
             src={imageUrl}
             alt={title}
             fill
             quality={90}
             loading="lazy"
-            className="size-[13.6rem] object-cover md:size-[14rem]"
+            className="size-[13.6rem] object-cover md:size-[14rem] lg:size-[18.1rem]"
           />
         </div>
 
         {/* 흰색 카드 */}
-        <div className="relative flex h-full w-[70%] flex-col justify-between gap-[0.8rem] rounded-[2.4rem] bg-white px-[2.2rem] py-[2rem] md:w-[80%]">
+        <div className="relative flex h-full w-[70%] flex-col justify-between gap-[0.8rem] rounded-[2.4rem] bg-white px-[2.2rem] py-[2rem] md:w-[75%]">
           {/* 상단 정보 영역 */}
           <div className="mb-[0.2rem] flex w-full flex-col">
             {/* 상태 뱃지 */}
@@ -135,7 +147,7 @@ const BookingCard = ({ reservation }: BookingCardProps) => {
             </span>
 
             {/* 타이틀 */}
-            <div className="text-[1.4rem] font-bold text-gray-950 lg:text-[1.8rem]">
+            <div className="truncate text-[1.4rem] font-bold text-gray-950 md:whitespace-normal lg:text-[1.8rem]">
               {title}
             </div>
             {/* 시간 */}
@@ -181,7 +193,7 @@ const BookingCard = ({ reservation }: BookingCardProps) => {
         </div>
       )}
 
-      <div className="mt-[3rem] h-[1px] w-full bg-gray-50" />
+      {showDivider && <div className="mt-[3rem] h-[1px] w-full bg-gray-50" />}
 
       {isCurrentCardModal && (
         <Modal

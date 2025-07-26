@@ -4,8 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import BookingCard from '@/features/booking-detail/components/booking-card';
 import FilterButtons from '@/features/booking-detail/components/filter-buttons';
+import { GroupedBookingCards } from '@/features/booking-detail/components/group-booking-card';
 import { useBookingQuery } from '@/features/booking-detail/libs/hooks/useBookingQuery';
 import { ErrorMessage } from '@/shared/components/error-message/error-message';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
@@ -37,7 +37,7 @@ const BookingList = () => {
           width={246}
           height={200}
         />
-        <p className="text-[1.6rem] font-medium text-gray-600">
+        <p className="text-[1.8rem] font-medium text-gray-600">
           아직 예약한 체험이 없어요.
         </p>
         <Link href="/activities">
@@ -52,7 +52,7 @@ const BookingList = () => {
   return (
     <>
       <FilterButtons active={activeStatus} onChange={setActiveStatus} />
-      <div className="flex flex-col gap-[3rem]">
+      <div className="flex flex-col gap-[2rem]">
         {isLoading ? (
           <div className="flex-center h-[16rem]">
             <LoadingSpinner />
@@ -60,9 +60,7 @@ const BookingList = () => {
         ) : isError ? (
           <ErrorMessage />
         ) : (
-          filteredBookings.map((reservation) => (
-            <BookingCard key={reservation.id} reservation={reservation} />
-          ))
+          <GroupedBookingCards reservations={filteredBookings} />
         )}
       </div>
     </>
