@@ -6,18 +6,17 @@ import CalendarForForm from '@/shared/components/calendar/components/calendar-fo
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 
 export default function Page() {
-  // test My
   const [selectedId, setSelectedId] = useState<number>();
-  const mockData = mockScheduleData;
-
-  // display data for test
-  const { date, selectedDate } = useCalendarStore();
+  const mockData = mockScheduleData; // mock data
+  const { date, selectedDate } = useCalendarStore(); // display data for test
 
   return (
     <div className="bg-purple-100">
       <div className="text-3xl text-black">date:{date}</div>
       <div className="text-3xl text-black">selectedDate:{selectedDate}</div>
       <div className="text-3xl text-black">selectedId:{selectedId}</div>
+
+      {/* 캘린더 컴포넌트 사용 */}
       <CalendarForForm
         setSelectedId={setSelectedId}
         scheduleArray={mockData}

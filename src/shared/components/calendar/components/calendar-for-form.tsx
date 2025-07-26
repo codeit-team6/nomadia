@@ -11,6 +11,36 @@ import { getMonthRange } from '@/shared/components/calendar/libs/utils/getMonthR
 import { cn } from '@/shared/libs/cn';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 
+/**
+ * @author 지윤
+ * @component
+ * 폼 내에서 사용할 캘린더 컴포넌트입니다. 날짜를 선택하거나, 날짜별 스케줄을 확인할 수 있습니다.
+ * 모든 프롭은 선택값이며, 필요에 따라 선택적으로 사용해주세요.
+ * 스타일 커스터마이징을 위한 프롭을 활용해서 반응형 스타일 등을 추가할수 있습니다.
+ *
+ * @param {function} [setSelectedId] - 특정 날짜(혹은 셀)의 ID를 선택할 때 호출되는 상태 설정 함수입니다. 날짜 클릭 시 트리거됩니다.
+ * @param {Schedules[]} [scheduleArray] - 날짜별 스케줄 정보 배열입니다.
+ * @param {string} [calendarWidth] - 캘린더 전체의 가로폭을 조정하는 Tailwind 클래스 문자열입니다. 예:"md:w-[38rem]".
+ * @param {string} [dayOfWeekStyle] - 요일(일~토) 셀에 적용할 Tailwind 클래스 문자열입니다. 반응형 스타일도 전달 가능.
+ * @param {string} [cellStyle] - 날짜 셀에 적용할 Tailwind 클래스 문자열입니다. 선택 상태, 스케줄 상태 등에 병합되어 사용됩니다.
+ * @param {boolean} [isForReservation=false] - 예약 선택 용도로 사용하는지 여부를 나타냅니다. `true`일 경우 스케줄이 있는 날짜가 표시됩니다.(체험상세페이지에서 사용)
+ *
+ * @example
+ * <CalendarForForm
+ *   setSelectedId={setScheduleId}
+ *   scheduleArray={data}
+ *   calendarWidth="md:w-[38rem] lg:w-[40rem]..."
+ *   dayOfWeekStyle="text-gray-500 md:w-[2rem]..."
+ *   cellStyle="relative h-[10rem] text-[1.4rem]..."
+ *   isForReservation={true}
+ * />
+ *
+ * @note
+ * - ✅ `calendarWidth`, `dayOfWeekStyle`, `cellStyle` 프롭을 통해 스타일을 외부에서 커스터마이징할 수 있습니다.
+ * - ❗️반응형 클래스(`md:`, `lg:` 등)를 프롭으로 넘길 경우, 클래스 순서나 병합 문제로 스타일이 무시될 수 있습니다.
+ *   이 경우에는 임시 `div`에 클래스를 붙여보고, 적용 순서를 정리한 후 복붙하는 방식이 안정적입니다.
+ */
+
 const CalendarForForm = ({
   setSelectedId,
   scheduleArray,

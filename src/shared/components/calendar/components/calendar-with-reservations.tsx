@@ -9,15 +9,38 @@ import { getMonthRange } from '@/shared/components/calendar/libs/utils/getMonthR
 import { cn } from '@/shared/libs/cn';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 
-//✅ calendarWidth,dayOfWeekStyle,cellStyle, 프롭으로 '스타일 클래스명'을 넘겨주면, 캘린더의 가로 폭, 요일칸, 날짜칸에 대한 스타일을 입힐수 있습니다.(아니면, className에 바로 작성하셔도 됩니다)
-//❗️ 프롭으로 반응형 스타일을 넘겨주는 경우, 클래스명 정렬 순서가 이상하면 스타일 적용 안될 수 있음. 다른 임시 div태그 만들어서, 클래스명 정렬 한번 해보고 복붙하는걸 추천.
+/**
+ * @author 지윤
+ * @component
+ * 캘린더 UI를 렌더링하며, 날짜별 예약 현황(완료/승인/예약)을 표시해줍니다.
+ *
+ *
+ * @param {MonthReservations[]} reservationArray - 날짜별 예약 데이터 배열. (특정 날짜에 대한 예약 현황)
+ * @param {string} [calendarWidth] - 캘린더 전체의 가로폭을 조정하는 Tailwind 클래스 문자열입니다. (예: "w-[38rem]")
+ * @param {string} [dayOfWeekStyle] - 요일(일~토) 셀에 적용할 Tailwind 클래스 문자열입니다. 반응형 스타일도 가능.
+ * @param {string} [cellStyle] - 날짜 셀에 적용할 Tailwind 클래스 문자열입니다. 예약 상태나 선택 상태 등과 병합되어 사용됩니다.
+ *
+ * @example
+ * <CalendarWithReservations
+ *   reservationArray={data}
+ *   calendarWidth="md:w-[38rem] lg:w-[40rem]..."
+ *   dayOfWeekStyle="text-gray-500 md:w-[2rem]..."
+ *   cellStyle="relative h-[10rem] text-[1.4rem]..."
+ * />
+ *
+ * @note
+ * - ✅ `calendarWidth`, `dayOfWeekStyle`, `cellStyle` 프롭을 통해 스타일을 외부에서 커스터마이징할 수 있습니다.
+ * - ❗️반응형 클래스(`md:`, `lg:` 등)를 프롭으로 넘길 경우, 클래스 순서나 병합 문제로 스타일이 무시될 수 있습니다.
+ *   이 경우에는 임시 `div`에 클래스를 붙여보고, 적용 순서를 정리한 후 복붙하는 방식이 안정적입니다.
+ */
+
 const CalendarWithReservations = ({
-  monthResArray,
+  reservationArray,
   calendarWidth,
   dayOfWeekStyle,
   cellStyle,
 }: {
-  monthResArray: MonthReservations[];
+  reservationArray: MonthReservations[];
   calendarWidth?: string;
   dayOfWeekStyle?: string;
   cellStyle?: string;
@@ -60,7 +83,7 @@ const CalendarWithReservations = ({
         >
           {thisMonthDays.map((day) => {
             const dateStr = formatDateToYMD(new Date(year, month, day));
-            const hasReservation = monthResArray.find(
+            const hasReservation = reservationArray.find(
               (reservation) => reservation.date === dateStr,
             );
             const resStatus = hasReservation?.reservations;

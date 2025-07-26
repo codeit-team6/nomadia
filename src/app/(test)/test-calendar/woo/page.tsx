@@ -5,7 +5,7 @@ import CalendarWithReservations from '@/shared/components/calendar/components/ca
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 
 export default function Page() {
-  const mockData = mockReservationData; // mock data🗑️
+  const mockData = mockReservationData; // mock data
   const { selectedDate, date } = useCalendarStore();
 
   return (
@@ -13,7 +13,8 @@ export default function Page() {
       <div className="text-3xl">selectedDate:{selectedDate}</div>
       <div className="text-3xl">date:{date}</div>
 
-      <CalendarWithReservations monthResArray={mockData} />
+      {/* 캘린더 컴포넌트 사용 */}
+      <CalendarWithReservations reservationArray={mockData} />
     </div>
   );
 }
