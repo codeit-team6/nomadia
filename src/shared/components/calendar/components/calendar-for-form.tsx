@@ -11,7 +11,6 @@ import { getMonthRange } from '@/shared/components/calendar/libs/utils/getMonthR
 import { cn } from '@/shared/libs/cn';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 
-//dayOfWeek, arrowButton 파일명 케밥으로 변경
 const CalendarForForm = ({
   setSelectedId,
   scheduleArray,
@@ -46,7 +45,7 @@ const CalendarForForm = ({
   return (
     <div
       className={cn(
-        'flex h-fit w-[32.7rem] flex-wrap bg-white',
+        'flex h-fit w-[32.69rem] flex-wrap bg-white',
         isForReservation && calendarWidth,
       )}
     >
@@ -86,7 +85,7 @@ const CalendarForForm = ({
               }
               onClick={() => handleClick(day, hasSchedule)}
               className={cn(
-                'flex-center',
+                'flex-center hover:bg-sub',
                 defaultCellStyle,
                 cellStyle,
                 hasSchedule && 'text-main',

@@ -73,6 +73,7 @@ const CalendarWithReservations = ({
                 onClick={() => handleClick(day)}
                 // 이번달 날짜 칸 스타일
                 className={cn(
+                  !isSelected ? 'hover:bg-sub' : 'hover:bg-orange-100',
                   cellStyleForCWR,
                   cellStyle,
                   isSelected && 'bg-red-100',
