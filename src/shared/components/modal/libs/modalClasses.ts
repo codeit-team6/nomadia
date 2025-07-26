@@ -3,7 +3,7 @@ export const modalContentClasses: Record<string, string> = {
     'flex  w-[32rem] flex-col items-center p-[3rem] pt-[3.4rem] text-center h-fit md:w-[40rem] md:p-[4rem] md:pb-[3.4rem]',
   warning:
     'flex w-[32rem] flex-col items-center p-[3rem] pb-[2.4rem] text-center md:w-[40rem] md:p-[3rem]',
-  custom: 'px-[2.4rem] py-[3rem]',
+  custom: 'px-[2.4rem] py-[2rem]',
 };
 
 export const modalHeaderClasses: Record<string, string> = {
