@@ -1,26 +1,23 @@
-import ArrowButton from '@/shared/components/calendar/components/arrowButton';
+import ArrowButton from '@/shared/components/calendar/components/arrow-button';
 import DaysOfMonth from '@/shared/components/calendar/components/days-of-month';
 import {
   defaultCellStyle,
   selectedCircle,
 } from '@/shared/components/calendar/libs/constants/calendarStyles';
 import { monthName } from '@/shared/components/calendar/libs/constants/monthName';
-import { Schedules } from '@/shared/components/calendar/libs/constants/myMockData';
+import { Schedules } from '@/shared/components/calendar/libs/types/data';
 import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatDateToYMD';
 import { getMonthRange } from '@/shared/components/calendar/libs/utils/getMonthRange';
 import { cn } from '@/shared/libs/cn';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 
-//경고 정리하고, 커밋 한번 남기기 ✨🎨feat: my,hyun테스트 페이지 & 디폴트 ui 정리
 //dayOfWeek, arrowButton 파일명 케밥으로 변경
-//id다시 클릭하면 취소하는거 해결해야🐛
 const CalendarForForm = ({
   setSelectedId,
   scheduleArray,
   calendarWidth,
   dayOfWeekStyle,
   cellStyle,
-
   isForReservation = false,
 }: {
   setSelectedId?: React.Dispatch<React.SetStateAction<number | undefined>>;
@@ -28,13 +25,11 @@ const CalendarForForm = ({
   calendarWidth?: string;
   dayOfWeekStyle?: string;
   cellStyle?: string;
-
   isForReservation?: boolean;
 }) => {
   const { setDate, setSelectedDate, year, month, date } = useCalendarStore();
   const { thisMonthDays } = getMonthRange(year, month);
 
-  //handle onClick, onKeyboard
   const handleClick = (day: number, hasSchedule?: Schedules) => {
     setDate(day);
     setSelectedDate(year, month, day);
@@ -86,7 +81,6 @@ const CalendarForForm = ({
           return (
             <button
               key={day}
-              tabIndex={0}
               onKeyDown={(e) =>
                 e.key === 'enter' && handleClick(day, hasSchedule)
               }

@@ -3,21 +3,6 @@ import Image from 'next/image';
 import { cn } from '@/shared/libs/cn';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 
-// interface buttonProps {
-//   month: number;
-//   setMonth: React.Dispatch<React.SetStateAction<number>>;
-//   setYear: React.Dispatch<React.SetStateAction<number>>;
-//   type: 'left' | 'right';
-//   extraClassName?: string;
-// }
-
-// const ArrowButton = ({
-//   month,
-//   setMonth,
-//   setYear,
-//   type,
-//   extraClassName,
-// }: buttonProps) => {
 const ArrowButton = ({
   type,
   extraClassName,
@@ -32,21 +17,6 @@ const ArrowButton = ({
     const isFirstMonth = month === 0;
     const isLastMonth = month === 11;
 
-    // if (isRight) {
-    //   if (isLastMonth) {
-    //     setYear((prev) => prev + 1);
-    //     setMonth(0);
-    //   } else {
-    //     setMonth((prev) => prev + 1);
-    //   }
-    // } else {
-    //   if (isFirstMonth) {
-    //     setYear((prev) => prev - 1);
-    //     setMonth(11);
-    //   } else {
-    //     setMonth((prev) => prev - 1);
-    //   }
-    // }
     if (isRight) {
       if (isLastMonth) {
         setYear(year + 1);
@@ -75,6 +45,7 @@ const ArrowButton = ({
         extraClassName,
       )}
       onClick={handleClick}
+      tabIndex={0}
     />
   );
 };

@@ -40,5 +40,3 @@ export const mockReservationData = [
     },
   },
 ];
-//2 9 11 21 23
-//completed: 23 11 9

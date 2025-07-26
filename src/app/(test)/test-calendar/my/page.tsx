@@ -1,14 +1,14 @@
 'use client';
 import { useState } from 'react';
 
+import { mockScheduleData } from '@/features/(test)/mockSchedules';
 import CalendarForForm from '@/shared/components/calendar/components/calendar-for-form';
-import { mockSchedules } from '@/shared/components/calendar/libs/constants/myMockData';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 
 export default function Page() {
   // test My
   const [selectedId, setSelectedId] = useState<number>();
-  const mockData = mockSchedules;
+  const mockData = mockScheduleData;
 
   // display data for test
   const { date, selectedDate } = useCalendarStore();

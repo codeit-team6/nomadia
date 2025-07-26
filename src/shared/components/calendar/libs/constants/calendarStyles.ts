@@ -6,3 +6,6 @@ export const defaultCellStyle =
 
 export const defaultDayOfWeekStyle =
   'flex-center size-[4.6rem] text-[1.6rem] font-semibold text-gray-800';
+
+export const cellStyleForCWR =
+  'relative flex h-[10.4rem] w-[5.35rem] flex-col justify-start px-[0.4rem] pt-[1rem] text-[1.2rem] font-medium text-gray-800';

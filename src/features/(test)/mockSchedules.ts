@@ -1,4 +1,4 @@
-export const mockSchedules = [
+export const mockScheduleData = [
   {
     id: 1,
     date: '2025-07-01',
@@ -18,11 +18,3 @@ export const mockSchedules = [
     endTime: '13:00',
   },
 ];
-//1 7 22
-
-export interface Schedules {
-  id: number;
-  date: string;
-  startTime: string;
-  endTime: string;
-}

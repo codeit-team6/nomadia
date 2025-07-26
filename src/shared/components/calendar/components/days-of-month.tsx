@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import DayOfWeek from '@/shared/components/calendar/components/dayOfWeek';
+import DayOfWeek from '@/shared/components/calendar/components/day-of-week';
 import NotThisMonth from '@/shared/components/calendar/components/not-this-month';
 import { getMonthRange } from '@/shared/components/calendar/libs/utils/getMonthRange';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
@@ -21,12 +21,6 @@ const DaysOfMonth = ({
 
   return (
     <>
-      {/* <div
-        className={cn(
-          'flex h-fit w-[32.7rem] flex-wrap bg-white',
-          isForReservation && calendarWidth,
-        )}
-      > */}
       {/* 요일(일~토) */}
       <DayOfWeek dayOfWeekStyle={dayOfWeekStyle} />
       {/* 앞 달 날짜*/}
