@@ -50,7 +50,6 @@ export default function Page() {
 
       <DaysOfMonth
         inactiveCellStyle="relative text-green-400 flex-col z-0 font-bold w-[7rem]  h-[7rem] border-b  border-b-amber-950"
-        calendarWidth="w-[49rem]"
         dayOfWeekStyle="mb-[2rem] w-[7rem]"
       >
         {thisMonthDays.map((day) => {

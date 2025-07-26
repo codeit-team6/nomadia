@@ -49,12 +49,16 @@ const CalendarForForm = ({
   };
 
   return (
-    <div>
+    <div
+      className={cn(
+        'flex h-fit w-[32.7rem] flex-wrap bg-white',
+        isForReservation && calendarWidth,
+      )}
+    >
       {/* year, month */}
       <div
         className={cn(
-          'flex w-[32.7rem] items-center justify-between bg-white text-[1.6rem] font-medium text-gray-950',
-          isForReservation && calendarWidth,
+          'flex w-full items-center justify-between bg-white text-[1.6rem] font-medium text-gray-950',
         )}
       >
         <div className={cn('mb-[0.8rem] flex gap-[0.2rem]')}>
@@ -69,9 +73,7 @@ const CalendarForForm = ({
       {/* 이번달 날짜*/}
       <DaysOfMonth
         inactiveCellStyle={cn(defaultCellStyle, cellStyle)}
-        calendarWidth={calendarWidth}
         dayOfWeekStyle={dayOfWeekStyle}
-        isForReservation={isForReservation}
       >
         {/* children */}
         {thisMonthDays.map((day) => {
