@@ -8,21 +8,21 @@ import React from 'react';
 const Sidebar = () => {
   const pathname = usePathname();
   const menus = [
-    { key: 'profile', label: '내 정보', imgae: '/images/icons/icon-user.png' },
+    { key: 'profile', label: '내 정보', image: '/images/icons/icon-user.png' },
     {
       key: 'reservation',
       label: '예약 내역',
-      imgae: '/images/icons/icon-list.png',
+      image: '/images/icons/icon-list.png',
     },
     {
       key: 'my-activities',
       label: '내 체험 관리',
-      imgae: '/images/icons/icon-setting.png',
+      image: '/images/icons/icon-setting.png',
     },
     {
       key: 'reserve-calendar',
       label: '예약 현황',
-      imgae: '/images/icons/icon-calendar.png',
+      image: '/images/icons/icon-calendar.png',
     },
   ];
 
@@ -41,7 +41,7 @@ const Sidebar = () => {
             >
               <div className="flex gap-[0.8rem]">
                 <Image
-                  src={menu.imgae}
+                  src={menu.image}
                   alt={`${menu.key}-image`}
                   width={24}
                   height={24}
