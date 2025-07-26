@@ -1,10 +1,10 @@
+import BookingDetail from '@/features/booking-detail/components/booking-detail';
+
 const ReservationPage = () => {
   return (
-    <div>
-      예약내역 페이지
-      <div className="bg-red-500">ㅇㅇ</div>
-      <button className="bg-main text-black">click</button>
-    </div>
+    <main>
+      <BookingDetail />
+    </main>
   );
 };
 
