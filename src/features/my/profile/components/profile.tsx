@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -14,6 +14,7 @@ import {
 import { getMe } from '@/features/my/profile/lib/api/profile.api';
 import { editMe } from '@/features/my/profile/lib/api/profile.api';
 import { FormInput } from '@/shared/components/form-input/form-input';
+import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 
 import { ProfilePatch } from '../lib/types/types';
 
@@ -28,16 +29,20 @@ const Profile = () => {
     mode: 'onChange',
   });
   const router = useRouter();
+  const [isloading, setIsLoading] = useState(true);
 
   // 사용자 정보 가져오기 (hook?)
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        setIsLoading(true);
         const userData = await getMe();
         reset(userData);
       } catch (error) {
         console.error(error);
         alert(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchUserData();
@@ -56,10 +61,18 @@ const Profile = () => {
       toast.success('프로필 수정 성공');
       router.push('/my');
     } catch (error) {
-      console.log(error);
-      alert(`수정 실패`);
+      console.error(error);
+      toast.error(`수정 실패`);
     }
   };
+
+  if (isloading) {
+    return (
+      <>
+        <LoadingSpinner />
+      </>
+    );
+  }
 
   return (
     <form
@@ -68,7 +81,7 @@ const Profile = () => {
     >
       <div className="relative h-[12rem] w-[12rem]">
         <Image
-          src="/images/icons/logo-desktop.png"
+          src="/images/icons/profile-default.png"
           alt="profile-image"
           fill
           className="rounded-full object-cover"
@@ -117,15 +130,15 @@ const Profile = () => {
       <div className="mt-[1.2rem] flex w-full justify-between gap-[1.2rem] md:justify-center">
         <button
           type="button"
-          onClick={() => reset()}
-          className="h-[4.7rem] w-full rounded-[1.4rem] border border-gray-200 text-[1.6rem] font-medium text-gray-600 md:hidden"
+          onClick={() => router.push('/my')}
+          className="h-[4.7rem] w-full cursor-pointer rounded-[1.4rem] border border-gray-200 text-[1.6rem] font-medium text-gray-600 md:hidden"
         >
           취소하기
         </button>
         <button
           type="submit"
           disabled={!isDirty || !isValid || isSubmitting}
-          className="bg-main h-[4.7rem] w-full rounded-[1.4rem] text-[1.6rem] font-bold text-white disabled:bg-gray-200 md:h-[4.1rem] md:w-[12rem] md:text-[1.4rem]"
+          className="bg-main h-[4.7rem] w-full cursor-pointer rounded-[1.4rem] text-[1.6rem] font-bold text-white disabled:bg-gray-200 md:h-[4.1rem] md:w-[12rem] md:text-[1.4rem]"
         >
           저장하기
         </button>

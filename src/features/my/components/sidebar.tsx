@@ -31,7 +31,7 @@ const Sidebar = () => {
       <div className="bg-main mb-[2.4rem] aspect-square w-[12rem] rounded-full md:mb-[1.2rem] md:w-[7rem] lg:mb-[2.4rem] lg:w-[12rem]"></div>
       <ul className="flex w-full flex-col gap-[1.4rem] md:gap-[1.2rem] lg:gap-[1.4rem]">
         {menus.map((menu) => {
-          const isActive = pathname?.includes(menu.key);
+          const isActive = pathname === `/my/${menu.key}`;
           return (
             <li
               key={menu.key}
