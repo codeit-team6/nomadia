@@ -111,7 +111,7 @@ const CalendarForForm = ({
             <button
               key={day}
               onKeyDown={(e) =>
-                e.key === 'enter' && handleClick(day, hasSchedule)
+                e.key === 'Enter' && handleClick(day, hasSchedule)
               }
               onClick={() => handleClick(day, hasSchedule)}
               className={cn(
