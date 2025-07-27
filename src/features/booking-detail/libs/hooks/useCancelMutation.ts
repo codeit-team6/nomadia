@@ -1,17 +1,21 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
-import { canceledBooking } from '@/features/booking-detail/libs/api/canceledBooking';
+import { cancelBooking } from '../api/bookingApi';
 
 export const useCancelMutation = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: canceledBooking,
+    mutationFn: cancelBooking,
     onSuccess: () => {
-      // 예약 취소 성공 시 페이지 새로고침
-      window.location.reload();
+      // 예약 취소 성공 시 booking 쿼리 무효화
+      queryClient.invalidateQueries({ queryKey: ['booking'] });
+      toast.success('예약이 성공적으로 취소되었습니다.');
     },
     onError: (error) => {
       console.error('예약 취소 실패:', error);
-      // 에러 시에는 새로고침하지 않고 에러 메시지만 표시
+      toast.error('예약 취소에 실패했습니다. 다시 시도해주세요.');
     },
   });
 };

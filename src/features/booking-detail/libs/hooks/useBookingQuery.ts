@@ -1,10 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getBooking } from '@/features/booking-detail/libs/api/getBooking';
-import {
-  GetBookingParams,
-  GetBookingResponse,
-} from '@/features/booking-detail/libs/types/booking';
+import { getBooking } from '../api/bookingApi';
+import { GetBookingParams, GetBookingResponse } from '../types/booking';
 
 export const useBookingQuery = (params?: GetBookingParams) => {
   return useQuery<GetBookingResponse>({

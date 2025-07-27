@@ -4,7 +4,6 @@ export type GetBookingParams = {
   status?: 'pending' | 'confirmed' | 'declined' | 'canceled' | 'completed';
 };
 
-// 예약 상세 조회 API 응답 타입 (예약 상세 조회 API 응답 타입)
 export type Activity = {
   id: number;
   title: string;

@@ -1,4 +1,8 @@
-// 예약 상태 라벨 매핑
+/**
+ * @description 예약 상태 라벨 매핑
+ *
+ * @author 김영현
+ */
 export const BOOKING_STATUS = [
   { label: '예약 완료', value: 'confirmed' },
   { label: '예약 신청', value: 'pending' },
@@ -7,7 +11,11 @@ export const BOOKING_STATUS = [
   { label: '체험 완료', value: 'completed' },
 ];
 
-// 예약 상태별 색상 매핑
+/**
+ * @description 예약 상태별 색상 매핑
+ *
+ * @author 김영현
+ */
 export const STATUS_COLOR_MAP: Record<string, string> = {
   pending: 'bg-yellow-100 text-yellow-700',
   canceled: 'bg-gray-100 text-gray-600',

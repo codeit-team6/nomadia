@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { postReview } from '@/features/booking-detail/libs/api/postReview';
-import { GetBookingResponse } from '@/features/booking-detail/libs/types/booking';
+import { postReview } from '../api/bookingApi';
+import { GetBookingResponse } from '../types/booking';
 
 interface PostReviewParams {
   reservationId: number;
@@ -12,9 +12,6 @@ interface PostReviewParams {
 
 /**
  * 리뷰 작성 mutation 훅
- * @author 김영현
- * @returns 리뷰 작성 mutation 결과
- * @description 체험 완료된 예약에 대한 리뷰 작성 시 사용
  */
 export const usePostReviewMutation = () => {
   const queryClient = useQueryClient();

@@ -1,4 +1,4 @@
-import BookingCard from '@/features/booking-detail/components/booking-card';
+import BookingCardContainer from '@/features/booking-detail/components/booking-card-container';
 import { Reservation } from '@/features/booking-detail/libs/types/booking';
 
 // 새로운 인터페이스
@@ -7,7 +7,7 @@ interface GroupedBookingsProps {
 }
 
 // 새로운 컴포넌트
-export const GroupedBookingCards = ({ reservations }: GroupedBookingsProps) => {
+const GroupedBookingCards = ({ reservations }: GroupedBookingsProps) => {
   // 날짜별로 예약 그룹화
   const groupedReservations = reservations.reduce(
     (groups, reservation) => {
@@ -40,7 +40,7 @@ export const GroupedBookingCards = ({ reservations }: GroupedBookingsProps) => {
           {/* 해당 날짜의 예약 카드들 */}
           <div className="flex flex-col gap-[3rem]">
             {groupedReservations[date].map((reservation, index) => (
-              <BookingCard
+              <BookingCardContainer
                 key={reservation.id}
                 reservation={reservation}
                 showDate={false} // 그룹 내에서는 날짜를 표시하지 않음
@@ -53,3 +53,5 @@ export const GroupedBookingCards = ({ reservations }: GroupedBookingsProps) => {
     </div>
   );
 };
+
+export default GroupedBookingCards;

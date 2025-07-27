@@ -4,11 +4,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import FilterButtons from '@/features/booking-detail/components/filter-buttons';
-import { GroupedBookingCards } from '@/features/booking-detail/components/group-booking-card';
-import { useBookingQuery } from '@/features/booking-detail/libs/hooks/useBookingQuery';
 import { ErrorMessage } from '@/shared/components/error-message/error-message';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
+
+import { useBookingQuery } from '../libs/hooks/useBookingQuery';
+import FilterButtons from './filter-buttons';
+import GroupedBookingCards from './group-booking-card';
 
 const BookingList = () => {
   const { data, isLoading, isError } = useBookingQuery();

@@ -1,7 +1,8 @@
 'use client';
 
-import { BOOKING_STATUS } from '@/features/booking-detail/libs/constants/bookingStatus';
 import { Button } from '@/shared/libs/shadcn/components/ui/button';
+
+import { BOOKING_STATUS } from '../libs/constants/bookingStatus';
 
 interface FilterButtonProps {
   active: string;
