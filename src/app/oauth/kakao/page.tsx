@@ -33,7 +33,7 @@ const KakaoCallbackPage = () => {
           refreshToken: data.refreshToken,
         });
 
-        router.push('/activities');
+        router.replace('/activities');
       } catch (error) {
         console.error('카카오 로그인 에러', error);
         router.push('/login');
