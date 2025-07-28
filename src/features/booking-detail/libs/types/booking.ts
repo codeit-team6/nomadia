@@ -43,3 +43,16 @@ export type PostReviewParams = {
   rating: number;
   content: string;
 };
+
+// 리뷰 작성 API 응답 타입
+export type ReviewResponse = {
+  id: number;
+  content: string;
+  rating: number;
+  userId: number;
+  activityId: number;
+  teamId: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+};

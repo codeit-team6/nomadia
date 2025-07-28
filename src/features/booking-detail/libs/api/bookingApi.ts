@@ -4,6 +4,8 @@ import {
   GetBookingParams,
   GetBookingResponse,
   PostReviewParams,
+  Reservation,
+  ReviewResponse,
 } from '../types/booking';
 
 /**
@@ -19,7 +21,9 @@ export const getBooking = async (
 /**
  * 예약 취소 API
  */
-export const cancelBooking = async (reservationId: number) => {
+export const cancelBooking = async (
+  reservationId: number,
+): Promise<Reservation> => {
   const { data } = await api.patch(`/my-reservations/${reservationId}`, {
     status: 'canceled',
   });
@@ -29,7 +33,9 @@ export const cancelBooking = async (reservationId: number) => {
 /**
  * 리뷰 작성 API
  */
-export const postReview = async (params: PostReviewParams) => {
+export const postReview = async (
+  params: PostReviewParams,
+): Promise<ReviewResponse> => {
   const { data } = await api.post(
     `/my-reservations/${params.reservationId}/reviews`,
     {
