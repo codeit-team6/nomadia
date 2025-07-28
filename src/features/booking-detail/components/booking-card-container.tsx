@@ -29,11 +29,8 @@ const BookingCardContainer = ({
     useModalStore();
 
   // 현재 카드의 모달인지 확인
-  // activeReservationId가 없으면 기존처럼 모든 카드에서 모달이 열림 (기존 호환성 유지)
   const isCurrentCardModal =
-    isModalOpen &&
-    (activeReservationId === undefined ||
-      activeReservationId === reservation.id);
+    isModalOpen && activeReservationId === reservation.id;
 
   // 예약 취소 버튼 클릭 시 현재 예약 ID와 함께 모달 열기
   const handleCancelClick = () => {
