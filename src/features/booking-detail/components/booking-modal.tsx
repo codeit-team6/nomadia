@@ -64,6 +64,11 @@ const BookingModal = ({
       return;
     }
 
+    if (review.trim().length === 0) {
+      toast.error('리뷰를 입력해주세요.');
+      return;
+    }
+
     postReview({
       reservationId: reservation.id,
       rating: reviewRating,
