@@ -30,7 +30,7 @@ const BookingList = () => {
     : sortedReservations;
 
   // 예약 내역이 없을 때
-  if (data?.reservations.length === 0) {
+  if (data && data.reservations.length === 0) {
     return (
       <div className="flex-center mt-[6rem] mb-[14.9rem] h-[40rem] w-full flex-col gap-[3rem] px-[2rem] md:mb-[47.2rem] lg:mb-[37rem]">
         <Image
