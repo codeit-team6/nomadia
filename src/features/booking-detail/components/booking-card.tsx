@@ -81,7 +81,7 @@ const BookingCard = ({
             </span>
 
             {/* 타이틀 */}
-            <div className="truncate text-[1.4rem] font-bold text-gray-950 md:whitespace-normal lg:text-[1.8rem]">
+            <div className="truncate text-[1.4rem] font-bold text-gray-950 lg:text-[1.8rem]">
               {reservation.activity.title}
             </div>
             {/* 시간 */}
