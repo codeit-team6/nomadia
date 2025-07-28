@@ -23,7 +23,7 @@ export const getStatusLabel = (status: string): string => {
  * @returns 색상 클래스
  */
 export const getStatusColorClass = (status: BookingStatus): string => {
-  return STATUS_COLOR_MAP[status];
+  return STATUS_COLOR_MAP[status] || 'bg-gray-100 text-gray-600';
 };
 
 /**
