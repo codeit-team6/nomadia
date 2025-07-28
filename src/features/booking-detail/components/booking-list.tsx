@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { ErrorMessage } from '@/shared/components/error-message/error-message';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
-import { parseDate } from '@/shared/libs/utils/parseDate';
+import { sortDatesAscending } from '@/shared/libs/utils/parseDate';
 
 import { useBookingQuery } from '../libs/hooks/useBookingQuery';
 import FilterButtons from './filter-buttons';
@@ -19,9 +19,8 @@ const BookingList = () => {
   // 날짜 기준 오름차순 정렬
   const sortedReservations = data?.reservations
     ? [...data.reservations].sort((a, b) => {
-        const dateA = parseDate(a.date);
-        const dateB = parseDate(b.date);
-        return dateA.getTime() - dateB.getTime();
+        const sortedDates = sortDatesAscending([a.date, b.date]);
+        return sortedDates[0] === a.date ? -1 : 1;
       })
     : [];
 

@@ -1,6 +1,6 @@
 import BookingCardContainer from '@/features/booking-detail/components/booking-card-container';
 import { Reservation } from '@/features/booking-detail/libs/types/booking';
-import { parseDate } from '@/shared/libs/utils/parseDate';
+import { sortDatesAscending } from '@/shared/libs/utils/parseDate';
 
 // 새로운 인터페이스
 interface GroupedBookingsProps {
@@ -28,11 +28,7 @@ const GroupedBookingCards = ({ reservations }: GroupedBookingsProps) => {
   );
 
   // 날짜순으로 정렬 (오름차순)
-  const sortedDates = Object.keys(groupedReservations).sort((a, b) => {
-    const dateA = parseDate(a);
-    const dateB = parseDate(b);
-    return dateA.getTime() - dateB.getTime();
-  });
+  const sortedDates = sortDatesAscending(Object.keys(groupedReservations));
 
   return (
     <div className="flex flex-col gap-[2rem]">
