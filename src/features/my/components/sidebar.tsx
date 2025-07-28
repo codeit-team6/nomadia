@@ -27,7 +27,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="flex h-[45rem] w-[32.7rem] flex-col items-center rounded-[1.2rem] border border-gray-50 px-[1.4rem] py-[2.4rem] md:h-[34.2rem] md:w-[17.8rem] lg:h-[45rem] lg:w-[29rem]">
+    <div className="shadow-experience-card flex h-[45rem] w-[32.7rem] flex-col items-center rounded-[1.2rem] border border-gray-50 px-[1.4rem] py-[2.4rem] md:h-[34.2rem] md:w-[17.8rem] lg:h-[45rem] lg:w-[29rem]">
       <div className="bg-main mb-[2.4rem] aspect-square w-[12rem] rounded-full md:mb-[1.2rem] md:w-[7rem] lg:mb-[2.4rem] lg:w-[12rem]"></div>
       <ul className="flex w-full flex-col gap-[1.4rem] md:gap-[1.2rem] lg:gap-[1.4rem]">
         {menus.map((menu) => {
