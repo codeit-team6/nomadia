@@ -104,7 +104,6 @@ const BookingCard = ({
       {/* 액션 버튼들 */}
       <BookingCardActions
         reservation={reservation}
-        statusLabel={statusLabel}
         onCancelClick={onCancelClick}
         onReviewClick={onReviewClick}
       />

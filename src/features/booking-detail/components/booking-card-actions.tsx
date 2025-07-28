@@ -4,7 +4,6 @@ import { Reservation } from '../libs/types/booking';
 
 interface BookingCardActionsProps {
   reservation: Reservation;
-  statusLabel: string;
   onCancelClick?: () => void;
   onReviewClick?: () => void;
 }
@@ -21,12 +20,11 @@ interface BookingCardActionsProps {
  */
 const BookingCardActions = ({
   reservation,
-  statusLabel,
   onCancelClick,
   onReviewClick,
 }: BookingCardActionsProps) => {
   // 예약 신청 상태일 때 취소 버튼 표시
-  if (statusLabel === '예약 신청') {
+  if (reservation.status === 'pending') {
     return (
       <button
         type="button"
@@ -39,7 +37,7 @@ const BookingCardActions = ({
   }
 
   // 체험 완료 상태일 때 후기 작성 관련 버튼 표시
-  if (statusLabel === '체험 완료') {
+  if (reservation.status === 'completed') {
     if (!reservation.reviewSubmitted) {
       return (
         <button
