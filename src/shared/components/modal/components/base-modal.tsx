@@ -10,6 +10,7 @@ interface ModalProps {
   hasOverlay?: boolean;
   isCenter?: boolean;
   extraClassName?: string;
+  onClickOverlay?: () => void;
 }
 
 /**
@@ -51,6 +52,7 @@ const BaseModal = ({
   hasOverlay = true,
   isCenter = true,
   extraClassName,
+  onClickOverlay,
 }: ModalProps) => {
   const { isModalOpen, setModalType } = useModalStore(); //모달을 중첨해서 여는 경우는 없어서, 전역상태로 관리
 
@@ -62,7 +64,7 @@ const BaseModal = ({
 
   return (
     <>
-      {hasOverlay && <ModalOverlay />}
+      {hasOverlay && <ModalOverlay onClickOverlay={onClickOverlay} />}
       <ModalContent isCenter={isCenter} extraClassName={extraClassName}>
         {children}
       </ModalContent>
