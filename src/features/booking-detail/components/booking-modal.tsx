@@ -18,7 +18,13 @@ interface BookingModalProps {
 }
 
 /**
- * 예약 관련 모달을 관리하는 컴포넌트
+ * @description 예약 관련 모달을 관리하는 컴포넌트 (예약 취소, 리뷰 작성(custom 모달))
+ *
+ * @author 김영현
+ * @param reservation 예약 정보
+ * @param statusLabel 예약 상태
+ * @param isOpen 모달 열림 여부
+ * @param onClose 모달 닫기 함수
  */
 const BookingModal = ({
   reservation,
@@ -41,9 +47,8 @@ const BookingModal = ({
 
   // 리뷰 입력 핸들러
   const handleReviewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (e.target.value.length <= maxLength) {
-      setReview(e.target.value);
-    }
+    const value = e.target.value.slice(0, maxLength);
+    setReview(value);
   };
 
   // 예약 취소 모달에서 확인 버튼 클릭 시
