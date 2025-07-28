@@ -41,7 +41,7 @@ const ReserveCalendarPage = () => {
             <ChevronDown className="size-[2rem]" />
           </div>
         }
-        dropdownClassName="w-full bg-white shadow-lg rounded-[1rem] border border-gray-100"
+        dropdownClassName="w-full bg-white shadow-experience-card rounded-[1rem] border border-gray-100 px-[2.6rem]"
       >
         <ul className="py-3">
           <p>내가 등록한 체험1</p>
