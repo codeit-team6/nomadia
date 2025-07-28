@@ -2,7 +2,7 @@ import { Star } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
 
-import { formatPrice } from '@/shared/libs/utils/format-price';
+import { formatPrice } from '@/shared/libs/utils/formatPrice';
 
 import { Activity } from '../libs/types/activity';
 

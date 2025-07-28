@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-import { formatPrice } from '@/shared/libs/utils/format-price';
+import { formatPrice } from '@/shared/libs/utils/formatPrice';
 
 import { Reservation } from '../libs/types/booking';
 import {
