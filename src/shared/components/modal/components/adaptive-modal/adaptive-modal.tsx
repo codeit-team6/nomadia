@@ -44,14 +44,8 @@ const AdaptiveModal = ({
 }) => {
   const { width } = useWindowSize();
 
-  const {
-    openModal,
-    isModalOpen,
-    appear,
-    disappearModal,
-    isDesktop,
-    setIsDesktop,
-  } = useModalStore();
+  const { openModal, appear, disappearModal, isDesktop, setIsDesktop } =
+    useModalStore();
 
   // 모달 항시 렌더링
   useEffect(() => {
@@ -70,8 +64,6 @@ const AdaptiveModal = ({
 
   return (
     <>
-      <div className="text-4xl">appear:{Number(appear)}</div>
-      <div className="text-4xl">isModalOpen:{Number(isModalOpen)}</div>
       <Modal
         type="custom"
         hasOverlay={isDesktop ? false : appear ? true : false}
