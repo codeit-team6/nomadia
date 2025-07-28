@@ -61,6 +61,18 @@ const BookingList = () => {
           </div>
         ) : isError ? (
           <ErrorMessage />
+        ) : filteredBookings.length === 0 ? (
+          <div className="flex-center flex-col gap-[1.6rem]">
+            <Image
+              src="/images/sad-laptop.svg"
+              alt="Sad laptop"
+              width={182}
+              height={182}
+            />
+            <p className="text-[1.6rem] font-medium text-gray-600">
+              조건에 맞는 예약 내역이 없어요.
+            </p>
+          </div>
         ) : (
           <GroupedBookingCards reservations={filteredBookings} />
         )}
