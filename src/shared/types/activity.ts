@@ -1,5 +1,6 @@
 /**
  * 체험 리스트 조회 GET 요청 응답 타입
+ * 여러 모듈에서 공통으로 사용되는 Activity 타입
  */
 export interface Activity {
   id: number;
