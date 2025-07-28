@@ -1,12 +1,18 @@
 import BookingCardContainer from '@/features/booking-detail/components/booking-card-container';
 import { Reservation } from '@/features/booking-detail/libs/types/booking';
+import { parseDate } from '@/shared/libs/utils/parseDate';
 
 // 새로운 인터페이스
 interface GroupedBookingsProps {
   reservations: Reservation[];
 }
 
-// 새로운 컴포넌트
+/**
+ * @description 날짜별로 예약 그룹화하여 렌더링하는 컴포넌트
+ *
+ * @author 김영현
+ * @param reservations 예약 정보
+ */
 const GroupedBookingCards = ({ reservations }: GroupedBookingsProps) => {
   // 날짜별로 예약 그룹화
   const groupedReservations = reservations.reduce(
@@ -23,8 +29,8 @@ const GroupedBookingCards = ({ reservations }: GroupedBookingsProps) => {
 
   // 날짜순으로 정렬 (오름차순)
   const sortedDates = Object.keys(groupedReservations).sort((a, b) => {
-    const dateA = new Date(a.replace(/\./g, '-'));
-    const dateB = new Date(b.replace(/\./g, '-'));
+    const dateA = parseDate(a);
+    const dateB = parseDate(b);
     return dateA.getTime() - dateB.getTime();
   });
 
