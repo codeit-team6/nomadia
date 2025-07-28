@@ -1,3 +1,5 @@
+import { Activity } from '@/shared/types/activity';
+
 import { BookingStatus } from '../constants/bookingStatus';
 
 // 예약 목록 조회 API 파라미터 타입
@@ -7,16 +9,12 @@ export type GetBookingParams = {
   status?: BookingStatus;
 };
 
-// 예약 상세 조회 API 응답 타입
-export type Activity = {
-  id: number;
-  title: string;
-  bannerImageUrl: string;
-};
+// 예약에서 사용할 Activity 타입 (필요한 필드만 추출)
+export type BookingActivity = Pick<Activity, 'id' | 'title' | 'bannerImageUrl'>;
 
 // 예약 상세 조회 API 응답 타입
 export type Reservation = {
-  activity: Activity;
+  activity: BookingActivity;
   scheduleId: number;
   id: number;
   teamId: string;

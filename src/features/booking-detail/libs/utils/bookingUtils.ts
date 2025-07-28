@@ -1,4 +1,8 @@
-import { BOOKING_STATUS, STATUS_COLOR_MAP } from '../constants/bookingStatus';
+import {
+  BOOKING_STATUS,
+  BookingStatus,
+  STATUS_COLOR_MAP,
+} from '../constants/bookingStatus';
 
 /**
  * @description 예약 상태에 대한 라벨을 반환합니다.
@@ -18,7 +22,7 @@ export const getStatusLabel = (status: string): string => {
  * @param status 예약 상태
  * @returns 색상 클래스
  */
-export const getStatusColorClass = (status: string): string => {
+export const getStatusColorClass = (status: BookingStatus): string => {
   return STATUS_COLOR_MAP[status];
 };
 

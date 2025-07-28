@@ -4,10 +4,10 @@ import type { Swiper as SwiperType } from 'swiper';
 import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import type { Activity } from '@/features/activities/libs/types/activity';
 import { ErrorMessage } from '@/shared/components/error-message/error-message';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import useActivity from '@/shared/libs/hooks/useActivityQuery';
+import type { Activity } from '@/shared/types/activity';
 
 interface HeroProps {
   swiperRef: React.MutableRefObject<SwiperType | null>;

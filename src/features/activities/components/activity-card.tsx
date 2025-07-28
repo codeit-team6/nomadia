@@ -3,8 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
-
-import { Activity } from '../libs/types/activity';
+import { Activity } from '@/shared/types/activity';
 
 interface ActivityCardProps {
   activity: Activity;
