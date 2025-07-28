@@ -44,6 +44,7 @@ const ReservationForm = ({ scheduleArray }: { scheduleArray: Schedules[] }) => {
 
       {/* 캘린더 컴포넌트 사용 */}
       {/* 🐛 폼 제출에는 selectedDate값이 필요가 없다. 일단은 컨트롤러로 필드값을 업데이트 하고 있지만, 그냥 캘린더로만 사용해도 문제 없을거 같다. */}
+      {/* 🐛 handleSubmit 제출 전에, 밸류를 Number로 형변환 체크 필요함 */}
       <form onSubmit={handleSubmit((data) => console.log('제출', data))}>
         <Controller
           name="selectedDate"

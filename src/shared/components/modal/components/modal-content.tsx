@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { ReactNode } from 'react';
 
-// import { createPortal } from 'react-dom';
 import { modalContentClasses } from '@/shared/components/modal/libs/modalClasses';
 import { cn } from '@/shared/libs/cn';
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
@@ -18,7 +17,7 @@ const ModalContent = ({
   const { isModalOpen, closeModal, modalType } = useModalStore();
 
   if (!isModalOpen) return null;
-  // return createPortal(
+
   return (
     <>
       {/* 모달을 중앙정렬 하기 위한 div 태그*/}

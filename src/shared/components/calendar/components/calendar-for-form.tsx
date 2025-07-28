@@ -24,6 +24,7 @@ import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
  * @param {string} [dayOfWeekStyle] - 요일(일~토) 셀에 적용할 Tailwind 클래스 문자열입니다. 반응형 스타일도 전달 가능.
  * @param {string} [cellStyle] - 날짜 셀에 적용할 Tailwind 클래스 문자열입니다. 선택 상태, 스케줄 상태 등에 병합되어 사용됩니다.
  * @param {boolean} [isForReservation=false] - 예약 선택 용도로 사용하는지 여부를 나타냅니다. `true`일 경우 스케줄이 있는 날짜가 표시됩니다.(체험상세페이지에서 사용)
+ * @param {()=>void} [changeFormValue] - 폼 내부의 value값 업데이트를 selectedDate업데이트 시점과 동시에 하고 싶은 경우
  *
  * @example
  * <CalendarForForm

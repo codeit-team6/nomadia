@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-// import { createPortal } from 'react-dom';
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
 
 const ModalOverlay = ({ onClickOverlay }: { onClickOverlay?: () => void }) => {
