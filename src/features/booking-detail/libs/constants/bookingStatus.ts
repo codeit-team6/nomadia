@@ -9,14 +9,16 @@ export const BOOKING_STATUS = [
   { label: '예약 취소', value: 'canceled' },
   { label: '예약 거절', value: 'declined' },
   { label: '체험 완료', value: 'completed' },
-];
+] as const;
+
+export type BookingStatus = (typeof BOOKING_STATUS)[number]['value'];
 
 /**
  * @description 예약 상태별 색상 매핑
  *
  * @author 김영현
  */
-export const STATUS_COLOR_MAP: Record<string, string> = {
+export const STATUS_COLOR_MAP: Record<BookingStatus, string> = {
   pending: 'bg-yellow-100 text-yellow-700',
   canceled: 'bg-gray-100 text-gray-600',
   confirmed: 'bg-[#DDF9F9] text-[#1790A0]',

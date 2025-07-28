@@ -1,8 +1,10 @@
+import { BookingStatus } from '../constants/bookingStatus';
+
 // 예약 목록 조회 API 파라미터 타입
 export type GetBookingParams = {
   cursorId?: number;
   size?: number;
-  status?: 'pending' | 'confirmed' | 'declined' | 'canceled' | 'completed';
+  status?: BookingStatus;
 };
 
 // 예약 상세 조회 API 응답 타입
@@ -19,7 +21,7 @@ export type Reservation = {
   id: number;
   teamId: string;
   userId: number;
-  status: 'pending' | 'confirmed' | 'declined' | 'canceled' | 'completed';
+  status: BookingStatus;
   reviewSubmitted: boolean;
   totalPrice: number;
   headCount: number;
