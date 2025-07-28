@@ -27,9 +27,18 @@ const StarRating = ({ onRatingChange }: StarRatingProps) => {
             height="42"
             viewBox="0 0 24 24"
             className="cursor-pointer"
+            role="button"
+            tabIndex={0}
+            aria-label={`${starIndex} 점`}
             onClick={() => handleRatingClick(starIndex)}
             onMouseEnter={() => setHovered(starIndex)}
             onMouseLeave={() => setHovered(0)}
+            onKeyDown={(e: React.KeyboardEvent<SVGSVGElement>) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleRatingClick(starIndex);
+              }
+            }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             animate={{
