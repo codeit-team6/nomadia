@@ -66,7 +66,9 @@ const Header = () => {
               trigger={
                 <button className="flex items-center gap-3">
                   <Image
-                    src={me?.profileImageUrl || '/images/icons/profile.svg'}
+                    src={
+                      me?.profileImageUrl || '/images/icons/profile-default.png'
+                    }
                     alt="프로필사진"
                     width={30}
                     height={30}

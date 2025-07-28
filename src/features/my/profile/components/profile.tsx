@@ -1,6 +1,8 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -13,10 +15,9 @@ import {
 } from '@/features/auth/validators/auth.schema';
 import { editImage, getMe } from '@/features/my/profile/lib/api/profile.api';
 import { editMe } from '@/features/my/profile/lib/api/profile.api';
+import { useMe } from '@/features/my/profile/lib/hooks/useMe';
 import { FormInput } from '@/shared/components/form-input/form-input';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
-
-import { ProfilePatch } from '../lib/types/types';
 
 const Profile = () => {
   const {
@@ -28,6 +29,7 @@ const Profile = () => {
     resolver: zodResolver(profileSchema),
     mode: 'onChange',
   });
+  const queryClient = useQueryClient();
   const router = useRouter();
   const [isloading, setIsLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -35,6 +37,7 @@ const Profile = () => {
     '/images/icons/profile-default.png',
   );
   const isImageChanged = !!selectedImage;
+  const { data: me } = useMe();
 
   // 사용자 정보 가져오기 (hook?)
   useEffect(() => {
@@ -66,38 +69,31 @@ const Profile = () => {
   };
 
   // 폼 제출 핸들러
-  const onSubmit: SubmitHandler<ProfileFormType> = async (data) => {
-    try {
-      const requestBody: ProfilePatch = {};
-      requestBody.nickname = data.nickname;
-      let profileImageUrl = '';
+  const onSubmit: SubmitHandler<ProfileFormType> = (data) =>
+    mutation.mutate(data);
 
+  //
+  const mutation = useMutation({
+    mutationFn: async (data: ProfileFormType) => {
+      let profileImageUrl = me?.profileImageUrl;
       if (selectedImage) {
         const res = await editImage(selectedImage);
         profileImageUrl = res.profileImageUrl;
       }
 
-      if (data.password) {
-        requestBody.newPassword = data.password;
-      }
-      await editMe({
+      return editMe({
         nickname: data.nickname,
-        profileImageUrl: profileImageUrl || undefined,
+        profileImageUrl,
         newPassword: data.password || undefined,
       });
+    },
+    onSuccess: () => {
       toast.success('프로필 수정 성공');
+      queryClient.invalidateQueries({ queryKey: ['me'] });
       router.push('/my');
-    } catch (error) {
-      console.error(error);
-      toast.error(`수정 실패`);
-    }
-  };
-
-  // const mutation = useMutation(editMe, {
-  //   onSuccess: () => {
-  //     QueryClient.invalidateQueries(['me'])
-  //   },
-  // });
+    },
+    onError: () => toast.error('수정 실패'),
+  });
 
   if (isloading) {
     return (
