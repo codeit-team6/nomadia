@@ -21,18 +21,21 @@ import { useModalStore } from '@/shared/libs/stores/useModalStore';
  * @param {() => void} [props.onClick] - 클릭 이벤트 핸들러
  * @param {string} props.extraClassName - 커스텀 클래스명 추가
  * @param {ReactNode} props.children - 버튼 내부 텍스트
+ * @param {()=>boolean} props.controlDisabled - 버튼 비활성화에 대한 함수. boolean값을 리턴 --> 해당 값이 disabled={}에 반영됨
  */
 export const Button = ({
   color,
   ariaLabel,
   onClick,
   extraClassName,
+  controlDisabled,
   children,
 }: {
   color: 'white' | 'blue';
   ariaLabel: string;
   onClick?: () => void;
   extraClassName?: string;
+  controlDisabled?: () => boolean;
   children: ReactNode;
 }) => {
   const { modalType } = useModalStore();
@@ -48,6 +51,7 @@ export const Button = ({
       )}
       aria-label={ariaLabel}
       onClick={onClick}
+      disabled={controlDisabled ? controlDisabled() : false}
     >
       {children}
     </button>
