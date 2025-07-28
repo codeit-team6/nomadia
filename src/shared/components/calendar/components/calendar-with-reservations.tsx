@@ -19,6 +19,7 @@ import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
  * @param {string} [calendarWidth] - 캘린더 전체의 가로폭을 조정하는 Tailwind 클래스 문자열입니다. (예: "w-[38rem]")
  * @param {string} [dayOfWeekStyle] - 요일(일~토) 셀에 적용할 Tailwind 클래스 문자열입니다. 반응형 스타일도 가능.
  * @param {string} [cellStyle] - 날짜 셀에 적용할 Tailwind 클래스 문자열입니다. 예약 상태나 선택 상태 등과 병합되어 사용됩니다.
+ * @param {string} [onCellClick] - 날짜 셀을 클릭했을때 발생하는 이벤트 함수 전달
  *
  * @example
  * <CalendarWithReservations
@@ -26,6 +27,7 @@ import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
  *   calendarWidth="md:w-[38rem] lg:w-[40rem]..."
  *   dayOfWeekStyle="text-gray-500 md:w-[2rem]..."
  *   cellStyle="relative h-[10rem] text-[1.4rem]..."
+ *   onCellClick={()=>{appearModal}}
  * />
  *
  * @note
@@ -39,11 +41,13 @@ const CalendarWithReservations = ({
   calendarWidth,
   dayOfWeekStyle,
   cellStyle,
+  onCellClick,
 }: {
   reservationArray: MonthReservations[];
   calendarWidth?: string;
   dayOfWeekStyle?: string;
   cellStyle?: string;
+  onCellClick?: () => void;
 }) => {
   const { year, month, date, setDate, setSelectedDate } = useCalendarStore();
   const { thisMonthDays } = getMonthRange(year, month);
@@ -51,6 +55,9 @@ const CalendarWithReservations = ({
   const handleClick = (day: number) => {
     setDate(day);
     setSelectedDate(year, month, day);
+    if (onCellClick) {
+      onCellClick();
+    }
   };
 
   return (
