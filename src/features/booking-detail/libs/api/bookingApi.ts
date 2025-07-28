@@ -1,12 +1,10 @@
 import api from '@/shared/libs/api/axios';
 
-import { GetBookingParams, GetBookingResponse } from '../types/booking';
-
-interface PostReviewParams {
-  reservationId: number;
-  rating: number;
-  content: string;
-}
+import {
+  GetBookingParams,
+  GetBookingResponse,
+  PostReviewParams,
+} from '../types/booking';
 
 /**
  * 예약 목록 조회 API
