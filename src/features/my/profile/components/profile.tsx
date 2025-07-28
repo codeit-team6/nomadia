@@ -75,7 +75,7 @@ const Profile = () => {
   //
   const mutation = useMutation({
     mutationFn: async (data: ProfileFormType) => {
-      let profileImageUrl = me?.profileImageUrl;
+      let profileImageUrl = me?.profileImageUrl; // 수정에서 profileImageUrl에 보낼 현재 유저의 url 기본값이 필요
       if (selectedImage) {
         const res = await editImage(selectedImage);
         profileImageUrl = res.profileImageUrl;
@@ -83,7 +83,7 @@ const Profile = () => {
 
       return editMe({
         nickname: data.nickname,
-        profileImageUrl,
+        profileImageUrl, //변경되면 변경된거로 들어옴
         newPassword: data.password || undefined,
       });
     },
