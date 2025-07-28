@@ -68,11 +68,6 @@ const Profile = () => {
     setPreviewUrl(URL.createObjectURL(file));
   };
 
-  // 폼 제출 핸들러
-  const onSubmit: SubmitHandler<ProfileFormType> = (data) =>
-    mutation.mutate(data);
-
-  //
   const mutation = useMutation({
     mutationFn: async (data: ProfileFormType) => {
       let profileImageUrl = me?.profileImageUrl; // 수정에서 profileImageUrl에 보낼 현재 유저의 url 기본값이 필요
@@ -94,6 +89,10 @@ const Profile = () => {
     },
     onError: () => toast.error('수정 실패'),
   });
+
+  // 폼 제출 핸들러
+  const onSubmit: SubmitHandler<ProfileFormType> = (data) =>
+    mutation.mutate(data);
 
   if (isloading) {
     return (
