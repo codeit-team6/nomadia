@@ -11,7 +11,7 @@ import {
   ProfileFormType,
   profileSchema,
 } from '@/features/auth/validators/auth.schema';
-import { getMe } from '@/features/my/profile/lib/api/profile.api';
+import { editImage, getMe } from '@/features/my/profile/lib/api/profile.api';
 import { editMe } from '@/features/my/profile/lib/api/profile.api';
 import { FormInput } from '@/shared/components/form-input/form-input';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
@@ -30,6 +30,10 @@ const Profile = () => {
   });
   const router = useRouter();
   const [isloading, setIsLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState(
+    '/images/icons/profile-default.png',
+  );
 
   // 사용자 정보 가져오기 (hook?)
   useEffect(() => {
@@ -37,7 +41,11 @@ const Profile = () => {
       try {
         setIsLoading(true);
         const userData = await getMe();
+        console.log(userData);
         reset(userData);
+        if (userData.profileImageUrl) {
+          setPreviewUrl(userData.profileImageUrl);
+        }
       } catch (error) {
         console.error(error);
         alert(error);
@@ -48,16 +56,34 @@ const Profile = () => {
     fetchUserData();
   }, [reset]);
 
+  // 이미지 변경 핸들러
+  const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setSelectedImage(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  };
+
   // 폼 제출 핸들러
   const onSubmit: SubmitHandler<ProfileFormType> = async (data) => {
     try {
       const requestBody: ProfilePatch = {};
       requestBody.nickname = data.nickname;
+      let profileImageUrl = '';
+
+      if (selectedImage) {
+        const res = await editImage(selectedImage);
+        profileImageUrl = res.profileImageUrl;
+      }
 
       if (data.password) {
         requestBody.newPassword = data.password;
       }
-      await editMe(requestBody);
+      await editMe({
+        nickname: data.nickname,
+        profileImageUrl: profileImageUrl || undefined,
+        newPassword: data.password || undefined,
+      });
       toast.success('프로필 수정 성공');
       router.push('/my');
     } catch (error) {
@@ -79,20 +105,29 @@ const Profile = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col items-center"
     >
-      <div className="relative h-[12rem] w-[12rem]">
+      <div className="relative mb-[2rem] h-[12rem] w-[12rem] md:mb-[2.4rem]">
         <Image
-          src="/images/icons/profile-default.png"
+          src={previewUrl}
           alt="profile-image"
           fill
           className="rounded-full object-cover"
         />
-        <Image
-          src="/images/icons/edit-button.png"
-          alt="edit-image"
-          width={30}
-          height={30}
-          className="absolute right-0 bottom-0 cursor-pointer"
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          id="profile-image-input"
+          onChange={handleProfileImageChange}
         />
+        <label htmlFor="profile-image-input">
+          <Image
+            src="/images/icons/edit-button.png"
+            alt="edit-image"
+            width={30}
+            height={30}
+            className="absolute right-0 bottom-0 cursor-pointer"
+          />
+        </label>
       </div>
       <div className="w-full">
         <FormInput

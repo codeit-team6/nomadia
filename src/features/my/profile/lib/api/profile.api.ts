@@ -11,3 +11,11 @@ export const editMe = async (payload: ProfilePatch) => {
   const response = await api.patch('/users/me', payload);
   return response.data;
 };
+
+export const editImage = async (file: File) => {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const response = await api.post('/users/me/image', formData);
+  return response.data;
+};
