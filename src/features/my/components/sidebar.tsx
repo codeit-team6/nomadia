@@ -5,7 +5,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 
+import { useMe } from '@/features/my/profile/lib/hooks/useMe';
+
 const Sidebar = () => {
+  const defaultProfileImage = '/images/icons/profile-default.png';
   const pathname = usePathname();
   const menus = [
     { key: 'profile', label: '내 정보', image: '/images/icons/icon-user.png' },
@@ -26,9 +29,17 @@ const Sidebar = () => {
     },
   ];
 
+  const { data: me } = useMe();
+
   return (
     <div className="shadow-experience-card flex h-[45rem] w-[32.7rem] flex-col items-center rounded-[1.2rem] border border-gray-50 px-[1.4rem] py-[2.4rem] md:h-[34.2rem] md:w-[17.8rem] lg:h-[45rem] lg:w-[29rem]">
-      <div className="bg-main mb-[2.4rem] aspect-square w-[12rem] rounded-full md:mb-[1.2rem] md:w-[7rem] lg:mb-[2.4rem] lg:w-[12rem]"></div>
+      <Image
+        src={me?.profileImageUrl || defaultProfileImage}
+        alt="profile-image"
+        width={120}
+        height={120}
+        className="mb-[2.4rem] aspect-square w-[12rem] rounded-full object-cover md:mb-[1.2rem] md:w-[7rem] lg:mb-[2.4rem] lg:w-[12rem]"
+      />
       <ul className="flex w-full flex-col gap-[1.4rem] md:gap-[1.2rem] lg:gap-[1.4rem]">
         {menus.map((menu) => {
           const isActive = pathname === `/my/${menu.key}`;

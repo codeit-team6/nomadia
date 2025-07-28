@@ -34,6 +34,7 @@ const Profile = () => {
   const [previewUrl, setPreviewUrl] = useState(
     '/images/icons/profile-default.png',
   );
+  const isImageChanged = !!selectedImage;
 
   // 사용자 정보 가져오기 (hook?)
   useEffect(() => {
@@ -91,6 +92,12 @@ const Profile = () => {
       toast.error(`수정 실패`);
     }
   };
+
+  // const mutation = useMutation(editMe, {
+  //   onSuccess: () => {
+  //     QueryClient.invalidateQueries(['me'])
+  //   },
+  // });
 
   if (isloading) {
     return (
@@ -172,7 +179,7 @@ const Profile = () => {
         </button>
         <button
           type="submit"
-          disabled={!isDirty || !isValid || isSubmitting}
+          disabled={!isValid || isSubmitting || (!isDirty && !isImageChanged)}
           className="bg-main h-[4.7rem] w-full cursor-pointer rounded-[1.4rem] text-[1.6rem] font-bold text-white disabled:bg-gray-200 md:h-[4.1rem] md:w-[12rem] md:text-[1.4rem]"
         >
           저장하기
