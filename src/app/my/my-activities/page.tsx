@@ -1,6 +1,6 @@
-import MyActivitiesCard from '@/features/my/my-activities/components/my-activities-card';
+import { MyActivitiesList } from '@/features/my/my-activities/components/my-activities-list';
 
-const MyExperiencePage = () => {
+const MyActivityPage = () => {
   return (
     <>
       <div className="mb-[2rem] flex items-center justify-between py-[1rem] md:mb-[2.4rem]">
@@ -16,9 +16,9 @@ const MyExperiencePage = () => {
         </button>
       </div>
 
-      <MyActivitiesCard />
+      <MyActivitiesList />
     </>
   );
 };
 
-export default MyExperiencePage;
+export default MyActivityPage;
