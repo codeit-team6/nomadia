@@ -18,15 +18,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const isMobile = width ? width < 768 : false;
   const isMyPageRoot = pathname === '/my';
+  const isActivityRegistration =
+    pathname === '/my/my-activities/activity-registration';
 
   return (
     <div className="mx-auto flex justify-center px-[2.4rem] py-[3rem] md:max-w-[68.4rem] md:gap-[3rem] lg:max-w-[98rem] lg:gap-[5rem]">
-      <aside className={isMobile && !isMyPageRoot ? 'hidden' : ''}>
+      <aside
+        className={
+          (isMobile && !isMyPageRoot) || isActivityRegistration ? 'hidden' : ''
+        }
+      >
         <Sidebar />
       </aside>
-      <main
-        className={`${isMobile && isMyPageRoot ? 'hidden' : ''} w-[32.7rem] md:w-[47.6rem] lg:w-[64rem]`}
-      >
+      <main className={`${isMobile && isMyPageRoot ? 'hidden' : ''} w-full`}>
         {children}
       </main>
     </div>
