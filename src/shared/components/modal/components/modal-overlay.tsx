@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import { createPortal } from 'react-dom';
 
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
 
-const ModalOverlay = () => {
+const ModalOverlay = ({ onClickOverlay }: { onClickOverlay?: () => void }) => {
   const { isModalOpen, closeModal } = useModalStore();
 
   // esc 이벤트 등록(closeModal)
@@ -17,15 +16,20 @@ const ModalOverlay = () => {
   }, [isModalOpen, closeModal]);
 
   if (!isModalOpen) return null;
-  return createPortal(
+  return (
     <>
       <div
-        className="fixed inset-0 bg-black/50"
-        onClick={closeModal} // 배경 클릭 시 닫힘
+        className="fixed inset-0 z-80 bg-black/50"
+        onClick={() => {
+          if (onClickOverlay) {
+            onClickOverlay();
+          } else {
+            closeModal();
+          }
+        }} // 배경 클릭 시 닫힘
         role="presentation"
       ></div>
-    </>,
-    document.body,
+    </>
   );
 };
 

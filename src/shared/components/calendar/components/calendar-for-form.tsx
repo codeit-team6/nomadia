@@ -1,3 +1,4 @@
+import { Schedules } from '@/features/activityId/libs/types/activityDataType';
 import ArrowButton from '@/shared/components/calendar/components/arrow-button';
 import DaysOfMonth from '@/shared/components/calendar/components/days-of-month';
 import {
@@ -5,7 +6,6 @@ import {
   selectedCircle,
 } from '@/shared/components/calendar/libs/constants/calendarStyles';
 import { monthName } from '@/shared/components/calendar/libs/constants/monthName';
-import { Schedules } from '@/shared/components/calendar/libs/types/data';
 import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatDateToYMD';
 import { getMonthRange } from '@/shared/components/calendar/libs/utils/getMonthRange';
 import { cn } from '@/shared/libs/cn';
@@ -24,6 +24,7 @@ import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
  * @param {string} [dayOfWeekStyle] - 요일(일~토) 셀에 적용할 Tailwind 클래스 문자열입니다. 반응형 스타일도 전달 가능.
  * @param {string} [cellStyle] - 날짜 셀에 적용할 Tailwind 클래스 문자열입니다. 선택 상태, 스케줄 상태 등에 병합되어 사용됩니다.
  * @param {boolean} [isForReservation=false] - 예약 선택 용도로 사용하는지 여부를 나타냅니다. `true`일 경우 스케줄이 있는 날짜가 표시됩니다.(체험상세페이지에서 사용)
+ * @param {()=>void} [changeFormValue] - 폼 내부의 value값 업데이트를 selectedDate업데이트 시점과 동시에 하고 싶은 경우
  *
  * @example
  * <CalendarForForm
@@ -42,33 +43,30 @@ import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
  */
 
 const CalendarForForm = ({
-  setSelectedId,
   scheduleArray,
   calendarWidth,
   dayOfWeekStyle,
   cellStyle,
   isForReservation = false,
+  changeFormValue,
 }: {
-  setSelectedId?: React.Dispatch<React.SetStateAction<number | undefined>>;
   scheduleArray?: Schedules[];
   calendarWidth?: string;
   dayOfWeekStyle?: string;
   cellStyle?: string;
   isForReservation?: boolean;
+  changeFormValue?: () => void;
 }) => {
   const { setDate, setSelectedDate, year, month, date } = useCalendarStore();
   const { thisMonthDays } = getMonthRange(year, month);
 
-  const handleClick = (day: number, hasSchedule?: Schedules) => {
+  const handleClick = (day: number) => {
     setDate(day);
     setSelectedDate(year, month, day);
 
-    // 스케줄 표시해야 하는 캘린더로 사용중인 경우
-    if (scheduleArray && setSelectedId) {
-      setSelectedId((prev) => {
-        if (prev === hasSchedule?.id) return undefined;
-        else return hasSchedule?.id; //hasScehdule? 없으면 알아서 undefined 리턴
-      });
+    // 스케줄 표시하는 캘린더로 사용중인 경우
+    if (scheduleArray && changeFormValue) {
+      changeFormValue();
     }
   };
 
@@ -109,11 +107,10 @@ const CalendarForForm = ({
 
           return (
             <button
+              type="button"
               key={day}
-              onKeyDown={(e) =>
-                e.key === 'Enter' && handleClick(day, hasSchedule)
-              }
-              onClick={() => handleClick(day, hasSchedule)}
+              onKeyDown={(e) => e.key === 'Enter' && handleClick(day)}
+              onClick={() => handleClick(day)}
               className={cn(
                 'flex-center hover:bg-sub',
                 defaultCellStyle,

@@ -7,9 +7,15 @@ interface ModalState {
   openModal: (reservationId?: number) => void;
   closeModal: () => void;
   setModalType: (type: 'confirm' | 'warning' | 'custom') => void;
+  appear: boolean;
+  appearModal: () => void;
+  disappearModal: () => void;
+  isDesktop: boolean | undefined;
+  setIsDesktop: (state: boolean) => void;
 }
 
 export const useModalStore = create<ModalState>((set) => ({
+  // Modal
   isModalOpen: false,
   modalType: 'confirm',
   activeReservationId: null, // 기본값
@@ -28,4 +34,10 @@ export const useModalStore = create<ModalState>((set) => ({
     }),
   setModalType: (type: 'confirm' | 'warning' | 'custom') =>
     set({ modalType: type }),
+  // AdaptiveModal
+  appear: false,
+  appearModal: () => set({ appear: true }),
+  disappearModal: () => set({ appear: false }),
+  isDesktop: undefined,
+  setIsDesktop: (state) => set({ isDesktop: state }),
 }));
