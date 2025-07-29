@@ -1,8 +1,16 @@
 import api from '@/shared/libs/api/axios';
-
-export const getMyActivities = async ({ cursorId = null, size = 10 } = {}) => {
+import {
+  GetActListApiParams,
+  GetActListApiResponse,
+} from '@/shared/types/activity';
+interface GetListWithCursorID extends GetActListApiParams {
+  cursorId?: number;
+}
+export const getMyActivities = async (
+  params?: GetListWithCursorID,
+): Promise<GetActListApiResponse> => {
   const response = await api.get('/my-activities', {
-    params: { cursorId, size },
+    params,
   });
   return response.data;
 };
