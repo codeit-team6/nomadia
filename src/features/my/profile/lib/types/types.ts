@@ -3,3 +3,7 @@ export interface ProfilePatch {
   profileImageUrl?: string;
   newPassword?: string;
 }
+
+export interface ProfileImageUrlResponse {
+  profileImageUrl: string;
+}
