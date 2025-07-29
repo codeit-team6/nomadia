@@ -21,10 +21,13 @@ export const signInWithKakao = async (
   }
 
   try {
-    const res = await api.post<KakaoSignInResponse>(`/oauth/sign-in/kakao`, {
-      token,
-      redirectUri,
-    });
+    const res = await api.post<KakaoSignInResponse>(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/oauth/sign-in/kakao`,
+      {
+        token,
+        redirectUri,
+      },
+    );
 
     return res.data;
   } catch (error) {
@@ -33,19 +36,26 @@ export const signInWithKakao = async (
     const err = error as AxiosError;
 
     if (err.response?.status === 404) {
-      await api.post(`/oauth/sign-up/kakao`, {
-        token,
-        redirectUri,
-      });
+      await api.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/oauth/sign-up/kakao`,
+        {
+          token,
+          redirectUri,
+        },
+      );
 
-      const res = await api.post<KakaoSignInResponse>(`/oauth/sign-in/kakao`, {
-        token,
-        redirectUri,
-      });
+      const res = await api.post<KakaoSignInResponse>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/oauth/sign-in/kakao`,
+        {
+          token,
+          redirectUri,
+        },
+      );
 
       return res.data;
     }
 
+    console.error('카카오 로그인 에러', error); // 확인용
     throw new Error('카카오 로그인 실패');
   }
 };
