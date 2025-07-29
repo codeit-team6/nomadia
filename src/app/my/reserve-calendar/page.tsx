@@ -133,7 +133,7 @@ const ReserveCalendarPage = () => {
             reservationArray={reservationArray}
             calendarWidth="md:w-[47.6rem] lg:w-[64rem] md:mt-[2.4rem] md:rounded-[2rem] border border-gray-50 shadow-experience-card"
             dayOfWeekStyle="w-[5.35rem] md:w-[6.8rem] lg:w-[9.143rem]"
-            onDateClick={handleDateClick}
+            onCellClick={handleDateClick}
           />
         ) : (
           <p className="mt-4 text-center text-gray-500">
