@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
-import { useMe } from '@/features/my/profile/lib/hooks/useMe';
+import { useMyProfile } from '@/features/my/profile/lib/hooks/useMyProfile';
 import Dropdown from '@/shared/components/dropdown';
 import useHydration from '@/shared/libs/hooks/useHydration';
 
@@ -16,7 +16,7 @@ const Header = () => {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
   const router = useRouter();
-  const { data: me } = useMe();
+  const { data: myData } = useMyProfile();
 
   const handleLogout = () => {
     logout();
@@ -67,7 +67,8 @@ const Header = () => {
                 <button className="flex items-center gap-3">
                   <Image
                     src={
-                      me?.profileImageUrl || '/images/icons/profile-default.png'
+                      myData?.profileImageUrl ||
+                      '/images/icons/profile-default.png'
                     }
                     alt="프로필사진"
                     width={30}
@@ -76,7 +77,7 @@ const Header = () => {
                   />
                   {isLoggedIn && user && (
                     <span className="txt-14-medium text-gray-950">
-                      {me?.nickname}
+                      {myData?.nickname}
                     </span>
                   )}
                 </button>

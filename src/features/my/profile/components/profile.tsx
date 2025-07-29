@@ -15,7 +15,7 @@ import {
 } from '@/features/auth/validators/auth.schema';
 import { editImage, getMe } from '@/features/my/profile/lib/api/profile.api';
 import { editMe } from '@/features/my/profile/lib/api/profile.api';
-import { useMe } from '@/features/my/profile/lib/hooks/useMe';
+import { useMyProfile } from '@/features/my/profile/lib/hooks/useMyProfile';
 import { FormInput } from '@/shared/components/form-input/form-input';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 
@@ -37,7 +37,7 @@ const Profile = () => {
     '/images/icons/profile-default.png',
   );
   const isImageChanged = !!selectedImage;
-  const { data: me } = useMe();
+  const { data: myData } = useMyProfile();
 
   // 사용자 정보 가져오기 (hook?)
   useEffect(() => {
@@ -45,14 +45,12 @@ const Profile = () => {
       try {
         setIsLoading(true);
         const userData = await getMe();
-        console.log(userData);
         reset(userData);
         if (userData.profileImageUrl) {
           setPreviewUrl(userData.profileImageUrl);
         }
-      } catch (error) {
-        console.error(error);
-        alert(error);
+      } catch {
+        toast.error('사용자 정보를 가져오지 못했습니다.');
       } finally {
         setIsLoading(false);
       }
@@ -64,13 +62,34 @@ const Profile = () => {
   const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    // 이전 preview URL 정리
+    if (
+      previewUrl &&
+      previewUrl !== '/images/icons/profile-default.png' &&
+      !previewUrl.startsWith('http')
+    ) {
+      URL.revokeObjectURL(previewUrl);
+    }
     setSelectedImage(file);
     setPreviewUrl(URL.createObjectURL(file));
   };
 
+  // 컴포넌트 언마운트 시 정리
+  useEffect(() => {
+    return () => {
+      if (
+        previewUrl &&
+        previewUrl !== '/images/icons/profile-default.png' &&
+        !previewUrl.startsWith('http')
+      ) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
   const mutation = useMutation({
     mutationFn: async (data: ProfileFormType) => {
-      let profileImageUrl = me?.profileImageUrl; // 수정에서 profileImageUrl에 보낼 현재 유저의 url 기본값이 필요
+      let profileImageUrl = myData?.profileImageUrl; // 수정에서 profileImageUrl에 보낼 현재 유저의 url 기본값이 필요
       if (selectedImage) {
         const res = await editImage(selectedImage);
         profileImageUrl = res.profileImageUrl;

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 
-import { useMe } from '@/features/my/profile/lib/hooks/useMe';
+import { useMyProfile } from '@/features/my/profile/lib/hooks/useMyProfile';
 
 const Sidebar = () => {
   const defaultProfileImage = '/images/icons/profile-default.png';
@@ -29,12 +29,12 @@ const Sidebar = () => {
     },
   ];
 
-  const { data: me } = useMe();
+  const { data: myData } = useMyProfile();
 
   return (
-    <div className="shadow-experience-card flex h-[45rem] w-[32.7rem] flex-col items-center rounded-[1.2rem] border border-gray-50 px-[1.4rem] py-[2.4rem] md:h-[34.2rem] md:w-[17.8rem] lg:h-[45rem] lg:w-[29rem]">
+    <div className="shadow-experience-card flex h-[45rem] w-[32.7rem] flex-col items-center rounded-[1.2rem] border border-gray-50 bg-white px-[1.4rem] py-[2.4rem] md:h-[34.2rem] md:w-[17.8rem] lg:h-[45rem] lg:w-[29rem]">
       <Image
-        src={me?.profileImageUrl || defaultProfileImage}
+        src={myData?.profileImageUrl || defaultProfileImage}
         alt="profile-image"
         width={120}
         height={120}
