@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 const MyActivitiesCard = () => {
   return (
-    <article className="shadow-experience-card flex justify-between rounded-[1.2rem] bg-white p-[2.4rem] lg:items-center lg:p-[3rem]">
+    <article className="shadow-experience-card flex justify-between rounded-[2.4rem] bg-white p-[2.4rem] lg:items-center lg:p-[3rem]">
       {/* 왼쪽 텍스트 영역 */}
       <div className="flex flex-col">
         <div className="mb-[1.2rem] lg:mb-[2rem]">
