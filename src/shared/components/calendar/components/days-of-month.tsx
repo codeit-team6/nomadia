@@ -20,7 +20,7 @@ const DaysOfMonth = ({
   const { leadingDays, trailingDays } = getMonthRange(year, month);
 
   return (
-    <div className="grid w-full grid-cols-7">
+    <div className="grid grid-cols-7">
       {/* 요일(일~토) */}
       <DayOfWeek dayOfWeekStyle={dayOfWeekStyle} />
       {/* 앞 달 날짜*/}
