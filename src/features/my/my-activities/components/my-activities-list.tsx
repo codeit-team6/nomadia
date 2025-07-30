@@ -16,7 +16,7 @@ export const MyActivitiesList = () => {
       keyName: 'myActivities',
       getFn: getMyActivities,
       params: {
-        size: 2,
+        size: 4,
       },
     });
   const loadMoreRef = useRef<HTMLDivElement | null>(null);

@@ -33,7 +33,7 @@ const MyActivitiesCard = ({ activity }: MyActivitiesCardProps) => {
         </div>
       </div>
       {/* 오른쪽 이미지 영역 */}
-      <figure>
+      <figure className="ml-[2.2rem] flex-shrink-0">
         <Image
           src={`${activity.bannerImageUrl}`}
           alt=""
