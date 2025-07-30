@@ -12,7 +12,7 @@ const MyActivityPage = () => {
             체험을 등록하거나 수정 및 삭제가 가능합니다.{' '}
           </span>
         </header>
-        <button className="bg-main h-[4.2rem] w-[6.8rem] rounded-[1.4rem] text-[1.2rem] text-white md:h-[4.8rem] md:w-[13.8rem] md:text-[1.6rem]">
+        <button className="bg-main h-[4.2rem] w-[6.8rem] cursor-pointer rounded-[1.4rem] text-[1.2rem] font-bold text-white transition-colors hover:bg-blue-500 md:h-[4.8rem] md:w-[13.8rem] md:text-[1.6rem]">
           <span className="block md:hidden">체험 등록</span>
           <span className="hidden md:block">체험 등록하기</span>
         </button>
