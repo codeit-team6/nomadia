@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import { formatPrice } from '@/shared/libs/utils/formatPrice';
+
 import { MyActivitiesCardProps } from '../lib/types/types';
 
 const MyActivitiesCard = ({ activity }: MyActivitiesCardProps) => {
@@ -16,7 +18,7 @@ const MyActivitiesCard = ({ activity }: MyActivitiesCardProps) => {
           </p>
           <div className="flex gap-[0.4rem]">
             <p className="text-[1.6rem] font-bold text-gray-950">
-              {`₩${activity.price}`}
+              {`₩${formatPrice(activity.price)}`}
             </p>
             <p className="text-[1.4rem] font-medium text-gray-400">/ 인</p>
           </div>
