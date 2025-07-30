@@ -11,21 +11,29 @@ const Sidebar = () => {
   const defaultProfileImage = '/images/icons/profile-default.png';
   const pathname = usePathname();
   const menus = [
-    { key: 'profile', label: '내 정보', image: '/images/icons/icon-user.png' },
+    {
+      key: 'profile',
+      label: '내 정보',
+      image: '/images/icons/icon-user.png',
+      imageSelected: '/images/icons/icon-user-selected.png',
+    },
     {
       key: 'reservation',
       label: '예약 내역',
       image: '/images/icons/icon-list.png',
+      imageSelected: '/images/icons/icon-list-selected.png',
     },
     {
       key: 'my-activities',
       label: '내 체험 관리',
       image: '/images/icons/icon-setting.png',
+      imageSelected: '/images/icons/icon-setting-selected.png',
     },
     {
       key: 'reserve-calendar',
       label: '예약 현황',
       image: '/images/icons/icon-calendar.png',
+      imageSelected: '/images/icons/icon-calendar-selected.png',
     },
   ];
 
@@ -50,9 +58,9 @@ const Sidebar = () => {
                 isActive ? 'bg-sub text-gray-950' : 'text-gray-600'
               } md:h-[4.8rem] lg:h-[5.4rem]`}
             >
-              <div className="flex gap-[0.8rem]">
+              <div className="flex cursor-pointer gap-[0.8rem]">
                 <Image
-                  src={menu.image}
+                  src={isActive ? menu.imageSelected : menu.image}
                   alt={`${menu.key}-image`}
                   width={24}
                   height={24}
