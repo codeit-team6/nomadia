@@ -1,8 +1,10 @@
+import { DeleteConfirmModal } from '@/features/my/my-activities/components/delete-confirm-modal';
 import { MyActivitiesList } from '@/features/my/my-activities/components/my-activities-list';
 
 const MyActivityPage = () => {
   return (
     <>
+      {/* 페이지 헤더 */}
       <div className="mb-[2rem] flex items-center justify-between py-[1rem] md:mb-[2.4rem]">
         <header className="flex flex-col gap-[0.4rem]">
           <h1 className="text-[1.8rem] font-bold text-gray-950">내 체험관리</h1>
@@ -15,8 +17,10 @@ const MyActivityPage = () => {
           <span className="hidden md:block">체험 등록하기</span>
         </button>
       </div>
-
+      {/* 내 체험 리스트 */}
       <MyActivitiesList />
+      {/* 삭제 확인 모달 */}
+      <DeleteConfirmModal />
     </>
   );
 };
