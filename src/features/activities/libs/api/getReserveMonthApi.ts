@@ -1,22 +1,15 @@
 import axios from 'axios';
 
+import { MonthReservations } from '@/shared/components/calendar/libs/types/data';
+
 interface FindReservationsByMonthParams {
   activityId: string;
   year: number;
   month: number;
 }
 
-export interface MonthReservation {
-  date: string;
-  reservations: {
-    completed: number;
-    confirmed: number;
-    pending: number;
-  };
-}
-
 interface FindReservationsByMonthResponse {
-  data: MonthReservation[];
+  data: MonthReservations[];
 }
 
 /**
@@ -28,7 +21,7 @@ export const getReservationsByMonthApi = async ({
   activityId,
   year,
   month,
-}: FindReservationsByMonthParams): Promise<MonthReservation[]> => {
+}: FindReservationsByMonthParams): Promise<MonthReservations[]> => {
   try {
     const response = await axios.get<FindReservationsByMonthResponse>(
       `https://sp-globalnomad-api.vercel.app/api/v1/my-activities/${activityId}/reservations/month`,

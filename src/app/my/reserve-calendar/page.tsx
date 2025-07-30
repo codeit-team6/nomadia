@@ -55,13 +55,6 @@ const ReserveCalendarPage = () => {
   const handleSelectActivity = (id: string | number, title: string) => {
     setSelectedActivityTitle(title);
     setSelectedActivityId(String(id));
-
-    const event = new MouseEvent('mousedown', {
-      view: window,
-      bubbles: true,
-      cancelable: true,
-    });
-    document.dispatchEvent(event);
   };
 
   useEffect(() => {
@@ -113,18 +106,23 @@ const ReserveCalendarPage = () => {
         }
         dropdownClassName="w-full bg-white shadow-experience-card rounded-[1rem] border border-gray-100 px-[2.6rem]"
       >
-        <ul className="py-3">
-          {activities.length === 0 && <p>체험이 없습니다.</p>}
-          {activities.map((act) => (
-            <button
-              key={act.id}
-              className="block w-full cursor-pointer py-2 text-left hover:bg-gray-100"
-              onClick={() => handleSelectActivity(act.id, act.title)}
-            >
-              {act.title}
-            </button>
-          ))}
-        </ul>
+        {(close) => (
+          <ul className="py-3">
+            {activities.length === 0 && <p>체험이 없습니다.</p>}
+            {activities.map((act) => (
+              <button
+                key={act.id}
+                className="block w-full cursor-pointer py-2 text-left hover:bg-gray-100"
+                onClick={() => {
+                  handleSelectActivity(act.id, act.title);
+                  close();
+                }}
+              >
+                {act.title}
+              </button>
+            ))}
+          </ul>
+        )}
       </Dropdown>
 
       <div className="flex-center flex">
