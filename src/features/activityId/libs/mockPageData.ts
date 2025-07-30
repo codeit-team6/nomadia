@@ -8,8 +8,8 @@ export const pageData = {
   address: '서울 종로구 효자로 12 국립고궁박물관',
   bannerImageUrl:
     'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/15-6_2178_1753407262113.jpeg',
-  rating: 4,
-  reviewCount: 1,
+  rating: 0.5,
+  reviewCount: 1300, //
   createdAt: '2025-07-25T10:36:12.292Z',
   updatedAt: '2025-07-26T14:40:09.768Z',
   subImages: [

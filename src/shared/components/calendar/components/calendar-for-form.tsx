@@ -1,4 +1,3 @@
-import { Schedules } from '@/features/activityId/libs/types/activityDataType';
 import ArrowButton from '@/shared/components/calendar/components/arrow-button';
 import DaysOfMonth from '@/shared/components/calendar/components/days-of-month';
 import {
@@ -10,6 +9,8 @@ import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatD
 import { getMonthRange } from '@/shared/components/calendar/libs/utils/getMonthRange';
 import { cn } from '@/shared/libs/cn';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
+
+import { Schedules } from '../../../../features/activityId/libs/types/activityInfo';
 
 /**
  * @author 지윤
