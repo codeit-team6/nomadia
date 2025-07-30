@@ -32,7 +32,7 @@ export const DeleteConfirmModal = () => {
   return (
     <Modal type="warning">
       <Modal.Header>체험을 삭제하시겠습니까?</Modal.Header>
-      <div className="flex gap-2 md:gap-3">
+      <div className="flex gap-[0.8rem] md:gap-[1.2rem]">
         <Modal.Button
           color="white"
           ariaLabel="취소"

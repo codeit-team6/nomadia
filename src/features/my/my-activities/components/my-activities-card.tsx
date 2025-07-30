@@ -31,7 +31,7 @@ const MyActivitiesCard = ({ activity }: MyActivitiesCardProps) => {
           </div>
         </div>
         <div className="flex gap-[0.8rem]">
-          <button className="h-[2.9rem] w-[6.8rem] cursor-pointer rounded-[0.8rem] border border-gray-50 text-[1.4rem] font-bold text-gray-600 transition-colors hover:bg-gray-100">
+          <button className="h-[2.9rem] w-[6.8rem] cursor-pointer rounded-[0.8rem] border border-gray-50 text-[1.4rem] font-bold text-gray-600 transition-colors hover:bg-gray-200 hover:text-white">
             수정하기
           </button>
           <button
