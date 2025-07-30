@@ -66,7 +66,7 @@ const Reviews = () => {
                   </time>
                 </header>
                 <section className="mt-[0.4rem] mb-[0.8rem] flex items-center">
-                  {Array.from({ length: 5 }, (_, idx) => (
+                  {Array.from({ length: review.rating }, (_, idx) => (
                     <Star key={idx} />
                   ))}
                 </section>

@@ -7,7 +7,6 @@ import Reviews from '@/features/activityId/components/reviews';
 import Star from '@/features/activityId/components/star';
 import SubImages from '@/features/activityId/components/sub-images';
 import { pageData } from '@/features/activityId/libs/mockPageData';
-import { useModalStore } from '@/shared/libs/stores/useModalStore';
 
 import AddressWithMap from '../../../features/activityId/components/addressWithMap';
 
@@ -26,8 +25,6 @@ const ActivityPage = () => {
   const data = pageData;
   console.log('data:', data);
 
-  const { appearModal } = useModalStore();
-
   const schedules = pageData.schedules;
   const images = [
     '/images/sad-laptop.svg',
@@ -42,7 +39,7 @@ const ActivityPage = () => {
         <div className="flex flex-col gap-[2rem] md:gap-[2.4rem] lg:flex-row lg:gap-[4rem]">
           <SubImages images={images} />
           <div className="relative">
-            <header className="order-2 col-span-1 lg:w-[41rem]">
+            <header className="order-2 lg:w-[41rem]">
               <div className="mt-[2rem] flex items-start justify-between">
                 <div>
                   <div className="text-[1.3rem] font-medium text-gray-700">
@@ -79,8 +76,8 @@ const ActivityPage = () => {
                 <p>{data?.address}</p>
               </div>
             </header>
-            <section className="absolute top-[23rem] left-0">
-              <ReservationModal scheduleArray={schedules} />
+            <section className="lg:absolute lg:-top-[42rem] lg:left-0">
+              <ReservationModal scheduleArray={schedules} price={data?.price} />
             </section>
           </div>
         </div>
@@ -99,17 +96,6 @@ const ActivityPage = () => {
           <AddressWithMap address={data?.address} />
           {/* ✅ 체험 후기 */}
           <Reviews />
-
-          <div className="fixed bottom-0 left-0 w-full border-t-1 bg-white p-[2.4rem] pb-[1.8rem] lg:hidden">
-            <div className="flex-center">
-              <button
-                className="bg-main w-[32.7rem] rounded-[1.4rem] py-[1.4rem] text-[1.6rem] font-bold text-white md:w-[68.4rem] lg:w-[67rem]"
-                onClick={() => appearModal()}
-              >
-                예약하기
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>

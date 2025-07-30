@@ -8,6 +8,7 @@ interface CalendarState {
   month: number;
   date: number | null;
   setSelectedDate: (y: number, m: number, d: number) => void;
+  resetSelectedDate: () => void;
   setYear: (y: number) => void;
   setMonth: (m: number) => void;
   setDate: (d: number) => void;
@@ -26,6 +27,9 @@ export const useCalendarStore = create<CalendarState>((set, get) => ({
     const newDate = formatDateToYMD(new Date(y, m, d));
     const current = get().selectedDate;
     set({ selectedDate: newDate === current ? null : newDate });
+  },
+  resetSelectedDate: () => {
+    set({ selectedDate: null });
   },
   setYear: (year) => set({ year }),
   setMonth: (month) => set({ month }),

@@ -5,14 +5,19 @@ import { Schedules } from '../libs/types/activityInfo';
 
 const ReservationModal = ({
   scheduleArray,
+  price,
 }: {
   scheduleArray: Schedules[];
+  price: number;
 }) => {
   return (
     <>
       {/* AdaptiveModal 사용 */}
-      <AdaptiveModal extraClassName="h-[60rem] p-[2.4rem] pb-[1.8rem] md:px-[3rem] lg:p-[3rem]">
-        <ReservationForm scheduleArray={scheduleArray} />
+      <AdaptiveModal
+        extraClassName="h-fit p-0"
+        translateY={'translate-y-[calc(100%-124px)]'}
+      >
+        <ReservationForm scheduleArray={scheduleArray} price={price} />
       </AdaptiveModal>
     </>
   );
