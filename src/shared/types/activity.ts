@@ -20,15 +20,15 @@ export interface ActivityBase {
 }
 
 /**
- * 체험 등록 폼 데이터 타입 (파일 업로드용)
- * ActivityBase를 확장하여 폼에서 사용하는 File 타입을 포함
+ * 체험 등록 폼 데이터 타입 (이미지 URL 저장용)
+ * ActivityBase를 확장하여 폼에서 사용하는 이미지 URL 타입을 포함
  */
 export interface ActivityRegistrationFormData
   extends Omit<ActivityBase, 'bannerImageUrl'> {
   date: string;
   startTime: string;
   endTime: string;
-  bannerImages: File[];
+  bannerImages: string; // 배너 이미지 URL (단일 이미지)
   subImages: string[];
 }
 
@@ -37,7 +37,7 @@ export interface ActivityRegistrationFormData
  * ActivityBase를 확장하여 등록 시 필요한 추가 필드들을 포함
  */
 export interface ActivityRegistrationParams extends ActivityBase {
-  schedule: Schedule;
+  schedules: Schedule[];
   subImageUrls: string[];
 }
 
