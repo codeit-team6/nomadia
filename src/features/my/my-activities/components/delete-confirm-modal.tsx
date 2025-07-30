@@ -1,4 +1,5 @@
 'use client';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { deleteActivities } from '@/features/my/my-activities/lib/api/myActivities.api';
@@ -7,6 +8,7 @@ import { useModalStore } from '@/shared/libs/stores/useModalStore';
 
 export const DeleteConfirmModal = () => {
   const { openModal, activeReservationId, closeModal } = useModalStore();
+  const queryClient = useQueryClient();
 
   if (!openModal) {
     return null;
@@ -18,6 +20,8 @@ export const DeleteConfirmModal = () => {
     try {
       await deleteActivities(activeReservationId);
       toast.success('삭제가 완료되었습니다.');
+
+      await queryClient.invalidateQueries({ queryKey: ['myActivities'] });
     } catch {
       toast.error('삭제에 실패하였습니다.');
     } finally {
