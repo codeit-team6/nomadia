@@ -9,12 +9,15 @@ const MyActivitiesCard = ({ activity }: MyActivitiesCardProps) => {
       {/* 왼쪽 텍스트 영역 */}
       <div className="flex flex-col">
         <div className="mb-[1.2rem] lg:mb-[2rem]">
-          <h1 className="mb-[0.6rem] text-[1.6rem] font-bold text-gray-950 lg:mb-[0.8rem]">
+          {/* 타이틀 */}
+          <h1 className="mb-[0.6rem] line-clamp-1 text-[1.6rem] font-bold text-gray-950 lg:mb-[0.8rem]">
             {activity.title}
           </h1>
+          {/* 별점 */}
           <p className="mb-[1rem] text-[1.3rem] font-medium text-gray-500 lg:mb-[1.2rem]">
             {activity.rating}
           </p>
+          {/* 가격 */}
           <div className="flex gap-[0.4rem]">
             <p className="text-[1.6rem] font-bold text-gray-950">
               {`₩${formatPrice(activity.price)}`}
