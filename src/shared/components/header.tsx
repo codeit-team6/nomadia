@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
+import NotificationButton from '@/features/activities/components/notification-button';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import { useMyProfile } from '@/features/my/profile/lib/hooks/useMyProfile';
 import Dropdown from '@/shared/components/dropdown';
@@ -50,12 +51,7 @@ const Header = () => {
           <>
             {/* 로그인 상태일 때 */}
             <li>
-              <Image
-                src="/images/icons/alarm.svg"
-                alt="알람"
-                width={24}
-                height={24}
-              />
+              <NotificationButton />
             </li>
 
             <li className="text-gray-100">|</li>
