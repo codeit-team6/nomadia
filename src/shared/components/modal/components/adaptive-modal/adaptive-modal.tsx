@@ -37,15 +37,18 @@ import { useModalStore } from '@/shared/libs/stores/useModalStore';
  */
 const AdaptiveModal = ({
   extraClassName,
+  translateY = 'translate-y-full',
   children,
 }: {
   extraClassName?: string;
+  translateY?: string;
   children: ReactNode;
 }) => {
   const { width } = useWindowSize();
 
   const { openModal, appear, disappearModal, isDesktop, setIsDesktop } =
     useModalStore();
+  const isDefaultStyle = translateY === 'translate-y-full';
 
   // 모달 항시 렌더링
   useEffect(() => {
@@ -69,10 +72,11 @@ const AdaptiveModal = ({
         hasOverlay={isDesktop ? false : appear ? true : false}
         isCenter={false}
         extraClassName={cn(
-          extraClassName,
           !isDesktop &&
-            'fixed bottom-0 left-0 z-90 w-full rounded-b-none transition-transform duration-300 ease-out',
-          !isDesktop && (appear ? 'translate-y-0' : 'translate-y-full'),
+            'fixed bottom-0 left-0 w-full rounded-b-none transition-transform duration-300 ease-out',
+          !isDesktop && (appear ? 'translate-y-0' : translateY),
+          !isDefaultStyle && (appear ? '' : 'rounded-0'),
+          extraClassName,
         )}
         onClickOverlay={() => disappearModal()}
       >
