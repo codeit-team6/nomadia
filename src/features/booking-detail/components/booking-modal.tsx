@@ -51,6 +51,13 @@ const BookingModal = ({
     setReview(value);
   };
 
+  // 리뷰 작성 취소 핸들러
+  const handleQuitClick = () => {
+    setReview('');
+    setReviewRating(0);
+    closeModal();
+  };
+
   // 예약 취소 모달에서 확인 버튼 클릭 시
   const handleModalCancelBooking = () => {
     cancelBooking(reservation.id);
@@ -83,7 +90,9 @@ const BookingModal = ({
     <Modal
       type={statusLabel === '예약 신청' ? 'warning' : 'custom'}
       extraClassName={
-        statusLabel === '체험 완료' ? 'w-full h-[47.9rem] mx-[2.4rem]' : ''
+        statusLabel === '체험 완료'
+          ? 'w-full h-[47.9rem] mx-[2.4rem] md:w-[50rem] md:h-[54.9rem]'
+          : ''
       }
     >
       {statusLabel === '예약 신청' ? (
@@ -107,15 +116,15 @@ const BookingModal = ({
           <div className="flex justify-end">
             <X
               className="text-gray-850 size-[2rem] cursor-pointer"
-              onClick={closeModal}
+              onClick={handleQuitClick}
             />
           </div>
           <div className="flex-center mb-[2rem] flex-col gap-[0.6rem]">
-            <p className="text-[1.6rem] font-bold text-gray-950 md:text-[1.8rem]">
+            <p className="truncate text-[1.6rem] font-bold text-gray-950 md:text-[1.8rem]">
               {reservation.activity.title}
             </p>
             <p className="text-[1.3rem] font-medium text-gray-500 md:text-[1.4rem]">
-              {`${reservation.date} / ${reservation.startTime} - ${reservation.endTime}`}
+              {`${reservation.date} / ${reservation.startTime} - ${reservation.endTime} (${reservation.headCount}명)`}
             </p>
             <StarRating onRatingChange={setReviewRating} />
           </div>

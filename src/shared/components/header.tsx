@@ -5,7 +5,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
+import NotificationButton from '@/features/activities/components/notification-button';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
+import { useMyProfile } from '@/features/my/profile/lib/hooks/useMyProfile';
 import Dropdown from '@/shared/components/dropdown';
 import useHydration from '@/shared/libs/hooks/useHydration';
 
@@ -15,6 +17,7 @@ const Header = () => {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
   const router = useRouter();
+  const { data: myData } = useMyProfile();
 
   const handleLogout = () => {
     logout();
@@ -48,12 +51,7 @@ const Header = () => {
           <>
             {/* 로그인 상태일 때 */}
             <li>
-              <Image
-                src="/images/icons/alarm.svg"
-                alt="알람"
-                width={24}
-                height={24}
-              />
+              <NotificationButton />
             </li>
 
             <li className="text-gray-100">|</li>
@@ -64,15 +62,18 @@ const Header = () => {
               trigger={
                 <button className="flex items-center gap-3">
                   <Image
-                    src="/images/icons/profile.svg"
+                    src={
+                      myData?.profileImageUrl ||
+                      '/images/icons/profile-default.png'
+                    }
                     alt="프로필사진"
                     width={30}
                     height={30}
-                    className="rounded-full"
+                    className="aspect-square rounded-full"
                   />
                   {isLoggedIn && user && (
                     <span className="txt-14-medium text-gray-950">
-                      {user.nickname}
+                      {myData?.nickname}
                     </span>
                   )}
                 </button>
