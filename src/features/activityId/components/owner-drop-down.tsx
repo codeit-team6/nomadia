@@ -3,10 +3,25 @@ import Image from 'next/image';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import Dropdown from '@/shared/components/dropdown';
 
-const OwnerDropdown = ({ ownerId }: { ownerId: number | undefined }) => {
+const OwnerDropdown = ({
+  ownerId,
+  activityId,
+}: {
+  ownerId: number | undefined;
+  activityId: number;
+}) => {
   const { user } = useAuthStore();
   const isOwner = user?.id === String(ownerId);
 
+  const handleDelete = () => {
+    console.log(
+      'activityId:',
+      activityId,
+      ' isOwner:',
+      isOwner,
+      'want to delete?',
+    );
+  };
   return (
     <>
       {!isOwner && (
@@ -28,7 +43,10 @@ const OwnerDropdown = ({ ownerId }: { ownerId: number | undefined }) => {
               수정하기
             </button>
             <hr />
-            <button className="h-[5.4rem] w-[9.3rem] px-[1.8rem] text-[1.6rem] hover:bg-red-100 hover:text-red-500">
+            <button
+              onClick={handleDelete}
+              className="h-[5.4rem] w-[9.3rem] px-[1.8rem] text-[1.6rem] hover:bg-red-100 hover:text-red-500"
+            >
               삭제하기
             </button>
           </div>

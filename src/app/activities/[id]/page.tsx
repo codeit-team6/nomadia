@@ -48,7 +48,7 @@ const ActivityPage = () => {
                   </div>
                   <h1 className={activityIdStyle.h1}>{data?.title}</h1>
                 </div>
-                <OwnerDropdown ownerId={data?.userId} />
+                <OwnerDropdown ownerId={data?.userId} activityId={Number(id)} />
               </div>
               {/* 별점 & 후기 & 구분선 */}
               <div className="mb-[1rem] flex items-center gap-[0.6rem] text-[1.4rem] leading-none text-gray-700">
