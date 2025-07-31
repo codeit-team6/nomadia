@@ -106,7 +106,12 @@ export const FormInput = <T extends FieldValues>({
             id={name}
             type="number"
             placeholder={placeholder}
-            {...register(name)}
+            {...register(name, {
+              setValueAs: (value) => {
+                const num = parseInt(value, 10);
+                return isNaN(num) ? undefined : num;
+              },
+            })}
             className={`${baseInputClass} h-[4.4rem] md:h-[4.8rem]`}
             {...rest}
             max={100000000}
