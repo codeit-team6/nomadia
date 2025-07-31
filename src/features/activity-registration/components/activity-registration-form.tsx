@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 
@@ -9,10 +10,13 @@ import DateScheduler from '@/features/activity-registration/components/date-sche
 import SubImage from '@/features/activity-registration/components/sub-image';
 import {
   CATEGORY_OPTIONS,
+  FORM_CONSTRAINTS,
   TIME_OPTIONS,
 } from '@/features/activity-registration/libs/constants/formOption';
 import { useRegistrationMutation } from '@/features/activity-registration/libs/hooks/useRegistrationMutation';
 import { FormInput } from '@/shared/components/form-input/form-input';
+import Modal from '@/shared/components/modal/components';
+import { useModalStore } from '@/shared/libs/stores/useModalStore';
 import { ActivityRegistrationParams, Schedule } from '@/shared/types/activity';
 
 // 업데이트된 스키마 - schedules 배열로 변경
@@ -23,8 +27,12 @@ const registerSchema = z.object({
   description: z.string().min(1, { message: '설명을 입력해 주세요.' }),
   price: z
     .number()
-    .min(1000, { message: '최소 1000원 이상 입력해 주세요.' })
-    .max(1000000, { message: '최대 100만원 이하 입력해 주세요.' }),
+    .min(FORM_CONSTRAINTS.PRICE.MIN, {
+      message: `최소 ${FORM_CONSTRAINTS.PRICE.MIN}원 이상 입력해 주세요.`,
+    })
+    .max(FORM_CONSTRAINTS.PRICE.MAX, {
+      message: `최대 ${FORM_CONSTRAINTS.PRICE.MAX.toLocaleString()}원 이하 입력해 주세요.`,
+    }),
   schedules: z
     .array(
       z.object({
@@ -33,7 +41,9 @@ const registerSchema = z.object({
         endTime: z.string().min(1, { message: '종료 시간을 선택해 주세요.' }),
       }),
     )
-    .min(1, { message: '최소 하나의 시간대를 등록해 주세요.' }),
+    .min(FORM_CONSTRAINTS.SCHEDULES.MIN_COUNT, {
+      message: '최소 하나의 시간대를 등록해 주세요.',
+    }),
   bannerImages: z.string().min(1, { message: '배너 이미지를 등록해 주세요.' }),
   subImages: z
     .array(z.string())
@@ -62,10 +72,14 @@ const ActivityRegistrationForm = () => {
     resolver: zodResolver(registerSchema),
     defaultValues: {
       schedules: [],
+      bannerImages: '',
+      subImages: [],
     },
   });
 
   const registrationMutation = useRegistrationMutation();
+  const { openModal, closeModal } = useModalStore();
+  const router = useRouter();
 
   const onSubmit = (data: UpdatedFormData) => {
     // 모든 스케줄의 시간 유효성 검증
@@ -97,7 +111,11 @@ const ActivityRegistrationForm = () => {
     };
 
     // TanStack Query mutation 실행
-    registrationMutation.mutate(apiData);
+    registrationMutation.mutate(apiData, {
+      onSuccess: () => {
+        openModal();
+      },
+    });
   };
 
   return (
@@ -199,6 +217,19 @@ const ActivityRegistrationForm = () => {
         >
           {registrationMutation.isPending ? '등록 중...' : '체험 등록하기'}
         </button>
+        <Modal type="confirm">
+          <Modal.Header>체험 등록이 완료되었습니다.</Modal.Header>
+          <Modal.Button
+            color="blue"
+            ariaLabel="확인 버튼"
+            onClick={() => {
+              closeModal();
+              router.push('/activities');
+            }}
+          >
+            확인
+          </Modal.Button>
+        </Modal>
       </div>
     </form>
   );
