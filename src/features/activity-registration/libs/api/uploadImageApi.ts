@@ -2,7 +2,7 @@ import api from '@/shared/libs/api/axios';
 
 // 이미지 업로드 응답 타입
 export interface UploadImageResponse {
-  imageUrl: string;
+  activityImageUrl: string;
   message?: string;
 }
 
