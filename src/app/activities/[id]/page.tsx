@@ -3,6 +3,7 @@
 import Image from 'next/image';
 
 import AddressWithMap from '@/features/activityId/components/map/address-with-map';
+import OwnerDropdown from '@/features/activityId/components/owner-drop-down';
 import ReservationModal from '@/features/activityId/components/reservation-modal';
 import Reviews from '@/features/activityId/components/reviews';
 import Star from '@/features/activityId/components/star';
@@ -48,15 +49,7 @@ const ActivityPage = () => {
                     {data?.title}
                   </h1>
                 </div>
-                {/* ✨ 이거 버튼 드롭다운  붙여야함~~ */}
-                <button>
-                  <Image
-                    src="/images/icons/more.svg"
-                    width={28}
-                    height={28}
-                    alt={'more-options'}
-                  />
-                </button>
+                <OwnerDropdown />
               </div>
               {/* 별점 & 후기 & 구분선 */}
               <div className="mb-[1rem] flex items-center gap-[0.6rem] text-[1.4rem] leading-none text-gray-700">
@@ -93,7 +86,7 @@ const ActivityPage = () => {
           <hr className="mt-[2rem] mb-[2rem]" />
           {/* ✅ 오시는 길 */}
           <AddressWithMap address={data?.address} />
-
+          <hr className="mb-[2rem] lg:mb-[4rem]" />
           {/* ✅ 체험 후기 */}
           <Reviews />
         </div>

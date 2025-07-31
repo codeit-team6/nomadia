@@ -8,7 +8,7 @@ const AddressWithMap = ({ address }: { address: string }) => {
         <p className="text-[1.4rem] font-semibold text-gray-800">{address}</p>
         <div
           id="map"
-          className="mb-[4rem] h-[18rem] w-full overflow-hidden rounded-[1.6rem]"
+          className="mb-[2rem] h-[18rem] w-full overflow-hidden rounded-[1.6rem] md:h-[38rem] lg:mb-[4rem] lg:h-[45rem] lg:rounded-[2.4rem]"
         >
           <KakaoMap />
         </div>
