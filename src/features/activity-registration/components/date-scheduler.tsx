@@ -1,7 +1,8 @@
 import Image from 'next/image';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { TIME_OPTIONS } from '@/features/activity-registration/libs/constants/formOption';
+import { validateTimeRange } from '@/features/activity-registration/libs/utils';
 import { Schedule } from '@/shared/types/activity';
 
 interface DateSchedulerProps {
@@ -13,30 +14,15 @@ interface DateSchedulerProps {
 }
 
 const DateScheduler = ({ schedules, onChange, errors }: DateSchedulerProps) => {
-  // 시간 옵션 인덱스 맵을 메모이제이션하여 성능 최적화
-  const timeOptionsMap = useMemo(() => {
-    return TIME_OPTIONS.reduce(
-      (acc, option, index) => {
-        acc[option.value] = index;
-        return acc;
-      },
-      {} as Record<string, number>,
+  const getNextHour = useCallback((startTime: string): string => {
+    const currentIndex = TIME_OPTIONS.findIndex(
+      (option) => option.value === startTime,
     );
+    if (currentIndex !== -1 && currentIndex < TIME_OPTIONS.length - 1) {
+      return TIME_OPTIONS[currentIndex + 1].value;
+    }
+    return startTime;
   }, []);
-
-  const getNextHour = useCallback(
-    (startTime: string): string => {
-      const currentIndex = timeOptionsMap[startTime];
-      if (
-        currentIndex !== undefined &&
-        currentIndex < TIME_OPTIONS.length - 1
-      ) {
-        return TIME_OPTIONS[currentIndex + 1].value;
-      }
-      return startTime;
-    },
-    [timeOptionsMap],
-  );
 
   const addSchedule = useCallback(() => {
     const newSchedule: Schedule = {
@@ -75,18 +61,6 @@ const DateScheduler = ({ schedules, onChange, errors }: DateSchedulerProps) => {
       onChange(updatedSchedules);
     },
     [schedules, onChange, getNextHour],
-  );
-
-  const validateTimeRange = useCallback(
-    (startTime: string, endTime: string): boolean => {
-      if (!startTime || !endTime) return true;
-
-      const startIndex = timeOptionsMap[startTime];
-      const endIndex = timeOptionsMap[endTime];
-
-      return endIndex > startIndex;
-    },
-    [timeOptionsMap],
   );
 
   useEffect(() => {
