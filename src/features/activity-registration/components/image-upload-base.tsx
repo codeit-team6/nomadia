@@ -2,7 +2,7 @@
 
 import { CirclePlus, X } from 'lucide-react';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 import {
@@ -156,6 +156,18 @@ const ImageUploadBase = ({
       fileInputRef.current?.click();
     }
   };
+
+  // 컴포넌트 언마운트 시 Object URL 정리
+  useEffect(() => {
+    return () => {
+      // 남은 모든 로컬 이미지 URL 해제
+      localImageUrls.forEach((url) => {
+        if (url && url.startsWith('blob:')) {
+          URL.revokeObjectURL(url);
+        }
+      });
+    };
+  }, [localImageUrls]);
 
   return (
     <div className={`flex flex-col gap-[0.8rem] ${className}`}>
