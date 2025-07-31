@@ -21,10 +21,10 @@ const ModalContent = ({
   return (
     <>
       {/* 모달을 중앙정렬 하기 위한 div 태그*/}
+
       <div
         className={cn(
-          isCenter && 'flex-center pointer-events-none fixed inset-0',
-          'z-99', //added
+          isCenter && 'flex-center pointer-events-none fixed inset-0 z-99',
         )}
       >
         {/* 모달 */}
@@ -33,6 +33,7 @@ const ModalContent = ({
             'pointer-events-auto rounded-[3rem] bg-white',
             modalContentClasses[modalType],
             extraClassName,
+            'z-100',
           )}
           onClick={(e) => e.stopPropagation()} // 모달 내용 클릭 시 닫힘 방지
           onKeyDown={(e) => {

@@ -1,11 +1,19 @@
 'use client';
+import { ArrowLeft, Minus, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { Schedules } from '@/features/activityId/libs/types/activityDataType';
+import { reservationFormStyle } from '@/features/activityId/libs/constants/variants';
+import { useReservationMutation } from '@/features/activityId/libs/hooks/useReservationMutation';
+import { ReservationRequestBody } from '@/features/activityId/libs/types/reservationType';
 import CalendarForForm from '@/shared/components/calendar/components/calendar-for-form';
 import { cn } from '@/shared/libs/cn';
+import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
+import { useModalStore } from '@/shared/libs/stores/useModalStore';
+import { formatPrice } from '@/shared/libs/utils/formatPrice';
+
+import { Schedules } from '../libs/types/activityInfo';
 
 const CALENDAR_STYLES = {
   calendarWidth: 'md:w-[35.9rem] lg:w-[35rem]',
@@ -13,152 +21,344 @@ const CALENDAR_STYLES = {
   cellStyle: 'md:my-[1.36rem] md:w-[5.128rem] lg:my-0 lg:w-[5rem]',
 } as const;
 
-const ReservationForm = ({ scheduleArray }: { scheduleArray: Schedules[] }) => {
-  const { selectedDate } = useCalendarStore();
+const ReservationForm = ({
+  scheduleArray,
+  price,
+  activityId,
+}: {
+  scheduleArray: Schedules[] | undefined;
+  price: number | undefined;
+  activityId: number;
+}) => {
+  const { selectedDate, resetSelectedDate } = useCalendarStore();
 
-  const [schedulesInDate, setSchedulesInDate] = useState<Schedules[]>([]);
+  const [schedulesInDate, setSchedulesInDate] = useState<
+    Schedules[] | undefined
+  >([]);
+  const [selectedTime, setSelectedTime] = useState('');
+  const { appear, disappearModal, appearModal, isDesktop } = useModalStore();
+  const [nextStep, setNextStep] = useState(false);
+  const { mutate } = useReservationMutation(activityId);
+  // const { year, month } = useCalendarStore();
 
-  // 해당 날짜에 해당하는 스케줄 배열 업데이트 -> 이후 시간 선택지에 사용
-  // 미리 시간 선택지가 보여야 해서, 날짜 선택할때마다 업데이트 해야 함..
+  // const { data } = useSchedulesQuery((id = activityId), {
+  //   year: String(year),
+  //   month: String(month),
+  // });
+
+  // 리액트훅폼
+  const {
+    control,
+    handleSubmit,
+    getValues,
+    resetField,
+    reset,
+    formState: { isValid },
+  } = useForm<ReservationRequestBody>();
+
   useEffect(() => {
-    const match = scheduleArray.filter(
+    resetField('scheduleId');
+    const match = scheduleArray?.filter(
       (schedule) => schedule.date === selectedDate,
     );
     setSchedulesInDate(match);
-  }, [selectedDate, scheduleArray]);
+  }, [selectedDate, scheduleArray, resetField]);
 
-  // 리액트훅폼
-  const { control, handleSubmit } = useForm();
-
-  // for test...
-  // const watchDate = watch('selectedDate');
-  // const watchCount = watch('headCount');
-  // const watchID = watch('resrvationTime');
+  // 태블릿 화면 감지
+  const [isTablet, setIsTablet] = useState(false);
+  const { width } = useWindowSize();
+  useEffect(() => {
+    if (width && 1024 > width && width >= 768) {
+      setIsTablet(true);
+    } else {
+      setIsTablet(false);
+    }
+  }, [width]);
 
   return (
     <>
-      {/*for test...
-      <div className="text-3xl">✅{watchDate}</div>
-      <div className="text-3xl">✅{watchCount}</div>
-      <div className="text-3xl">watchId: ✅{watchID}</div> */}
-
       {/* 캘린더 컴포넌트 사용 */}
       {/* 🐛 폼 제출에는 selectedDate값이 필요가 없다. 일단은 컨트롤러로 필드값을 업데이트 하고 있지만, 그냥 캘린더로만 사용해도 문제 없을거 같다. */}
       {/* 🐛 handleSubmit 제출 전에, 밸류를 Number로 형변환 체크 필요함 */}
-      <form onSubmit={handleSubmit((data) => console.log('제출', data))}>
-        <Controller
-          name="selectedDate"
-          control={control}
-          defaultValue=""
-          rules={{
-            validate: (value) => value !== '' || '날짜를 선택해주세요',
-          }}
-          render={({ field }) => {
-            return (
-              <>
-                <label htmlFor="selectedDate">날짜</label>
-                <CalendarForForm
-                  scheduleArray={scheduleArray}
-                  isForReservation={true}
-                  calendarWidth={CALENDAR_STYLES.calendarWidth}
-                  dayOfWeekStyle={CALENDAR_STYLES.dayOfWeekStyle}
-                  cellStyle={CALENDAR_STYLES.cellStyle}
-                  changeFormValue={() =>
-                    field.onChange(
-                      field.value === selectedDate ? '' : selectedDate,
-                    )
-                  } // 🐛 selectedDate값을 확인하고(이거 업데이트 이후에), 폼 값을 업데이트하는데, 상태 리렌더링이 한박자 밀림.
-                  // 밑에 시간 스케줄은 정확하게 뜨는것도 아이러니
-                  // 시도1. selectedDate의 최신(현재값) 사용하는거 시도해보기(getState()로 가져올수 있음)
-                  // -> console.log('currnet:', useCalendarStore.getState().selectedDate);
-                  // console.log('selected:', selectedDate); //둘다 클릭 시점에 현재값을 잘 반영하고 있음
-                  // 소용 없음.. 나중에, 주스탄드,여기,캘린더컴포넌트 내부에 다 콘솔 찍어서 업데이트 순서 확인해봐야 알수있을듯
-                />
-              </>
-            );
-          }}
-        />
+      {!appear && <hr className="lg:hidden" />}
+      <div className="hidden">{activityId}</div>
+      <form
+        onSubmit={handleSubmit((data) => {
+          console.log('제출', data, typeof getValues('scheduleId'));
+          mutate(data); // data: { scheduleId, headCount }
+          resetSelectedDate(); //🐛이거 해도 제출후 다시 열어보면, 이전 선택 날짜가 칠해져있음...뭔가 리렌더링 기회가 없는건가
+          setSelectedTime('');
+          reset(); // 제출 후 폼 초기화
+        })}
+        className="shadow-experience-card flex flex-col overflow-auto p-[2.4rem] pb-[1.8rem] md:px-[3rem] lg:p-[3rem]"
+      >
+        {/* 모바일 - 스텝2(인원 체크) */}
+        {!isDesktop && !isTablet && appear && nextStep && (
+          <>
+            <button
+              className="flex items-center gap-[0.6rem]"
+              onClick={() => setNextStep(false)}
+            >
+              <ArrowLeft />
+              <h2 className="text-[1.8rem] font-bold text-gray-950">인원</h2>
+            </button>
+            <p className="mt-[0.8rem] mb-[2rem] text-[1.6rem] text-gray-900">
+              예약할 인원을 선택해주세요
+            </p>
+          </>
+        )}
+        {/* 데스크탑 - 캘린더 상단에 '0000/인' 표시 */}
+        {isDesktop && price && (
+          <p className="mb-[2.4rem] flex items-center gap-[0.6rem]">
+            <span className="inline-block text-[1.8rem] leading-none font-bold text-gray-950">
+              ₩{formatPrice(price)}
+            </span>
+            <span className="inline-block text-[1.6rem] leading-none text-gray-600">
+              / 인
+            </span>
+          </p>
+        )}
 
-        {/* 참여 인원 수 */}
-        <Controller
-          name="headCount"
-          control={control}
-          defaultValue={1}
-          rules={{ min: 1 }}
-          render={({ field }) => {
-            const value = Number(field.value);
-            return (
-              <>
-                <label htmlFor="headCount">참여 인원 수</label>
-                <div className="gap=[3rem] flex text-5xl">
-                  <button
-                    type="button"
-                    disabled={value <= 1}
-                    onClick={() => {
-                      field.onChange(value - 1);
-                    }}
-                  >
-                    -
-                  </button>
-                  <input
-                    id="headCount"
-                    {...field}
-                    value={field.value}
-                    readOnly
-                    className="pointer-events-none cursor-default select-none focus:outline-none"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      field.onChange(value + 1);
-                    }}
-                  >
-                    +
-                  </button>
-                </div>
-              </>
-            );
-          }}
-        />
+        {/* Group - 캘린더 + 인원 수 + 시간 선택 */}
+        <div
+          className={cn(
+            isDesktop ? '' : appear ? 'order-1' : 'order-2',
+            isTablet &&
+              'md:mb-[4rem] md:flex md:justify-center md:gap-[2.4rem]',
+          )}
+        >
+          {/* 날짜 선택 캘린더(폼 제출 값에는 미반영) */}
+          <section
+            className={cn(!isDesktop && !isTablet && nextStep && 'hidden')}
+          >
+            <h2 className="mb-[0.8rem] text-[1.8rem] font-bold text-gray-950 md:mb-[2.4rem] lg:mb-[0.8rem]">
+              날짜
+            </h2>
+            <div className="flex-center">
+              <CalendarForForm
+                scheduleArray={scheduleArray}
+                isForReservation={true}
+                calendarWidth={CALENDAR_STYLES.calendarWidth}
+                dayOfWeekStyle={CALENDAR_STYLES.dayOfWeekStyle}
+                cellStyle={CALENDAR_STYLES.cellStyle}
+              />
+            </div>
+          </section>
 
-        {/* 예약 시간 선택지 */}
-        <Controller
-          name="resrvationTime"
-          control={control}
-          defaultValue=""
-          rules={{
-            validate: (value) => value !== '' || '예약 시간을 선택해 주세요',
-          }}
-          render={({ field }) => {
-            return (
-              <>
-                <label htmlFor="resrvationTime">예약 가능한 시간</label>
-                <div>
-                  {schedulesInDate.map((schedule) => {
-                    const isSelected = field.value === schedule.id;
-                    return (
-                      <div key={schedule.id}>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            field.onChange(isSelected ? '' : schedule.id);
-                          }}
-                          className={cn(
-                            'text-3xl text-green-500',
-                            isSelected && 'text-blue-500',
-                          )}
-                        >
-                          {schedule.startTime}~{schedule.endTime}
-                        </button>
+          {/* Group - 인원 수 + 시간 선택 */}
+          <div
+            className={cn(
+              isTablet &&
+                'shadow-experience-card mt-[4.8rem] flex w-full flex-col-reverse justify-end rounded-[2.4rem] p-[2.4rem] pt-0',
+            )}
+          >
+            <Controller
+              name="headCount"
+              control={control}
+              defaultValue={1}
+              rules={{ min: 1 }}
+              render={({ field }) => {
+                const value = Number(field.value);
+                return (
+                  <section
+                    className={cn(
+                      'mb-[3rem] flex items-center justify-between',
+                      'lg:my-[2.4rem]',
+                      !isDesktop && !nextStep && 'hidden md:block',
+                    )}
+                  >
+                    <label
+                      htmlFor="headCount"
+                      className={cn(reservationFormStyle.labelFont, 'lg:mb-0')}
+                    >
+                      참여 인원 수
+                    </label>
+                    <div
+                      className={cn(
+                        'flex h-[4.8rem] w-[14.4rem] items-center justify-between rounded-[1.2rem] border border-gray-100 text-[1.6rem] font-bold text-gray-900 md:w-full',
+                        'lg:h-[4rem] lg:w-[14rem]',
+                      )}
+                    >
+                      <button
+                        type="button"
+                        className="p-[1rem]"
+                        disabled={value <= 1}
+                        onClick={() => {
+                          field.onChange(value - 1);
+                        }}
+                      >
+                        <Minus strokeWidth={1.5} size={20} />
+                      </button>
+                      <input
+                        id="headCount"
+                        {...field}
+                        value={field.value}
+                        readOnly
+                        className="hidden"
+                      />
+                      <p className="w-[4rem] text-center">
+                        {getValues('headCount')}
+                      </p>
+                      <button
+                        type="button"
+                        className="p-[1rem]"
+                        onClick={() => {
+                          field.onChange(value + 1);
+                        }}
+                      >
+                        <Plus strokeWidth={1.5} size={20} />
+                      </button>
+                    </div>
+                  </section>
+                );
+              }}
+            />
+            {/* 예약 시간 선택지 */}
+            <Controller
+              name="scheduleId"
+              control={control}
+              rules={{ required: '예약 시간을 선택해 주세요' }}
+              render={({ field }) => {
+                return (
+                  <section
+                    className={cn(
+                      'mb-[3.6rem]',
+                      !isDesktop && !isTablet && nextStep && 'hidden',
+                      'lg:mb-0',
+                    )}
+                  >
+                    <label
+                      htmlFor="resrvationTime"
+                      className={cn(
+                        reservationFormStyle.labelFont,
+                        'mt-[2.4rem] mb-[1.4rem] md:mb-[2rem]',
+                        'lg:mb-[1.4rem]',
+                      )}
+                    >
+                      예약 가능한 시간
+                    </label>
+                    <div>
+                      {schedulesInDate?.length === 0 && (
+                        <p className="text-[1.6rem] text-gray-900">
+                          예약 가능한 날짜를 선택해주세요
+                        </p>
+                      )}
+                      <div className="flex flex-col gap-[1.2rem]">
+                        {schedulesInDate?.map((schedule) => {
+                          const isSelected = field.value === schedule.id;
+                          return (
+                            <div key={schedule.id}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  field.onChange(isSelected ? '' : schedule.id);
+                                  if (!isSelected) {
+                                    setSelectedTime(
+                                      `${schedule.startTime}~${schedule.endTime}`,
+                                    );
+                                  } else setSelectedTime('');
+                                }}
+                                className={cn(
+                                  'flex-center border-sub w-full rounded-[1.2rem] border-2 py-[1.4rem] text-[1.4rem] text-gray-950',
+                                  isSelected &&
+                                    'text-main border-sub-300 bg-sub',
+                                )}
+                              >
+                                {schedule.startTime}~{schedule.endTime}
+                              </button>
+                            </div>
+                          );
+                        })}
                       </div>
-                    );
-                  })}
-                </div>
-              </>
-            );
-          }}
-        />
-        <button className="bg-main text-[1.6rem] font-bold">예약하기</button>
+                    </div>
+                  </section>
+                );
+              }}
+            />
+          </div>
+        </div>
+
+        {isDesktop && <hr className="mt-[3.3rem] mb-[2rem]" />}
+        {/* Group - sm,md: 가격,선택한 값 표시 + 확인 버튼 */}
+        <section
+          className={cn(
+            isDesktop ? '' : appear ? 'order-2' : 'order-1 pb-[1.6rem]',
+            'flex flex-col items-center justify-center',
+            'lg:flex-row lg:justify-between',
+          )}
+        >
+          {/* Group - 0000원/n명 + 00/00/00 00:00~00:00 */}
+          <div
+            className={cn(
+              'flex h-[2.4rem] w-full flex-wrap items-center justify-between',
+              'lg:h-[5rem] lg:w-fit',
+              appear ? 'hidden' : '',
+            )}
+          >
+            {/* 가격/n명 */}
+            <p className="flex-center gap-[0.6rem]">
+              {isDesktop && (
+                <span className="text-[2rem] text-gray-700">총 합계</span>
+              )}
+              {price && (
+                <span className="inline-block text-[1.8rem] leading-none font-bold text-gray-950">
+                  ₩{formatPrice(price * getValues('headCount'))}
+                </span>
+              )}
+              {!isDesktop && (
+                <span className="inline-block text-[1.6rem] leading-none text-gray-800">
+                  / {getValues('headCount')}명
+                </span>
+              )}
+            </p>
+            {/* 00/00/00 00:00~00:00 */}
+            <button
+              className="text-main text-[1.6rem] font-bold underline underline-offset-4 lg:hidden"
+              onClick={() => !appear && appearModal()}
+              type="button"
+            >
+              {selectedDate} {selectedTime}
+              {/* 날짜 포맷해야함 formatToYYMMDD */}
+            </button>
+          </div>
+
+          {/* 예약하기/확인 버튼 */}
+          <button
+            type="submit"
+            className={cn(
+              isValid ? 'bg-main' : 'bg-gray-200',
+              appear && !isValid ? 'bg-gray-300' : '',
+              'mt-[1.2rem] w-full rounded-[1.4rem] py-[1.4rem] text-[1.6rem] font-bold text-white',
+              'h-[5rem] lg:mt-0 lg:w-[13.5rem]',
+              'z-100',
+            )}
+            onClick={(e) => {
+              if (!isDesktop) {
+                if (!appear && !isValid) {
+                  appearModal();
+                }
+                if (!isTablet) {
+                  if (appear && !nextStep) {
+                    setNextStep(true);
+                    e.preventDefault();
+                  }
+                  if (appear && nextStep) {
+                    disappearModal();
+                    setNextStep(false);
+                    e.preventDefault();
+                  }
+                } else {
+                  if (appear) {
+                    disappearModal();
+                    e.preventDefault();
+                  }
+                }
+              }
+            }}
+          >
+            {!isDesktop && !appear ? '예약하기' : '확인'}
+          </button>
+        </section>
       </form>
     </>
   );

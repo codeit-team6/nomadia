@@ -1,4 +1,4 @@
-import { Schedules } from '@/features/activityId/libs/types/activityDataType';
+import { Schedules } from '@/features/activityId/libs/types/activityInfo';
 import ArrowButton from '@/shared/components/calendar/components/arrow-button';
 import DaysOfMonth from '@/shared/components/calendar/components/days-of-month';
 import {

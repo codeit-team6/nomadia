@@ -47,7 +47,7 @@ const CalendarWithReservations = ({
   calendarWidth?: string;
   dayOfWeekStyle?: string;
   cellStyle?: string;
-  onCellClick?: (dateStr: string) => void;
+  onCellClick?: () => void;
 }) => {
   const { year, month, date, setDate, setSelectedDate } = useCalendarStore();
   const { thisMonthDays } = getMonthRange(year, month);
