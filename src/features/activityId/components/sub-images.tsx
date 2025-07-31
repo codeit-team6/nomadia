@@ -58,7 +58,7 @@ const SubImages = ({ images }: { images: string[] }) => {
               />
               <div
                 className={cn(
-                  'flex-center text-bold absolute inset-0 bg-black/30 text-[1.3rem] text-white opacity-0 transition-opacity duration-300 hover:opacity-100',
+                  'flex-center text-bold absolute inset-0 bg-black/30 text-[1.3rem] text-white opacity-0 transition-opacity duration-300 hover:opacity-100 md:text-[1.8rem]',
                   imageChanged === idx && 'opacity-100',
                 )}
               >

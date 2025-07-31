@@ -73,7 +73,7 @@ const AdaptiveModal = ({
         isCenter={false}
         extraClassName={cn(
           !isDesktop &&
-            'fixed bottom-0 left-0 z-90 w-full rounded-b-none transition-transform duration-300 ease-out',
+            'fixed bottom-0 left-0 w-full rounded-b-none transition-transform duration-300 ease-out',
           // !isDesktop && (appear ? 'translate-y-0' : 'translate-y-full'),
           translateY,
           !isDesktop && (appear ? 'translate-y-0' : translateY),

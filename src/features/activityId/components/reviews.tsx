@@ -5,6 +5,7 @@
 import { useState } from 'react';
 
 import Star from '@/features/activityId/components/star';
+import { activityIdStyle } from '@/features/activityId/libs/constants/variants';
 import { mockReviewData } from '@/features/activityId/libs/mockReviewData';
 import { formatRating } from '@/features/activityId/libs/utils/formatRating';
 import Pagination from '@/shared/components/pagination/pagination';
@@ -21,7 +22,7 @@ const Reviews = () => {
         className="flex flex-col gap-[0.8rem]"
       >
         <header className="flex items-center gap-[0.8rem]">
-          <h2 className="text-[1.6rem] font-bold text-gray-950">체험 후기</h2>
+          <h2 className={activityIdStyle.h2}>체험 후기</h2>
           <p className="text-[1.4rem] font-semibold text-gray-600">
             {formatPrice(data?.totalCount)}개
           </p>
@@ -70,7 +71,9 @@ const Reviews = () => {
                     <Star key={idx} />
                   ))}
                 </section>
-                <p className="text-[1.4rem] text-gray-950">{review.content}</p>
+                <p className="text-[1.4rem] text-gray-950 md:text-[1.6rem]">
+                  {review.content}
+                </p>
               </article>
             </li>
           );

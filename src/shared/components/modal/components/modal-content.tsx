@@ -33,6 +33,7 @@ const ModalContent = ({
             'pointer-events-auto rounded-[3rem] bg-white',
             modalContentClasses[modalType],
             extraClassName,
+            'z-100',
           )}
           onClick={(e) => e.stopPropagation()} // 모달 내용 클릭 시 닫힘 방지
           onKeyDown={(e) => {

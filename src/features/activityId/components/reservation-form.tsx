@@ -3,6 +3,7 @@ import { ArrowLeft, Minus, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
+import { reservationFormStyle } from '@/features/activityId/libs/constants/variants';
 import CalendarForForm from '@/shared/components/calendar/components/calendar-for-form';
 import { cn } from '@/shared/libs/cn';
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
@@ -77,9 +78,6 @@ const ReservationForm = ({
   //   reset(); // 제출 후 폼 초기화
   // };
 
-  const formStyle = {
-    labelFont: 'text-[1.6rem] font-bold text-gray-950 block md:mb-[2rem]',
-  };
   return (
     <>
       {/* 캘린더 컴포넌트 사용 */}
@@ -174,7 +172,7 @@ const ReservationForm = ({
                   >
                     <label
                       htmlFor="headCount"
-                      className={cn(formStyle.labelFont, 'lg:mb-0')}
+                      className={cn(reservationFormStyle.labelFont, 'lg:mb-0')}
                     >
                       참여 인원 수
                     </label>
@@ -240,7 +238,7 @@ const ReservationForm = ({
                     <label
                       htmlFor="resrvationTime"
                       className={cn(
-                        formStyle.labelFont,
+                        reservationFormStyle.labelFont,
                         'mt-[2.4rem] mb-[1.4rem] md:mb-[2rem]',
                         'lg:mb-[1.4rem]',
                       )}
@@ -339,6 +337,7 @@ const ReservationForm = ({
               appear && !isValid ? 'bg-gray-300' : '',
               'mt-[1.2rem] w-full rounded-[1.4rem] py-[1.4rem] text-[1.6rem] font-bold text-white',
               'h-[5rem] lg:mt-0 lg:w-[13.5rem]',
+              'z-100',
             )}
             onClick={(e) => {
               if (!isDesktop) {

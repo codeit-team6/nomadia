@@ -8,6 +8,7 @@ import ReservationModal from '@/features/activityId/components/reservation-modal
 import Reviews from '@/features/activityId/components/reviews';
 import Star from '@/features/activityId/components/star';
 import SubImages from '@/features/activityId/components/sub-images';
+import { activityIdStyle } from '@/features/activityId/libs/constants/variants';
 import { pageData } from '@/features/activityId/libs/mockPageData';
 
 // TODO
@@ -42,14 +43,12 @@ const ActivityPage = () => {
             <header className="order-2 lg:w-[41rem]">
               <div className="mt-[2rem] flex items-start justify-between">
                 <div>
-                  <div className="text-[1.3rem] font-medium text-gray-700">
+                  <div className="text-[1.4rem] font-medium text-gray-700">
                     {data?.category}
                   </div>
-                  <h1 className="mb-[1.6rem] text-[1.8rem] font-bold text-gray-950">
-                    {data?.title}
-                  </h1>
+                  <h1 className={activityIdStyle.h1}>{data?.title}</h1>
                 </div>
-                <OwnerDropdown />
+                <OwnerDropdown ownerId={data?.userId} />
               </div>
               {/* 별점 & 후기 & 구분선 */}
               <div className="mb-[1rem] flex items-center gap-[0.6rem] text-[1.4rem] leading-none text-gray-700">
@@ -78,10 +77,8 @@ const ActivityPage = () => {
           <hr className="mt-[2rem] mb-[2rem]" />
           {/* ✅ 체험 설명 */}
           <section>
-            <h2 className="text-[1.6rem] font-bold text-gray-950">체험 설명</h2>
-            <p className="text-[1.6rem] font-medium text-gray-950">
-              {data?.description}
-            </p>
+            <h2 className={activityIdStyle.h2}>체험 설명</h2>
+            <p className={activityIdStyle.content}>{data?.description}</p>
           </section>
           <hr className="mt-[2rem] mb-[2rem]" />
           {/* ✅ 오시는 길 */}
