@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { TIME_OPTIONS } from '@/features/activity-registration/libs/constants/formOption';
 import { Schedule } from '@/shared/types/activity';
@@ -13,15 +13,30 @@ interface DateSchedulerProps {
 }
 
 const DateScheduler = ({ schedules, onChange, errors }: DateSchedulerProps) => {
-  const getNextHour = (startTime: string): string => {
-    const currentIndex = TIME_OPTIONS.findIndex(
-      (option) => option.value === startTime,
+  // 시간 옵션 인덱스 맵을 메모이제이션하여 성능 최적화
+  const timeOptionsMap = useMemo(() => {
+    return TIME_OPTIONS.reduce(
+      (acc, option, index) => {
+        acc[option.value] = index;
+        return acc;
+      },
+      {} as Record<string, number>,
     );
-    if (currentIndex >= 0 && currentIndex < TIME_OPTIONS.length - 1) {
-      return TIME_OPTIONS[currentIndex + 1].value;
-    }
-    return startTime;
-  };
+  }, []);
+
+  const getNextHour = useCallback(
+    (startTime: string): string => {
+      const currentIndex = timeOptionsMap[startTime];
+      if (
+        currentIndex !== undefined &&
+        currentIndex < TIME_OPTIONS.length - 1
+      ) {
+        return TIME_OPTIONS[currentIndex + 1].value;
+      }
+      return startTime;
+    },
+    [timeOptionsMap],
+  );
 
   const addSchedule = useCallback(() => {
     const newSchedule: Schedule = {
@@ -33,45 +48,46 @@ const DateScheduler = ({ schedules, onChange, errors }: DateSchedulerProps) => {
   }, [schedules, onChange]);
 
   // 스케줄 제거
-  const removeSchedule = (index: number) => {
-    if (schedules.length > 1) {
-      onChange(schedules.filter((_, i) => i !== index));
-    }
-  };
-
-  const updateSchedule = (
-    index: number,
-    field: keyof Schedule,
-    value: string,
-  ) => {
-    const updatedSchedules = schedules.map((schedule, i) => {
-      if (i === index) {
-        const updated = { ...schedule, [field]: value };
-
-        if (field === 'startTime' && value) {
-          updated.endTime = getNextHour(value);
-        }
-
-        return updated;
+  const removeSchedule = useCallback(
+    (index: number) => {
+      if (schedules.length > 1) {
+        onChange(schedules.filter((_, i) => i !== index));
       }
-      return schedule;
-    });
+    },
+    [schedules, onChange],
+  );
 
-    onChange(updatedSchedules);
-  };
+  const updateSchedule = useCallback(
+    (index: number, field: keyof Schedule, value: string) => {
+      const updatedSchedules = schedules.map((schedule, i) => {
+        if (i === index) {
+          const updated = { ...schedule, [field]: value };
 
-  const validateTimeRange = (startTime: string, endTime: string): boolean => {
-    if (!startTime || !endTime) return true;
+          if (field === 'startTime' && value) {
+            updated.endTime = getNextHour(value);
+          }
 
-    const startIndex = TIME_OPTIONS.findIndex(
-      (option) => option.value === startTime,
-    );
-    const endIndex = TIME_OPTIONS.findIndex(
-      (option) => option.value === endTime,
-    );
+          return updated;
+        }
+        return schedule;
+      });
 
-    return endIndex > startIndex;
-  };
+      onChange(updatedSchedules);
+    },
+    [schedules, onChange, getNextHour],
+  );
+
+  const validateTimeRange = useCallback(
+    (startTime: string, endTime: string): boolean => {
+      if (!startTime || !endTime) return true;
+
+      const startIndex = timeOptionsMap[startTime];
+      const endIndex = timeOptionsMap[endTime];
+
+      return endIndex > startIndex;
+    },
+    [timeOptionsMap],
+  );
 
   useEffect(() => {
     if (schedules.length === 0) {
