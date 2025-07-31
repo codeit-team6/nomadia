@@ -116,12 +116,11 @@ export const FormInput = <T extends FieldValues>({
             {...rest}
             max={100000000}
             min={0}
-            maxLength={8}
-            onChange={(e) => {
-              const value = e.target.value;
-              if (value.length > 8) {
-                e.preventDefault();
-                e.target.value = value.slice(0, 8);
+            onInput={(e) => {
+              const target = e.target as HTMLInputElement;
+
+              if (target.value.length > 8) {
+                target.value = target.value.slice(0, 8);
               }
             }}
           />
