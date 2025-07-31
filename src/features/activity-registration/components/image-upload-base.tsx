@@ -3,6 +3,7 @@
 import { CirclePlus, X } from 'lucide-react';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 import {
   createImageFormData,
@@ -94,7 +95,7 @@ const ImageUploadBase = ({
     // 파일 유효성 검사
     const validation = validateImageFile(file);
     if (!validation.isValid) {
-      alert(validation.error);
+      toast.error(validation.error);
       return;
     }
 
