@@ -2,13 +2,12 @@
 
 import Image from 'next/image';
 
+import AddressWithMap from '@/features/activityId/components/map/address-with-map';
 import ReservationModal from '@/features/activityId/components/reservation-modal';
 import Reviews from '@/features/activityId/components/reviews';
 import Star from '@/features/activityId/components/star';
 import SubImages from '@/features/activityId/components/sub-images';
 import { pageData } from '@/features/activityId/libs/mockPageData';
-
-import AddressWithMap from '../../../features/activityId/components/addressWithMap';
 
 // TODO
 // 🐛 1.  calendar-for-form에서 클릭 시 id 저장하는 코드 제거하기 O
@@ -29,7 +28,7 @@ const ActivityPage = () => {
   const images = [
     '/images/sad-laptop.svg',
     '/images/warning.svg',
-    '/images/icons/logo.svg',
+    // '/images/icons/logo.svg',
     // '/images/icons/fire.svg',
   ];
 
@@ -94,6 +93,7 @@ const ActivityPage = () => {
           <hr className="mt-[2rem] mb-[2rem]" />
           {/* ✅ 오시는 길 */}
           <AddressWithMap address={data?.address} />
+
           {/* ✅ 체험 후기 */}
           <Reviews />
         </div>

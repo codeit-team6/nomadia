@@ -30,13 +30,16 @@ const SubImages = ({ images }: { images: string[] }) => {
       </div>
       {/* 상세 이미지 */}
       <div className="flex gap-[0.6rem] md:gap-[1.2rem]">
-        {/* <div className="flex w-full gap-[0.6rem] md:gap-[1.2rem]"> */}
         {imagesToShow.map((image, idx) => {
           return (
             <button
               key={idx}
-              className="relative h-[8rem] w-[10.5rem] overflow-hidden rounded-2xl bg-gray-50 md:h-[14rem] md:w-[22rem] md:rounded-3xl lg:w-[21.5rem]"
-              //   className="relative h-[8rem] w-full overflow-hidden rounded-2xl bg-gray-50 md:h-[14rem] md:w-[22rem] md:rounded-3xl lg:w-[21.5rem]"
+              className={cn(
+                'relative h-[8rem] w-[10.5rem] overflow-hidden rounded-2xl bg-gray-50 md:h-[14rem] md:w-[22rem] md:rounded-3xl lg:w-[21.5rem]',
+                length === 2
+                  ? 'w-[21.6rem] md:h-[16rem] md:w-[44.2rem] lg:w-[44.2rem]'
+                  : '',
+              )}
               onClick={() => {
                 if (representImage === image) {
                   setRepresentImage(images[0]);
