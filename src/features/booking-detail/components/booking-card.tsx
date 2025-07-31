@@ -49,13 +49,14 @@ const BookingCard = ({
   const time = formatBookingTime(reservation.startTime, reservation.endTime);
 
   return (
-    <div className="flex flex-col gap-[1.2rem]">
+    <div className="flex w-full max-w-[50rem] flex-col gap-[1.2rem] lg:max-w-[60rem]">
       {showDate && (
         <div className="text-[1.6rem] font-bold text-gray-800 md:text-[1.8rem]">
           {reservation.date}
         </div>
       )}
 
+      {/* 기존 코드에서 max-w 제거 (상위에서 처리) */}
       <div className="shadow-experience-card relative h-[13.6rem] w-full overflow-hidden rounded-[2.4rem] md:h-[14rem] lg:h-[18.1rem]">
         {/* 배경 이미지 */}
         <div className="absolute top-0 right-0 h-full w-[13.6rem] md:w-[14rem] lg:w-[18.1rem]">
@@ -69,8 +70,8 @@ const BookingCard = ({
           />
         </div>
 
-        {/* 흰색 카드 */}
-        <div className="relative flex h-full w-[70%] flex-col justify-between gap-[0.8rem] rounded-[2.4rem] bg-white px-[2.2rem] py-[2rem] md:w-[75%]">
+        {/* 흰색 카드 - 세밀한 브레이크포인트 추가 */}
+        <div className="relative flex h-full w-[70%] flex-col justify-between gap-[0.8rem] rounded-[2.4rem] bg-white px-[2.2rem] py-[2rem] min-[470px]:w-[75%] sm:w-[75%] md:w-[75%]">
           {/* 상단 정보 영역 */}
           <div className="mb-[0.2rem] flex w-full flex-col">
             {/* 상태 뱃지 */}
