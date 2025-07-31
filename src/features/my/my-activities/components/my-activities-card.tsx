@@ -57,7 +57,7 @@ const MyActivitiesCard = ({ activity }: MyActivitiesCardProps) => {
       {/* 오른쪽 이미지 영역 */}
       <figure className="ml-[2.2rem] flex-shrink-0">
         <Image
-          src={activity.bannerImageUrl || '/images/icons/activity-default.png'}
+          src={activity.bannerImageUrl || '/images/icons/activity-default.svg'}
           alt={`${activity.title} 체험 이미지`}
           width={82}
           height={82}
