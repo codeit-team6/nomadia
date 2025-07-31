@@ -1,4 +1,3 @@
-import { Star } from 'lucide-react';
 import Image from 'next/image';
 
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
@@ -21,7 +20,12 @@ const MyActivitiesCard = ({ activity }: MyActivitiesCardProps) => {
           </h1>
           {/* 별점, 리뷰*/}
           <div className="mb-[1rem] flex flex-row items-center gap-[0.2rem] lg:mb-[1.2rem]">
-            <Star className="text-yellow h-[1.4rem] w-[1.4rem]" />
+            <Image
+              src={'/images/icons/icon-star.svg'}
+              alt={`${activity.title} 체험 이미지`}
+              width={14}
+              height={14}
+            />
             <span className="text-[1.3rem] font-medium text-gray-500">
               {activity.rating}
             </span>
@@ -58,7 +62,8 @@ const MyActivitiesCard = ({ activity }: MyActivitiesCardProps) => {
           width={82}
           height={82}
           className="aspect-square rounded-[2rem] object-cover lg:w-[14.2rem]"
-          // loading="lazy"
+          loading="lazy"
+          quality={90}
         />
       </figure>
     </article>

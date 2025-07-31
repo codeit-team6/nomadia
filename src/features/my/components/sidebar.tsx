@@ -1,5 +1,6 @@
 'use client';
 
+import { CalendarDays, MessageSquareText, Settings, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -14,26 +15,22 @@ const Sidebar = () => {
     {
       key: 'profile',
       label: '내 정보',
-      image: '/images/icons/icon-user.png',
-      imageSelected: '/images/icons/icon-user-selected.png',
+      icon: User,
     },
     {
       key: 'reservation',
       label: '예약 내역',
-      image: '/images/icons/icon-list.png',
-      imageSelected: '/images/icons/icon-list-selected.png',
+      icon: MessageSquareText,
     },
     {
       key: 'my-activities',
       label: '내 체험 관리',
-      image: '/images/icons/icon-setting.png',
-      imageSelected: '/images/icons/icon-setting-selected.png',
+      icon: Settings,
     },
     {
       key: 'reserve-calendar',
       label: '예약 현황',
-      image: '/images/icons/icon-calendar.png',
-      imageSelected: '/images/icons/icon-calendar-selected.png',
+      icon: CalendarDays,
     },
   ];
 
@@ -51,6 +48,7 @@ const Sidebar = () => {
       <ul className="flex w-full flex-col gap-[1.4rem] md:gap-[1.2rem] lg:gap-[1.4rem]">
         {menus.map((menu) => {
           const isActive = pathname === `/my/${menu.key}`;
+          const IconComponent = menu.icon;
           return (
             <li
               key={menu.key}
@@ -59,11 +57,10 @@ const Sidebar = () => {
               } md:h-[4.8rem] lg:h-[5.4rem]`}
             >
               <div className="flex cursor-pointer gap-[0.8rem]">
-                <Image
-                  src={isActive ? menu.imageSelected : menu.image}
-                  alt={`${menu.key}-image`}
-                  width={24}
-                  height={24}
+                <IconComponent
+                  className={`h-[2.4rem] w-[2.4rem] ${
+                    isActive ? 'text-main' : 'text-gray-500'
+                  }`}
                 />
                 <Link href={`/my/${menu.key}`}>{menu.label}</Link>
               </div>
