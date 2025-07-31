@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { reservationFormStyle } from '@/features/activityId/libs/constants/variants';
+import { useReservationMutation } from '@/features/activityId/libs/hooks/useReservationMutation';
+import { ReservationRequestBody } from '@/features/activityId/libs/types/reservationType';
 import CalendarForForm from '@/shared/components/calendar/components/calendar-for-form';
 import { cn } from '@/shared/libs/cn';
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
@@ -22,16 +24,27 @@ const CALENDAR_STYLES = {
 const ReservationForm = ({
   scheduleArray,
   price,
+  activityId,
 }: {
-  scheduleArray: Schedules[];
-  price: number;
+  scheduleArray: Schedules[] | undefined;
+  price: number | undefined;
+  activityId: number;
 }) => {
   const { selectedDate, resetSelectedDate } = useCalendarStore();
 
-  const [schedulesInDate, setSchedulesInDate] = useState<Schedules[]>([]);
+  const [schedulesInDate, setSchedulesInDate] = useState<
+    Schedules[] | undefined
+  >([]);
   const [selectedTime, setSelectedTime] = useState('');
   const { appear, disappearModal, appearModal, isDesktop } = useModalStore();
   const [nextStep, setNextStep] = useState(false);
+  const { mutate } = useReservationMutation(activityId);
+  // const { year, month } = useCalendarStore();
+
+  // const { data } = useSchedulesQuery((id = activityId), {
+  //   year: String(year),
+  //   month: String(month),
+  // });
 
   // 리액트훅폼
   const {
@@ -41,13 +54,11 @@ const ReservationForm = ({
     resetField,
     reset,
     formState: { isValid },
-  } = useForm();
+  } = useForm<ReservationRequestBody>();
 
-  // 해당 날짜에 해당하는 스케줄 배열 업데이트 -> 이후 시간 선택지에 사용
-  // 미리 시간 선택지가 보여야 해서, 날짜 선택할때마다 업데이트 해야 함..
   useEffect(() => {
     resetField('scheduleId');
-    const match = scheduleArray.filter(
+    const match = scheduleArray?.filter(
       (schedule) => schedule.date === selectedDate,
     );
     setSchedulesInDate(match);
@@ -63,32 +74,18 @@ const ReservationForm = ({
       setIsTablet(false);
     }
   }, [width]);
-  // const onValid = (data: { headCount: string; resrvationTime: string }) => {
-  //   const parsed = {
-  //     headCount: Number(data.headCount),
-  //     resrvationTime: Number(data.resrvationTime),
-  //   };
-
-  //   // 이후 원하는 로직 실행
-  //   // submitForm(parsed);
-  // };
-
-  //   const onSubmit = (data) => {
-  //   console.log('제출', data, typeof getValues('scheduleId'));
-  //   reset(); // 제출 후 폼 초기화
-  // };
 
   return (
     <>
       {/* 캘린더 컴포넌트 사용 */}
       {/* 🐛 폼 제출에는 selectedDate값이 필요가 없다. 일단은 컨트롤러로 필드값을 업데이트 하고 있지만, 그냥 캘린더로만 사용해도 문제 없을거 같다. */}
       {/* 🐛 handleSubmit 제출 전에, 밸류를 Number로 형변환 체크 필요함 */}
-      {/* https://sp-globalnomad-api.vercel.app/15-6/activities/5192/reservations */}
       {!appear && <hr className="lg:hidden" />}
-
+      <div className="hidden">{activityId}</div>
       <form
         onSubmit={handleSubmit((data) => {
           console.log('제출', data, typeof getValues('scheduleId'));
+          mutate(data); // data: { scheduleId, headCount }
           resetSelectedDate(); //🐛이거 해도 제출후 다시 열어보면, 이전 선택 날짜가 칠해져있음...뭔가 리렌더링 기회가 없는건가
           setSelectedTime('');
           reset(); // 제출 후 폼 초기화
@@ -111,7 +108,7 @@ const ReservationForm = ({
           </>
         )}
         {/* 데스크탑 - 캘린더 상단에 '0000/인' 표시 */}
-        {isDesktop && (
+        {isDesktop && price && (
           <p className="mb-[2.4rem] flex items-center gap-[0.6rem]">
             <span className="inline-block text-[1.8rem] leading-none font-bold text-gray-950">
               ₩{formatPrice(price)}
@@ -217,15 +214,10 @@ const ReservationForm = ({
               }}
             />
             {/* 예약 시간 선택지 */}
-            {/* 만약 예약가능 선택지 없으면 "해당 날짜에 예약 가능한 시간대가 없습니다" */}
             <Controller
               name="scheduleId"
               control={control}
               rules={{ required: '예약 시간을 선택해 주세요' }}
-              // defaultValue=""
-              // rules={{
-              //   validate: (value) => value !== '' || '예약 시간을 선택해 주세요',
-              // }}
               render={({ field }) => {
                 return (
                   <section
@@ -246,13 +238,13 @@ const ReservationForm = ({
                       예약 가능한 시간
                     </label>
                     <div>
-                      {schedulesInDate.length === 0 && (
+                      {schedulesInDate?.length === 0 && (
                         <p className="text-[1.6rem] text-gray-900">
                           예약 가능한 날짜를 선택해주세요
                         </p>
                       )}
                       <div className="flex flex-col gap-[1.2rem]">
-                        {schedulesInDate.map((schedule) => {
+                        {schedulesInDate?.map((schedule) => {
                           const isSelected = field.value === schedule.id;
                           return (
                             <div key={schedule.id}>
@@ -291,7 +283,6 @@ const ReservationForm = ({
         <section
           className={cn(
             isDesktop ? '' : appear ? 'order-2' : 'order-1 pb-[1.6rem]',
-            // 'w-full bg-white lg:hidden', - 불필요한 코드인듯????
             'flex flex-col items-center justify-center',
             'lg:flex-row lg:justify-between',
           )}
@@ -309,9 +300,11 @@ const ReservationForm = ({
               {isDesktop && (
                 <span className="text-[2rem] text-gray-700">총 합계</span>
               )}
-              <span className="inline-block text-[1.8rem] leading-none font-bold text-gray-950">
-                ₩{formatPrice(price * getValues('headCount'))}
-              </span>
+              {price && (
+                <span className="inline-block text-[1.8rem] leading-none font-bold text-gray-950">
+                  ₩{formatPrice(price * getValues('headCount'))}
+                </span>
+              )}
               {!isDesktop && (
                 <span className="inline-block text-[1.6rem] leading-none text-gray-800">
                   / {getValues('headCount')}명

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import Dropdown from '@/shared/components/dropdown';
 
-const OwnerDropdown = ({ ownerId }: { ownerId: number }) => {
+const OwnerDropdown = ({ ownerId }: { ownerId: number | undefined }) => {
   const { user } = useAuthStore();
   const isOwner = user?.id === String(ownerId);
 

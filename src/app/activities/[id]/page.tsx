@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { notFound, useParams } from 'next/navigation';
 
 import AddressWithMap from '@/features/activityId/components/map/address-with-map';
 import OwnerDropdown from '@/features/activityId/components/owner-drop-down';
@@ -9,37 +10,36 @@ import Reviews from '@/features/activityId/components/reviews';
 import Star from '@/features/activityId/components/star';
 import SubImages from '@/features/activityId/components/sub-images';
 import { activityIdStyle } from '@/features/activityId/libs/constants/variants';
-import { pageData } from '@/features/activityId/libs/mockPageData';
+import { useActivityIdQuery } from '@/features/activityId/libs/hooks/useActivityIdQuery';
+import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 
 // TODO
 // 🐛 1.  calendar-for-form에서 클릭 시 id 저장하는 코드 제거하기 O
-// 2. 시간까지 클릭하면, 날짜,시작시간,끝시간 일치하는 객체 찾는 로직으로 구현 X --> 어차피 날짜 선택지 표시하려면, 날짜 선택 시점에 관련 array로 filter해야함
 // 3. isDesktop활용하여, 캘린더를 모달로 감싸서 사용 O
-// * 예약신청 리퀘스트 형식
-//    "scheduleId": 0,
-//    "headCount": 0 - 참여 인원
 // * mockData pageID = 5192
 
 const ActivityPage = () => {
-  // const { id } = useParams();
-  // const { data } = useActivityIdQuery(id);
-  const data = pageData;
-  console.log('data:', data);
+  const { id } = useParams();
+  const { data, isLoading, isError, error } = useActivityIdQuery(id);
 
-  const schedules = pageData.schedules;
-  const images = [
-    '/images/sad-laptop.svg',
-    '/images/warning.svg',
-    // '/images/icons/logo.svg',
-    // '/images/icons/fire.svg',
-  ];
+  const schedules = data?.schedules;
+  const images = data?.subImages;
 
+  if (isError) {
+    console.error('에러 발생:', error);
+    if (error.message === 'Request failed with status code 404') {
+      notFound();
+    }
+  }
+
+  if (isLoading) return <LoadingSpinner />;
   return (
     <div className="flex-center flex-col p-[2.4rem]">
       <div>
         <div className="flex flex-col gap-[2rem] md:gap-[2.4rem] lg:flex-row lg:gap-[4rem]">
           <SubImages images={images} />
           <div className="relative">
+            {/* 타이틀 헤더 */}
             <header className="order-2 lg:w-[41rem]">
               <div className="mt-[2rem] flex items-start justify-between">
                 <div>
@@ -67,25 +67,29 @@ const ActivityPage = () => {
                 <p>{data?.address}</p>
               </div>
             </header>
-            <section className="lg:absolute lg:-top-[42rem] lg:left-0">
-              <ReservationModal scheduleArray={schedules} price={data?.price} />
+            {/* 체험 예약 캘린더 */}
+            <section className="lg:absolute lg:top-[21rem] lg:left-0">
+              <ReservationModal
+                scheduleArray={schedules}
+                price={data?.price}
+                activityId={Number(id)}
+              />
             </section>
           </div>
         </div>
         <div className="lg:w-[67rem]">
-          {/* ✅ info title */}
           <hr className="mt-[2rem] mb-[2rem]" />
-          {/* ✅ 체험 설명 */}
+          {/* 체험 설명 */}
           <section>
             <h2 className={activityIdStyle.h2}>체험 설명</h2>
             <p className={activityIdStyle.content}>{data?.description}</p>
           </section>
           <hr className="mt-[2rem] mb-[2rem]" />
-          {/* ✅ 오시는 길 */}
+          {/* 오시는 길 */}
           <AddressWithMap address={data?.address} />
           <hr className="mb-[2rem] lg:mb-[4rem]" />
-          {/* ✅ 체험 후기 */}
-          <Reviews />
+          {/* 체험 후기 */}
+          <Reviews activityId={Number(id)} />
         </div>
       </div>
     </div>

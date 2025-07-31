@@ -6,15 +6,15 @@ import { useState } from 'react';
 
 import Star from '@/features/activityId/components/star';
 import { activityIdStyle } from '@/features/activityId/libs/constants/variants';
-import { mockReviewData } from '@/features/activityId/libs/mockReviewData';
+import { useReviewsQuery } from '@/features/activityId/libs/hooks/useReviewsQuery';
 import { formatRating } from '@/features/activityId/libs/utils/formatRating';
 import Pagination from '@/shared/components/pagination/pagination';
 import { cn } from '@/shared/libs/cn';
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
 
-const Reviews = () => {
+const Reviews = ({ activityId }: { activityId: number }) => {
   const [page, setPage] = useState(1);
-  const data = mockReviewData;
+  const { data } = useReviewsQuery(activityId, { page: page, size: 3 });
   return (
     <>
       <section
@@ -23,9 +23,11 @@ const Reviews = () => {
       >
         <header className="flex items-center gap-[0.8rem]">
           <h2 className={activityIdStyle.h2}>체험 후기</h2>
-          <p className="text-[1.4rem] font-semibold text-gray-600">
-            {formatPrice(data?.totalCount)}개
-          </p>
+          {data && (
+            <p className="text-[1.4rem] font-semibold text-gray-600">
+              {formatPrice(data?.totalCount)}개
+            </p>
+          )}
         </header>
         <h3 className="flex-center mb-[3rem] flex-col gap-[0.6rem]">
           <span className="block text-[2.4rem] font-semibold text-gray-950">
@@ -36,17 +38,18 @@ const Reviews = () => {
           </span>
           <div className="flex-center">
             <Star />
-            <span className="ml-0.5 text-[1.4rem] font-medium text-gray-600">
-              {formatPrice(data?.totalCount)}개 후기
-            </span>
+            {data && (
+              <span className="ml-0.5 text-[1.4rem] font-medium text-gray-600">
+                {formatPrice(data?.totalCount)}개 후기
+              </span>
+            )}
           </div>
         </h3>
       </section>
 
       {/* 후기 리스트 - 따로 api 호출 필요 */}
-
       <ul>
-        {data.reviews.map((review, idx) => {
+        {data?.reviews.map((review, idx) => {
           return (
             <li key={idx}>
               <article
@@ -79,13 +82,14 @@ const Reviews = () => {
           );
         })}
       </ul>
-
-      <Pagination
-        totalPages={data.totalCount}
-        currentPage={page}
-        setPage={setPage}
-        className="mb-[7.5rem] justify-center lg:mb-[17rem]"
-      />
+      {data?.totalCount && (
+        <Pagination
+          totalPages={data?.totalCount}
+          currentPage={page}
+          setPage={setPage}
+          className="mb-[7.5rem] justify-center lg:mb-[17rem]"
+        />
+      )}
     </>
   );
 };

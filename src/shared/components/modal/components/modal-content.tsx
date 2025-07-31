@@ -21,10 +21,10 @@ const ModalContent = ({
   return (
     <>
       {/* 모달을 중앙정렬 하기 위한 div 태그*/}
+
       <div
         className={cn(
-          isCenter && 'flex-center pointer-events-none fixed inset-0',
-          'z-99', //added
+          isCenter && 'flex-center pointer-events-none fixed inset-0 z-99',
         )}
       >
         {/* 모달 */}

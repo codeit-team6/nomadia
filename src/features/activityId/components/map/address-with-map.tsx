@@ -1,7 +1,7 @@
 import KakaoMap from '@/features/activityId/components/map/kakao-map';
 import { activityIdStyle } from '@/features/activityId/libs/constants/variants';
 
-const AddressWithMap = ({ address }: { address: string }) => {
+const AddressWithMap = ({ address }: { address: string | undefined }) => {
   return (
     <>
       <section className="flex flex-col gap-[0.8rem]">
@@ -11,7 +11,7 @@ const AddressWithMap = ({ address }: { address: string }) => {
           id="map"
           className="mb-[2rem] h-[18rem] w-full overflow-hidden rounded-[1.6rem] md:h-[38rem] lg:mb-[4rem] lg:h-[45rem] lg:rounded-[2.4rem]"
         >
-          <KakaoMap />
+          <KakaoMap address={address} />
         </div>
       </section>
     </>
