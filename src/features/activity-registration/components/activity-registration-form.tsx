@@ -17,7 +17,10 @@ import { useRegistrationMutation } from '@/features/activity-registration/libs/h
 import { FormInput } from '@/shared/components/form-input/form-input';
 import Modal from '@/shared/components/modal/components';
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
-import { ActivityRegistrationParams, Schedule } from '@/shared/types/activity';
+import {
+  ActivityRegistrationFormData,
+  ActivityRegistrationParams,
+} from '@/shared/types/activity';
 
 // 업데이트된 스키마 - schedules 배열로 변경
 const registerSchema = z.object({
@@ -50,17 +53,6 @@ const registerSchema = z.object({
     .min(1, { message: '소개 이미지를 등록해 주세요.' }),
 });
 
-type UpdatedFormData = {
-  title: string;
-  category: string;
-  address: string;
-  description: string;
-  price: number;
-  schedules: Schedule[];
-  bannerImages: string;
-  subImages: string[];
-};
-
 const ActivityRegistrationForm = () => {
   const {
     register,
@@ -68,7 +60,7 @@ const ActivityRegistrationForm = () => {
     watch,
     setValue,
     formState: { errors },
-  } = useForm<UpdatedFormData>({
+  } = useForm<ActivityRegistrationFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       schedules: [],
@@ -81,7 +73,7 @@ const ActivityRegistrationForm = () => {
   const { openModal, closeModal } = useModalStore();
   const router = useRouter();
 
-  const onSubmit = (data: UpdatedFormData) => {
+  const onSubmit = (data: ActivityRegistrationFormData) => {
     // 모든 스케줄의 시간 유효성 검증
     const hasInvalidSchedules = data.schedules.some((schedule) => {
       const startIndex = TIME_OPTIONS.findIndex(

@@ -25,9 +25,7 @@ export interface ActivityBase {
  */
 export interface ActivityRegistrationFormData
   extends Omit<ActivityBase, 'bannerImageUrl'> {
-  date: string;
-  startTime: string;
-  endTime: string;
+  schedules: Schedule[];
   bannerImages: string; // 배너 이미지 URL (단일 이미지)
   subImages: string[];
 }
