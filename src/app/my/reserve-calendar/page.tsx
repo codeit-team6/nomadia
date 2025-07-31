@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 import { getActListApi } from '@/features/activities/libs/api/getActListApi';
 import { getReservationsByMonthApi } from '@/features/activities/libs/api/getReserveMonthApi';
+import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import CalendarWithReservations from '@/shared/components/calendar/components/calendar-with-reservations';
 import { MonthReservations } from '@/shared/components/calendar/libs/types/data';
 import Dropdown from '@/shared/components/dropdown';
@@ -17,6 +18,8 @@ const ReserveCalendarPage = () => {
   const [reservationArray, setReservationArray] = useState<MonthReservations[]>(
     [],
   );
+  const { user } = useAuthStore();
+  const userId = user?.id;
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivityTitle, setSelectedActivityTitle] =
     useState<string>('내가 등록한 체험 선택');
@@ -39,18 +42,21 @@ const ReserveCalendarPage = () => {
   };
 
   useEffect(() => {
-    if (!shouldFetch) return;
+    if (!shouldFetch || !userId) return;
 
     (async () => {
       try {
         const data = await getActListApi();
-        setActivities(data.activities || []);
+        const myActivities = (data.activities || []).filter(
+          (activity) => activity.userId === Number(userId),
+        );
+        setActivities(myActivities);
       } catch (error) {
         console.error('내 체험 리스트 조회 실패', error);
       }
       setShouldFetch(false);
     })();
-  }, [shouldFetch]);
+  }, [shouldFetch, userId]);
 
   const handleSelectActivity = (id: string | number, title: string) => {
     setSelectedActivityTitle(title);
@@ -108,7 +114,7 @@ const ReserveCalendarPage = () => {
       >
         {(close) => (
           <ul className="py-3">
-            {activities.length === 0 && <p>체험이 없습니다.</p>}
+            {activities.length === 0 && <p>등록한 체험이 없습니다.</p>}
             {activities.map((act) => (
               <button
                 key={act.id}
