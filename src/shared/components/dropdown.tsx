@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 interface DropdownProps {
   trigger: React.ReactNode;
-  children: React.ReactNode;
+  children: React.ReactNode | ((close: () => void) => React.ReactNode);
   className?: string;
   dropdownClassName?: string;
 }
@@ -47,7 +47,9 @@ const Dropdown: React.FC<DropdownProps> = ({
         <div
           className={`absolute z-[98] mt-[1.5rem] ${dropdownClassName} ${className} `}
         >
-          {children}
+          {typeof children === 'function'
+            ? children(() => setIsOpen(false))
+            : children}
         </div>
       )}
     </div>
