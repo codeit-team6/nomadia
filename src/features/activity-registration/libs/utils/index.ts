@@ -1,3 +1,5 @@
+import { Schedule } from '@/shared/types/activity';
+
 /**
  * 체험 등록 관련 유틸리티 함수들
  */
@@ -45,17 +47,7 @@ export const isValidImageUrl = (url: string): boolean => {
  * @param schedules - 스케줄 배열
  * @returns 정규화된 스케줄 배열
  */
-export const normalizeSchedules = (
-  schedules: Array<{
-    date: string;
-    startTime: string;
-    endTime: string;
-  }>,
-): Array<{
-  date: string;
-  startTime: string;
-  endTime: string;
-}> => {
+export const normalizeSchedules = (schedules: Schedule[]): Schedule[] => {
   return schedules
     .filter(
       (schedule) => schedule.date && schedule.startTime && schedule.endTime,
