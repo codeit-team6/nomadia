@@ -7,12 +7,8 @@ import Modal from '@/shared/components/modal/components';
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
 
 export const DeleteConfirmModal = () => {
-  const { openModal, activeReservationId, closeModal } = useModalStore();
+  const { activeReservationId, closeModal } = useModalStore();
   const queryClient = useQueryClient();
-
-  if (!openModal) {
-    return null;
-  }
 
   const handleConfirm = async () => {
     if (!activeReservationId) return;

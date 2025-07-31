@@ -19,6 +19,9 @@ export const getMyActivities = async (
 
 // 내 체험 삭제 api
 export const deleteActivities = async (activityId: number) => {
+  if (!activityId || activityId <= 0) {
+    throw new Error('유효하지 않은 활동 Id입니다.');
+  }
   const response = await api.delete(`/my-activities/${activityId}`);
   return response.data;
 };
