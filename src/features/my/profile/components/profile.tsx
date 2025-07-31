@@ -165,6 +165,7 @@ const Profile = () => {
           type="email"
           disabled
           register={register}
+          className="text-gray-400"
         />
         <FormInput
           label="비밀번호"
