@@ -34,19 +34,6 @@ const DateScheduler = ({
     [key: string]: boolean;
   }>({});
 
-  // 중복 시간 체크 함수
-  const isDuplicateTime = useCallback(
-    (targetDate: string, targetStartTime: string, currentIndex: number) => {
-      return schedules.some(
-        (schedule, index) =>
-          index !== currentIndex &&
-          schedule.date === targetDate &&
-          schedule.startTime === targetStartTime,
-      );
-    },
-    [schedules],
-  );
-
   // 특정 날짜에 사용된 시작 시간들을 반환하는 함수
   const getUsedStartTimes = useCallback(
     (targetDate: string, excludeIndex: number) => {
@@ -106,25 +93,15 @@ const DateScheduler = ({
         if (i === index) {
           const updated = { ...schedule, [field]: value };
 
-          // 시작 시간 변경 시 중복 체크
-          if (field === 'startTime' && value && schedule.date) {
-            if (isDuplicateTime(schedule.date, value, index)) {
-              // 중복된 시간이면 업데이트하지 않고 경고 메시지 표시
-              alert(
-                '같은 날짜에 이미 선택된 시작 시간입니다. 다른 시간을 선택해주세요.',
-              );
-              return schedule; // 기존 값 유지
-            }
+          // 시작 시간 변경 시 종료 시간 자동 설정
+          if (field === 'startTime' && value) {
             updated.endTime = getNextHour(value);
           }
 
-          // 날짜 변경 시 시작 시간이 중복되는지 체크
-          if (field === 'date' && value && schedule.startTime) {
-            if (isDuplicateTime(value, schedule.startTime, index)) {
-              // 중복된다면 시작 시간과 종료 시간을 초기화
-              updated.startTime = '';
-              updated.endTime = '';
-            }
+          // 날짜 변경 시 시작 시간과 종료 시간 초기화 (새로운 날짜이므로)
+          if (field === 'date' && value) {
+            updated.startTime = '';
+            updated.endTime = '';
           }
 
           return updated;
@@ -134,7 +111,7 @@ const DateScheduler = ({
 
       onChange(updatedSchedules);
     },
-    [schedules, onChange, getNextHour, isDuplicateTime],
+    [schedules, onChange, getNextHour],
   );
 
   // 필드가 터치되었는지 확인하는 함수

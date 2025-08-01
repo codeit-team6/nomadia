@@ -76,12 +76,11 @@ const ImageUploadBase = ({
           return prev;
         });
 
-        // 업로드 중 상태 제거
+        // 업로드 중 상태 제거 (가장 오래된 것부터)
         setUploadingIndexes((prev) => {
           const newSet = new Set(prev);
-          const currentCount = [...(value as string[]), data.activityImageUrl]
-            .length;
-          newSet.delete(currentCount - 1);
+          const oldestIndex = Math.min(...Array.from(newSet));
+          newSet.delete(oldestIndex);
           return newSet;
         });
       }
@@ -108,13 +107,11 @@ const ImageUploadBase = ({
         return prev;
       });
 
-      // 업로드 중 상태 제거
+      // 업로드 중 상태 제거 (가장 오래된 것부터)
       setUploadingIndexes((prev) => {
         const newSet = new Set(prev);
-        const maxIndex = Math.max(...Array.from(newSet), -1);
-        if (maxIndex >= 0) {
-          newSet.delete(maxIndex);
-        }
+        const oldestIndex = Math.min(...Array.from(newSet));
+        newSet.delete(oldestIndex);
         return newSet;
       });
     }
