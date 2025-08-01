@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { getActListApi } from '@/features/activities/libs/api/getActListApi';
 import { getReservationsByMonthApi } from '@/features/activities/libs/api/getReserveMonthApi';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
+import { AuthGuard } from '@/shared/components/auth/AuthGuard';
 import CalendarWithReservations from '@/shared/components/calendar/components/calendar-with-reservations';
 import { MonthReservations } from '@/shared/components/calendar/libs/types/data';
 import Dropdown from '@/shared/components/dropdown';
@@ -160,4 +161,10 @@ const ReserveCalendarPage = () => {
   );
 };
 
-export default ReserveCalendarPage;
+export default function GuardReserveCalendarPage() {
+  return (
+    <AuthGuard>
+      <ReserveCalendarPage />
+    </AuthGuard>
+  );
+}
