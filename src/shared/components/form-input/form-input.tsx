@@ -1,11 +1,16 @@
+import { Search, X } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
+import DaumPostcode from 'react-daum-postcode';
 import {
   FieldError,
   FieldValues,
   Path,
   UseFormRegister,
 } from 'react-hook-form';
+
+import Modal from '@/shared/components/modal/components';
+import { useModalStore } from '@/shared/libs/stores/useModalStore';
 
 /**
  * @description react-hook-form 과 함께 쓰는 공통 입력 컴포넌트
@@ -24,8 +29,10 @@ interface FormInputProps<T extends FieldValues> {
   label: string;
   name: Path<T>;
   register: UseFormRegister<T>;
+  setValue?: (name: Path<T>, value: string) => void;
+  watch?: (name: Path<T>) => string;
   error?: FieldError;
-  inputType?: 'input' | 'textarea' | 'select' | 'number' | 'file';
+  inputType?: 'input' | 'textarea' | 'select' | 'number' | 'address';
   options?: Array<{ value: string; label: string }>;
   rows?: number;
   type?: string;
@@ -38,6 +45,8 @@ export const FormInput = <T extends FieldValues>({
   label,
   name,
   register,
+  setValue,
+  watch,
   error,
   inputType = 'input',
   options = [],
@@ -49,6 +58,8 @@ export const FormInput = <T extends FieldValues>({
 }: FormInputProps<T>) => {
   const [showPassword, setShowPassword] = useState(false);
   const isPasswordField = type === 'password';
+
+  const { openModal, closeModal } = useModalStore();
 
   // 공통 스타일 클래스
   const baseInputClass = `w-full bg-white rounded-[1.2rem] border px-[1.6rem] text-[1.4rem] focus:outline-0 md:text-[1.6rem] ${
@@ -126,6 +137,53 @@ export const FormInput = <T extends FieldValues>({
               }
             }}
           />
+        );
+
+      case 'address':
+        return (
+          <div className="relative">
+            <button
+              type="button"
+              id={name}
+              className={`${baseInputClass} flex h-[4.4rem] cursor-pointer items-center justify-between md:h-[4.8rem]`}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                openModal();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  openModal();
+                }
+              }}
+              aria-label={placeholder}
+            >
+              <span className="flex-1 text-left">
+                {watch ? watch(name) || placeholder : placeholder}
+              </span>
+              {watch && watch(name) ? (
+                <X className="h-[2rem] w-[2rem] text-gray-500 md:h-[2.4rem] md:w-[2.4rem]" />
+              ) : (
+                <Search className="h-[2rem] w-[2rem] text-gray-500 md:h-[2.4rem] md:w-[2.4rem]" />
+              )}
+            </button>
+            <Modal type="custom">
+              <div>
+                <DaumPostcode
+                  onComplete={(data) => {
+                    // 주소 선택 완료 시 입력 필드에 값 설정
+                    const fullAddress = data.address;
+                    if (setValue) {
+                      setValue(name, fullAddress);
+                    }
+                    closeModal();
+                  }}
+                />
+              </div>
+            </Modal>
+          </div>
         );
 
       default: // input
