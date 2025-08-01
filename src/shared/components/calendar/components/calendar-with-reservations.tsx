@@ -56,7 +56,8 @@ const CalendarWithReservations = ({
     setDate(day);
     setSelectedDate(year, month, day);
     if (onCellClick) {
-      onCellClick();
+      const dateStr = formatDateToYMD(new Date(year, month, day));
+      onCellClick(dateStr);
     }
   };
 
