@@ -1,9 +1,18 @@
 import Image from 'next/image';
 import { useCallback, useEffect } from 'react';
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { TIME_OPTIONS } from '@/features/activity-registration/libs/constants/formOption';
 import { validateTimeRange } from '@/features/activity-registration/libs/utils';
-import { Schedule } from '@/shared/types/activity';
+import {
+  getTodayDateString,
+  hasDuplicateStartTime,
+} from '@/shared/libs/utils/parseDate';
+import {
+  ActivityRegistrationFormData,
+  Schedule,
+} from '@/shared/types/activity';
 
 interface DateSchedulerProps {
   schedules: Schedule[];
@@ -11,9 +20,17 @@ interface DateSchedulerProps {
   errors?: {
     schedules?: { message?: string };
   };
+  register?: UseFormRegister<ActivityRegistrationFormData>;
+  formErrors?: FieldErrors<ActivityRegistrationFormData>;
 }
 
-const DateScheduler = ({ schedules, onChange, errors }: DateSchedulerProps) => {
+const DateScheduler = ({
+  schedules,
+  onChange,
+  errors,
+  register,
+  formErrors,
+}: DateSchedulerProps) => {
   const getNextHour = useCallback((startTime: string): string => {
     const currentIndex = TIME_OPTIONS.findIndex(
       (option) => option.value === startTime,
@@ -58,6 +75,12 @@ const DateScheduler = ({ schedules, onChange, errors }: DateSchedulerProps) => {
         return schedule;
       });
 
+      // 중복 시간 검증
+      if (hasDuplicateStartTime(updatedSchedules)) {
+        toast.error('같은 날짜의 시작 시간이 같으면 안됩니다.');
+        return;
+      }
+
       onChange(updatedSchedules);
     },
     [schedules, onChange, getNextHour],
@@ -92,11 +115,17 @@ const DateScheduler = ({ schedules, onChange, errors }: DateSchedulerProps) => {
                 </span>
                 <input
                   type="date"
+                  {...(register && register(`schedules.${index}.date`))}
                   value={schedule.date}
+                  min={getTodayDateString()}
                   onChange={(e) =>
                     updateSchedule(index, 'date', e.target.value)
                   }
-                  className="h-[5.4rem] w-full rounded-[1.2rem] border border-gray-200 px-[1.6rem] text-[1.4rem] focus:outline-0 md:text-[1.6rem]"
+                  className={`h-[5.4rem] w-full rounded-[1.2rem] border px-[1.6rem] text-[1.4rem] focus:outline-0 md:text-[1.6rem] ${
+                    formErrors?.schedules?.[index]?.date
+                      ? 'border-red-500'
+                      : 'border-gray-200'
+                  }`}
                 />
               </div>
 
@@ -106,11 +135,17 @@ const DateScheduler = ({ schedules, onChange, errors }: DateSchedulerProps) => {
                 <div className="flex flex-col">
                   <div className="relative">
                     <select
+                      {...(register &&
+                        register(`schedules.${index}.startTime`))}
                       value={schedule.startTime}
                       onChange={(e) =>
                         updateSchedule(index, 'startTime', e.target.value)
                       }
-                      className="h-[5.4rem] w-[12.8rem] appearance-none rounded-[1.2rem] border border-gray-200 px-[1.6rem] pr-[4.8rem] text-[1.4rem] focus:outline-0 md:w-[12rem] lg:w-[15rem]"
+                      className={`h-[5.4rem] w-[12.8rem] appearance-none rounded-[1.2rem] border px-[1.6rem] pr-[4.8rem] text-[1.4rem] focus:outline-0 md:w-[12rem] lg:w-[15rem] ${
+                        formErrors?.schedules?.[index]?.startTime
+                          ? 'border-red-500'
+                          : 'border-gray-200'
+                      }`}
                     >
                       <option value="" disabled>
                         시작 시간
@@ -144,12 +179,16 @@ const DateScheduler = ({ schedules, onChange, errors }: DateSchedulerProps) => {
                 <div className="flex flex-col">
                   <div className="relative">
                     <select
+                      {...(register && register(`schedules.${index}.endTime`))}
                       value={schedule.endTime}
                       onChange={(e) =>
                         updateSchedule(index, 'endTime', e.target.value)
                       }
                       className={`h-[5.4rem] w-[12.8rem] appearance-none rounded-[1.2rem] border px-[1.6rem] pr-[4.8rem] text-[1.4rem] focus:outline-0 md:w-[12rem] lg:w-[15rem] ${
-                        isTimeRangeValid ? 'border-gray-200' : 'border-red-500'
+                        formErrors?.schedules?.[index]?.endTime ||
+                        !isTimeRangeValid
+                          ? 'border-red-500'
+                          : 'border-gray-200'
                       }`}
                     >
                       <option value="" disabled>
@@ -196,6 +235,15 @@ const DateScheduler = ({ schedules, onChange, errors }: DateSchedulerProps) => {
               </div>
             </div>
 
+            {/* 에러 메시지들 */}
+            <div className="flex flex-col gap-[0.4rem]">
+              {formErrors?.schedules?.[index]?.date && (
+                <p className="text-[1.2rem] font-medium text-red-500">
+                  {formErrors.schedules[index]?.date?.message}
+                </p>
+              )}
+            </div>
+
             {/* 시간 유효성 검증 에러 메시지 */}
             {!isTimeRangeValid && schedule.startTime && schedule.endTime && (
               <p className="text-[1.2rem] font-medium text-red-500">
@@ -208,7 +256,7 @@ const DateScheduler = ({ schedules, onChange, errors }: DateSchedulerProps) => {
 
       {/* 전체 에러 메시지 */}
       {errors?.schedules && (
-        <p className="text-[1.2rem] font-medium text-red-500">
+        <p className="mt-[0.8rem] text-[1.4rem] font-medium text-red-500">
           {errors.schedules.message}
         </p>
       )}

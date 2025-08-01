@@ -108,6 +108,9 @@ export const FormInput = <T extends FieldValues>({
             placeholder={placeholder}
             {...register(name, {
               setValueAs: (value) => {
+                if (!value || value.trim() === '') {
+                  return undefined;
+                }
                 const num = parseInt(value, 10);
                 return isNaN(num) ? undefined : num;
               },
@@ -118,7 +121,6 @@ export const FormInput = <T extends FieldValues>({
             min={0}
             onInput={(e) => {
               const target = e.target as HTMLInputElement;
-
               if (target.value.length > 8) {
                 target.value = target.value.slice(0, 8);
               }
@@ -175,7 +177,12 @@ export const FormInput = <T extends FieldValues>({
       {renderInputElement()}
       {error && (
         <p className="text-[1.2rem] font-medium text-red-500">
-          {error.message}
+          {inputType === 'number' &&
+          (error.message ===
+            'Invalid input: expected number, received undefined' ||
+            error.message === 'Expected number, received nan')
+            ? '금액을 작성해주세요'
+            : error.message}
         </p>
       )}
     </div>

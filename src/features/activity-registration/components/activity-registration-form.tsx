@@ -17,12 +17,8 @@ import { useRegistrationMutation } from '@/features/activity-registration/libs/h
 import { FormInput } from '@/shared/components/form-input/form-input';
 import Modal from '@/shared/components/modal/components';
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
-import {
-  ActivityRegistrationFormData,
-  ActivityRegistrationParams,
-} from '@/shared/types/activity';
+import { ActivityRegistrationParams } from '@/shared/types/activity';
 
-// 업데이트된 스키마 - schedules 배열로 변경
 const registerSchema = z.object({
   title: z.string().min(1, { message: '제목을 입력해 주세요.' }),
   category: z.string().min(1, { message: '카테고리를 선택해 주세요.' }),
@@ -36,22 +32,22 @@ const registerSchema = z.object({
     .max(FORM_CONSTRAINTS.PRICE.MAX, {
       message: `최대 ${FORM_CONSTRAINTS.PRICE.MAX.toLocaleString()}원 이하 입력해 주세요.`,
     }),
-  schedules: z
-    .array(
-      z.object({
-        date: z.string().min(1, { message: '날짜를 선택해 주세요.' }),
-        startTime: z.string().min(1, { message: '시작 시간을 선택해 주세요.' }),
-        endTime: z.string().min(1, { message: '종료 시간을 선택해 주세요.' }),
+  schedules: z.array(
+    z.object({
+      date: z.string().min(1, {
+        message: '예약 가능한 시간대는 최소 1개 이상 등록해주세요.',
       }),
-    )
-    .min(FORM_CONSTRAINTS.SCHEDULES.MIN_COUNT, {
-      message: '최소 하나의 시간대를 등록해 주세요.',
+      startTime: z.string().min(1, { message: '시작 시간을 선택해 주세요.' }),
+      endTime: z.string().min(1, { message: '종료 시간을 선택해 주세요.' }),
     }),
+  ),
   bannerImages: z.string().min(1, { message: '배너 이미지를 등록해 주세요.' }),
   subImages: z
     .array(z.string())
     .min(1, { message: '소개 이미지를 등록해 주세요.' }),
 });
+
+type FormData = z.infer<typeof registerSchema>;
 
 const ActivityRegistrationForm = () => {
   const {
@@ -60,7 +56,7 @@ const ActivityRegistrationForm = () => {
     watch,
     setValue,
     formState: { errors },
-  } = useForm<ActivityRegistrationFormData>({
+  } = useForm<FormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       schedules: [],
@@ -73,7 +69,7 @@ const ActivityRegistrationForm = () => {
   const { openModal, closeModal } = useModalStore();
   const router = useRouter();
 
-  const onSubmit = (data: ActivityRegistrationFormData) => {
+  const onSubmit = (data: FormData) => {
     // 모든 스케줄의 시간 유효성 검증
     const hasInvalidSchedules = data.schedules.some((schedule) => {
       const startIndex = TIME_OPTIONS.findIndex(
@@ -96,7 +92,7 @@ const ActivityRegistrationForm = () => {
       category: data.category,
       description: data.description,
       address: data.address,
-      price: data.price,
+      price: data.price as number,
       bannerImageUrl: data.bannerImages,
       schedules: data.schedules,
       subImageUrls: data.subImages,
@@ -177,6 +173,8 @@ const ActivityRegistrationForm = () => {
         schedules={watch('schedules') || []}
         onChange={(schedules) => setValue('schedules', schedules)}
         errors={{ schedules: errors.schedules }}
+        register={register}
+        formErrors={errors}
       />
 
       <BannerImageUpload
@@ -201,7 +199,7 @@ const ActivityRegistrationForm = () => {
         <button
           type="submit"
           disabled={registrationMutation.isPending}
-          className={`h-[4.1rem] w-[16rem] rounded-[1.2rem] text-center text-[1.4rem] font-bold text-white md:h-[4.8rem] md:w-[16rem] md:rounded-[1.6rem] md:text-[1.6rem] lg:h-[5.2rem] lg:w-[18rem] ${
+          className={`h-[4.1rem] w-[16rem] cursor-pointer rounded-[1.2rem] text-center text-[1.4rem] font-bold text-white md:h-[4.8rem] md:w-[16rem] md:rounded-[1.6rem] md:text-[1.6rem] lg:h-[5.2rem] lg:w-[18rem] ${
             registrationMutation.isPending
               ? 'cursor-not-allowed bg-gray-400'
               : 'bg-main hover:bg-blue-500'
