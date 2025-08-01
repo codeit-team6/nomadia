@@ -1,7 +1,9 @@
 'use client';
+import axios from 'axios';
 import { ArrowLeft, Minus, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { reservationFormStyle } from '@/features/activityId/libs/constants/variants';
 import { useIsTablet } from '@/features/activityId/libs/hooks/useIsTablet';
@@ -16,6 +18,7 @@ import {
   addReservation,
   getMyResertvation,
 } from '@/features/activityId/libs/utils/addReservation';
+import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import CalendarForForm from '@/shared/components/calendar/components/calendar-for-form';
 import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatDateToYMD';
 import { cn } from '@/shared/libs/cn';
@@ -51,6 +54,7 @@ const ReservationForm = ({
     year: String(year),
     month: String(month + 1).padStart(2, '0'),
   });
+  const { isLoggedIn } = useAuthStore();
 
   // 리액트훅폼
   const {
@@ -62,7 +66,7 @@ const ReservationForm = ({
     formState: { isValid },
   } = useForm<ReservationRequestBody>();
 
-  // 지난 날짜의 일정을 걸러냄
+  // 지난 날짜의 일정을 걸러냄 //오늘까지는 포함되는지 테스트 필요
   useEffect(() => {
     if (!data || isLoading || error) return;
 
@@ -110,6 +114,10 @@ const ReservationForm = ({
             },
             onError: (err) => {
               console.error('❌ 예약 실패:', err);
+              if (axios.isAxiosError(err)) {
+                const errorMessage = err.response?.data.message;
+                toast.error(`<예약 실패>❗️ ${errorMessage}`);
+              }
             },
           });
         })}
@@ -360,9 +368,10 @@ const ReservationForm = ({
 
           {/* 예약하기/확인 버튼 */}
           <button
+            disabled={!isLoggedIn}
             type="submit"
             className={cn(
-              isValid ? 'bg-main' : 'bg-gray-200',
+              isValid && isLoggedIn ? 'bg-main' : 'bg-gray-200',
               appear && !isValid ? 'bg-gray-300' : '',
               'mt-[1.2rem] w-full rounded-[1.4rem] py-[1.4rem] text-[1.6rem] font-bold text-white',
               'h-[5rem] lg:mt-0 lg:w-[13.5rem]',
@@ -392,7 +401,7 @@ const ReservationForm = ({
               }
             }}
           >
-            {!isDesktop && !appear ? '예약하기' : '확인'}
+            {isDesktop ? '예약하기' : !appear ? '예약하기' : '확인'}
           </button>
         </section>
       </form>
