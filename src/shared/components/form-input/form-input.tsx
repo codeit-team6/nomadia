@@ -1,4 +1,4 @@
-import { Search, X } from 'lucide-react';
+import { Search } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
@@ -75,7 +75,9 @@ export const FormInput = <T extends FieldValues>({
             id={name}
             rows={rows}
             placeholder={placeholder}
-            {...register(name)}
+            {...register(name, {
+              setValueAs: (value) => value, // 원본 값을 그대로 유지하여 엔터 문자 보존
+            })}
             className={`${baseInputClass} h-auto resize-none py-[1.2rem]`}
             {...rest}
           />
@@ -163,11 +165,7 @@ export const FormInput = <T extends FieldValues>({
               <span className="flex-1 text-left">
                 {watch ? watch(name) || placeholder : placeholder}
               </span>
-              {watch && watch(name) ? (
-                <X className="h-[2rem] w-[2rem] text-gray-500 md:h-[2.4rem] md:w-[2.4rem]" />
-              ) : (
-                <Search className="h-[2rem] w-[2rem] text-gray-500 md:h-[2.4rem] md:w-[2.4rem]" />
-              )}
+              <Search className="h-[2rem] w-[2rem] text-gray-500 md:h-[2.4rem] md:w-[2.4rem]" />
             </button>
             <Modal type="custom" extraClassName="md: w-[60rem] h-[50rem]">
               <div>
