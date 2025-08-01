@@ -4,16 +4,24 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { reservationFormStyle } from '@/features/activityId/libs/constants/variants';
+import { useIsTablet } from '@/features/activityId/libs/hooks/useIsTablet';
 import { useReservationMutation } from '@/features/activityId/libs/hooks/useReservationMutation';
+import { useSchedulesQuery } from '@/features/activityId/libs/hooks/useSchedulesQuery';
+import {
+  AvailableScheduleList,
+  TimeSlot,
+} from '@/features/activityId/libs/types/availableSchedule';
 import { ReservationRequestBody } from '@/features/activityId/libs/types/reservationType';
+import {
+  addReservation,
+  getMyResertvation,
+} from '@/features/activityId/libs/utils/addReservation';
 import CalendarForForm from '@/shared/components/calendar/components/calendar-for-form';
+import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatDateToYMD';
 import { cn } from '@/shared/libs/cn';
-import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
-
-import { Schedules } from '../libs/types/activityInfo';
 
 const CALENDAR_STYLES = {
   calendarWidth: 'md:w-[35.9rem] lg:w-[35rem]',
@@ -22,29 +30,27 @@ const CALENDAR_STYLES = {
 } as const;
 
 const ReservationForm = ({
-  scheduleArray,
   price,
   activityId,
 }: {
-  scheduleArray: Schedules[] | undefined;
   price: number | undefined;
   activityId: number;
 }) => {
   const { selectedDate, resetSelectedDate } = useCalendarStore();
-
   const [schedulesInDate, setSchedulesInDate] = useState<
-    Schedules[] | undefined
+    TimeSlot[] | undefined[] | undefined
   >([]);
   const [selectedTime, setSelectedTime] = useState('');
   const { appear, disappearModal, appearModal, isDesktop } = useModalStore();
   const [nextStep, setNextStep] = useState(false);
   const { mutate } = useReservationMutation(activityId);
-  // const { year, month } = useCalendarStore();
-
-  // const { data } = useSchedulesQuery((id = activityId), {
-  //   year: String(year),
-  //   month: String(month),
-  // });
+  const isTablet = useIsTablet();
+  const { year, month, setMonth, setYear } = useCalendarStore();
+  const [scheduledDate, setScheduledDate] = useState<AvailableScheduleList>();
+  const { data, isLoading, error } = useSchedulesQuery(activityId, {
+    year: String(year),
+    month: String(month + 1).padStart(2, '0'),
+  });
 
   // 리액트훅폼
   const {
@@ -56,24 +62,32 @@ const ReservationForm = ({
     formState: { isValid },
   } = useForm<ReservationRequestBody>();
 
+  // 지난 날짜의 일정을 걸러냄
+  useEffect(() => {
+    if (!data || isLoading || error) return;
+
+    const today = formatDateToYMD(new Date());
+    const notYetPassed = data?.filter((schedule) => schedule.date >= today);
+    setScheduledDate(notYetPassed);
+    console.log(today);
+  }, [data, isLoading, error]);
+
+  // 선택한 날짜가 바뀌면, 이전에 선택한 스케줄을 취소함. 새로운 날짜에 스케줄이 존재하면 TimeSlot선택지를 보여주기 위해 schedulesInDate 업데이트
   useEffect(() => {
     resetField('scheduleId');
-    const match = scheduleArray?.filter(
-      (schedule) => schedule.date === selectedDate,
-    );
-    setSchedulesInDate(match);
-  }, [selectedDate, scheduleArray, resetField]);
+    const match = data?.filter((schedule) => schedule.date === selectedDate);
+    const schedules = match?.flatMap((schedule) => schedule.times);
+    setSchedulesInDate(schedules);
+  }, [selectedDate, data, resetField]);
 
-  // 태블릿 화면 감지
-  const [isTablet, setIsTablet] = useState(false);
-  const { width } = useWindowSize();
+  // useEffect cleanup --> 컴포넌트 언마운트 시 캘린더 리셋
   useEffect(() => {
-    if (width && 1024 > width && width >= 768) {
-      setIsTablet(true);
-    } else {
-      setIsTablet(false);
-    }
-  }, [width]);
+    return () => {
+      const today = new Date();
+      setYear(today.getFullYear());
+      setMonth(today.getMonth());
+    };
+  }, [setMonth, setYear]);
 
   return (
     <>
@@ -83,12 +97,21 @@ const ReservationForm = ({
       {!appear && <hr className="lg:hidden" />}
       <div className="hidden">{activityId}</div>
       <form
+        // data: { scheduleId, headCount }
         onSubmit={handleSubmit((data) => {
           console.log('제출', data, typeof getValues('scheduleId'));
-          mutate(data); // data: { scheduleId, headCount }
-          resetSelectedDate(); //🐛이거 해도 제출후 다시 열어보면, 이전 선택 날짜가 칠해져있음...뭔가 리렌더링 기회가 없는건가
-          setSelectedTime('');
-          reset(); // 제출 후 폼 초기화
+          mutate(data, {
+            onSuccess: (res) => {
+              console.log('✅ 예약 성공:', res);
+              addReservation(data.scheduleId); //save id in localStorage
+              resetSelectedDate(); //🐛이거 해도 제출후 다시 열어보면, 이전 선택 날짜가 칠해져있음...뭔가 리렌더링 기회가 없는건가
+              setSelectedTime('');
+              reset(); // 제출 후 폼 초기화
+            },
+            onError: (err) => {
+              console.error('❌ 예약 실패:', err);
+            },
+          });
         })}
         className="shadow-experience-card flex flex-col overflow-auto p-[2.4rem] pb-[1.8rem] md:px-[3rem] lg:p-[3rem]"
       >
@@ -136,7 +159,7 @@ const ReservationForm = ({
             </h2>
             <div className="flex-center">
               <CalendarForForm
-                scheduleArray={scheduleArray}
+                scheduleArray={scheduledDate}
                 isForReservation={true}
                 calendarWidth={CALENDAR_STYLES.calendarWidth}
                 dayOfWeekStyle={CALENDAR_STYLES.dayOfWeekStyle}
@@ -245,16 +268,22 @@ const ReservationForm = ({
                       )}
                       <div className="flex flex-col gap-[1.2rem]">
                         {schedulesInDate?.map((schedule) => {
-                          const isSelected = field.value === schedule.id;
+                          const isSelected = field.value === schedule?.id;
+                          const didIBooked = getMyResertvation().find(
+                            (id) => id === schedule?.id,
+                          );
                           return (
-                            <div key={schedule.id}>
+                            <div key={schedule?.id}>
                               <button
                                 type="button"
                                 onClick={() => {
-                                  field.onChange(isSelected ? '' : schedule.id);
+                                  if (didIBooked) return;
+                                  field.onChange(
+                                    isSelected ? '' : schedule?.id,
+                                  );
                                   if (!isSelected) {
                                     setSelectedTime(
-                                      `${schedule.startTime}~${schedule.endTime}`,
+                                      `${schedule?.startTime}~${schedule?.endTime}`,
                                     );
                                   } else setSelectedTime('');
                                 }}
@@ -262,9 +291,16 @@ const ReservationForm = ({
                                   'flex-center border-sub w-full rounded-[1.2rem] border-2 py-[1.4rem] text-[1.4rem] text-gray-950',
                                   isSelected &&
                                     'text-main border-sub-300 bg-sub',
+                                  didIBooked && 'bg-gray-50 text-gray-600',
                                 )}
                               >
-                                {schedule.startTime}~{schedule.endTime}
+                                {didIBooked ? (
+                                  '내가 예약한 체험'
+                                ) : (
+                                  <>
+                                    {schedule?.startTime} ~ {schedule?.endTime}
+                                  </>
+                                )}
                               </button>
                             </div>
                           );
