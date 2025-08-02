@@ -1,0 +1,90 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Lighthouse CI
+        run: pnpm lighthouse:ci
+
+      - name: Upload Lighthouse results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-results
+          path: .lighthouseci/
+          retention-days: 30
+
+      - name: Comment PR with Lighthouse results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            try {
+              const resultsPath = '.lighthouseci/assertion-results.json';
+              if (fs.existsSync(resultsPath)) {
+                const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+                
+                let comment = '## 🚀 Lighthouse CI Results\n\n';
+                
+                if (results.length === 0) {
+                  comment += '✅ All Lighthouse checks passed!\n';
+                } else {
+                  comment += '⚠️ Some Lighthouse checks failed:\n\n';
+                  results.forEach(result => {
+                    const status = result.passed ? '✅' : '❌';
+                    comment += `${status} **${result.auditTitle}**: ${result.actual}ms (기준: ${result.expected}ms)\n`;
+                  });
+                }
+                
+                comment += '\n📊 [View detailed report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})';
+                
+                github.rest.issues.createComment({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: comment
+                });
+              }
+            } catch (error) {
+              console.log('Error creating comment:', error);
+            }
