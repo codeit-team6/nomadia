@@ -3,7 +3,7 @@ import { create } from 'zustand';
 interface ModalState {
   isModalOpen: boolean;
   modalType: 'confirm' | 'warning' | 'custom';
-  activeReservationId?: number | null;
+
   openModal: (reservationId?: number) => void;
   closeModal: () => void;
   setModalType: (type: 'confirm' | 'warning' | 'custom') => void;
@@ -13,19 +13,25 @@ interface ModalState {
   disappearModal: () => void;
   isDesktop: boolean | undefined;
   setIsDesktop: (state: boolean) => void;
-  //second modal
+  //second modal (using two modals at once)
   isSecondModalOpen: boolean;
   secondModalType: 'confirm' | 'warning' | 'custom';
-  openSecondModal: (reservationId?: number) => void;
+  openSecondModal: (reservationId?: number, name?: string) => void;
   closeSecondModal: () => void;
   setSecondModalType: (type: 'confirm' | 'warning' | 'custom') => void;
+  //using multiple modal
+  modalName: string | undefined;
+  setModalName: (id: string) => void;
+  //로직 관련 상태값
+  activeReservationId?: number | null;
+  scheduleId: number | null;
+  setScheduleId: (id: number | null) => void;
 }
 
 export const useModalStore = create<ModalState>((set) => ({
   // Modal
   isModalOpen: false,
   modalType: 'confirm',
-  activeReservationId: null, // 기본값
   openModal: (reservationId?: number) =>
     set({
       isModalOpen: true,
@@ -50,8 +56,9 @@ export const useModalStore = create<ModalState>((set) => ({
   //second modal
   isSecondModalOpen: false,
   secondModalType: 'confirm',
-  openSecondModal: (reservationId?: number) =>
+  openSecondModal: (reservationId, name) =>
     set({
+      modalName: name,
       isSecondModalOpen: true,
       // reservationId가 전달되면 설정하고, 없으면 기존처럼 동작
       ...(reservationId !== undefined && {
@@ -65,4 +72,12 @@ export const useModalStore = create<ModalState>((set) => ({
     }),
   setSecondModalType: (type: 'confirm' | 'warning' | 'custom') =>
     set({ secondModalType: type }),
+  // using multiple modal
+  modalName: undefined,
+  setModalName: (id) => set({ modalName: id }),
+  // <로직 관련> ----------------------------------------------------
+  activeReservationId: null, // 기본값
+  // 로컬스토리지에 전달하기 위한 스케줄 아이디 저장(예약취소 시)
+  scheduleId: null,
+  setScheduleId: (id) => set({ scheduleId: id }),
 }));

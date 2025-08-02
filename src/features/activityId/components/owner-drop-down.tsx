@@ -20,7 +20,7 @@ const OwnerDropdown = ({
 }) => {
   const { user } = useAuthStore();
   const isOwner = user?.id === ownerId;
-  const { openSecondModal, closeSecondModal, activeReservationId } =
+  const { openSecondModal, closeSecondModal, activeReservationId, modalName } =
     useModalStore();
 
   // delete confirm
@@ -67,8 +67,7 @@ const OwnerDropdown = ({
             <hr />
             <button
               onClick={() => {
-                openSecondModal(activityId);
-                closeSecondModal();
+                openSecondModal(activityId, 'delete');
               }}
               className="h-[5.4rem] w-[9.3rem] px-[1.8rem] text-[1.6rem] hover:bg-red-100 hover:text-red-500"
             >
@@ -77,21 +76,23 @@ const OwnerDropdown = ({
           </div>
         </Dropdown>
       )}
-      <SecondModal type="warning" extraClassName="md:pb-[1rem]">
-        <Modal.Header>체험을 삭제하시겠습니까?</Modal.Header>
-        <div className="mb-0 flex w-[23.4rem] gap-2 md:w-[28.2rem] md:gap-3">
-          <Modal.Button
-            color="white"
-            ariaLabel="아니요"
-            onClick={closeSecondModal}
-          >
-            아니요
-          </Modal.Button>
-          <Modal.Button color="blue" ariaLabel="네" onClick={handleConfirm}>
-            네
-          </Modal.Button>
-        </div>
-      </SecondModal>
+      {modalName === 'delete' && (
+        <SecondModal type="warning" extraClassName="md:pb-[1rem]">
+          <Modal.Header>체험을 삭제하시겠습니까?</Modal.Header>
+          <div className="mb-0 flex w-[23.4rem] gap-2 md:w-[28.2rem] md:gap-3">
+            <Modal.Button
+              color="white"
+              ariaLabel="아니요"
+              onClick={closeSecondModal}
+            >
+              아니요
+            </Modal.Button>
+            <Modal.Button color="blue" ariaLabel="네" onClick={handleConfirm}>
+              네
+            </Modal.Button>
+          </div>
+        </SecondModal>
+      )}
     </>
   );
 };
