@@ -19,9 +19,8 @@ interface ModalState {
   openSecondModal: (reservationId?: number, name?: string) => void;
   closeSecondModal: () => void;
   setSecondModalType: (type: 'confirm' | 'warning' | 'custom') => void;
-  //using multiple modal
-  modalName: string | undefined;
-  setModalName: (id: string) => void;
+  //using multiple second modal //second modal에서 사용 중. openSecondModal 시 바로 name 받아서 설정함
+  secondModalName: string | undefined;
   //로직 관련 상태값
   activeReservationId?: number | null;
   scheduleId: number | null;
@@ -58,7 +57,7 @@ export const useModalStore = create<ModalState>((set) => ({
   secondModalType: 'confirm',
   openSecondModal: (reservationId, name) =>
     set({
-      modalName: name,
+      secondModalName: name,
       isSecondModalOpen: true,
       // reservationId가 전달되면 설정하고, 없으면 기존처럼 동작
       ...(reservationId !== undefined && {
@@ -72,9 +71,8 @@ export const useModalStore = create<ModalState>((set) => ({
     }),
   setSecondModalType: (type: 'confirm' | 'warning' | 'custom') =>
     set({ secondModalType: type }),
-  // using multiple modal
-  modalName: undefined,
-  setModalName: (id) => set({ modalName: id }),
+  // using multiple second modal
+  secondModalName: undefined,
   // <로직 관련> ----------------------------------------------------
   activeReservationId: null, // 기본값
   // 로컬스토리지에 전달하기 위한 스케줄 아이디 저장(예약취소 시)

@@ -20,8 +20,12 @@ const OwnerDropdown = ({
 }) => {
   const { user } = useAuthStore();
   const isOwner = user?.id === ownerId;
-  const { openSecondModal, closeSecondModal, activeReservationId, modalName } =
-    useModalStore();
+  const {
+    openSecondModal,
+    closeSecondModal,
+    activeReservationId,
+    secondModalName,
+  } = useModalStore();
 
   // delete confirm
   const queryClient = useQueryClient();
@@ -76,7 +80,7 @@ const OwnerDropdown = ({
           </div>
         </Dropdown>
       )}
-      {modalName === 'delete' && (
+      {secondModalName === 'delete' && (
         <SecondModal type="warning" extraClassName="md:pb-[1rem]">
           <Modal.Header>체험을 삭제하시겠습니까?</Modal.Header>
           <div className="mb-0 flex w-[23.4rem] gap-2 md:w-[28.2rem] md:gap-3">

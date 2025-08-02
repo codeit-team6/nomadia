@@ -21,6 +21,8 @@ import {
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import CalendarForForm from '@/shared/components/calendar/components/calendar-for-form';
 import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatDateToYMD';
+import Modal from '@/shared/components/modal/components';
+import SecondModal from '@/shared/components/modal/components/second-modal/second-modal';
 import { cn } from '@/shared/libs/cn';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
@@ -48,7 +50,15 @@ const ReservationForm = ({
     setYear,
     resetDate,
   } = useCalendarStore();
-  const { appear, disappearModal, appearModal, isDesktop } = useModalStore();
+  const {
+    appear,
+    disappearModal,
+    appearModal,
+    isDesktop,
+    secondModalName,
+    closeSecondModal,
+    openSecondModal,
+  } = useModalStore();
   const [schedulesInDate, setSchedulesInDate] = useState<
     TimeSlot[] | undefined
   >([]);
@@ -115,6 +125,7 @@ const ReservationForm = ({
           mutate(data, {
             onSuccess: (res) => {
               console.log('✅ 예약 성공:', res);
+              openSecondModal(undefined, 'success');
               addReservation(data.scheduleId); //save id in localStorage
               resetSelectedDate(); //🐛이거 해도 제출후 다시 열어보면, 이전 선택 날짜가 칠해져있음...:스타일링은 date 담당이기 떄문이었다.
               resetDate(); //이거까지 해야함
@@ -414,6 +425,20 @@ const ReservationForm = ({
           </button>
         </section>
       </form>
+      {secondModalName === 'success' && (
+        <SecondModal type="confirm" extraClassName="md:pb-[1rem]">
+          <Modal.Header>예약이 완료되었습니다.</Modal.Header>
+          <div className="w-[18rem] md:w-[20rem]">
+            <Modal.Button
+              color="blue"
+              ariaLabel="확인"
+              onClick={closeSecondModal}
+            >
+              확인
+            </Modal.Button>
+          </div>
+        </SecondModal>
+      )}
     </>
   );
 };
