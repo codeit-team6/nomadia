@@ -21,6 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const isMyPageRoot = pathname === '/my';
   const isActivityRegistration =
     pathname === '/my/my-activities/activity-registration';
+  const isActivityEdit = pathname.startsWith('/my/my-activities/activity-edit');
 
   const handleBackClick = () => {
     router.back();
@@ -48,7 +49,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       <aside
         className={
-          (isMobile && !isMyPageRoot) || isActivityRegistration ? 'hidden' : ''
+          (isMobile && !isMyPageRoot) ||
+          isActivityRegistration ||
+          isActivityEdit
+            ? 'hidden'
+            : ''
         }
       >
         <Sidebar />
