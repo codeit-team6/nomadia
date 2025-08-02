@@ -39,22 +39,29 @@ const ReservationForm = ({
   price: number | undefined;
   activityId: number;
 }) => {
-  const { selectedDate, resetSelectedDate } = useCalendarStore();
-  const [schedulesInDate, setSchedulesInDate] = useState<
-    TimeSlot[] | undefined[] | undefined
-  >([]);
-  const [selectedTime, setSelectedTime] = useState('');
+  const {
+    selectedDate,
+    resetSelectedDate,
+    year,
+    month,
+    setMonth,
+    setYear,
+    resetDate,
+  } = useCalendarStore();
   const { appear, disappearModal, appearModal, isDesktop } = useModalStore();
-  const [nextStep, setNextStep] = useState(false);
-  const { mutate } = useReservationMutation(activityId);
-  const isTablet = useIsTablet();
-  const { year, month, setMonth, setYear } = useCalendarStore();
+  const [schedulesInDate, setSchedulesInDate] = useState<
+    TimeSlot[] | undefined
+  >([]);
   const [scheduledDate, setScheduledDate] = useState<AvailableScheduleList>();
+  const [selectedTime, setSelectedTime] = useState('');
+  const [nextStep, setNextStep] = useState(false);
+  const isTablet = useIsTablet();
+  const { isLoggedIn } = useAuthStore();
+  const { mutate } = useReservationMutation(activityId);
   const { data, isLoading, error } = useSchedulesQuery(activityId, {
     year: String(year),
     month: String(month + 1).padStart(2, '0'),
   });
-  const { isLoggedIn } = useAuthStore();
 
   // 리액트훅폼
   const {
@@ -90,8 +97,9 @@ const ReservationForm = ({
       const today = new Date();
       setYear(today.getFullYear());
       setMonth(today.getMonth());
+      resetDate();
     };
-  }, [setMonth, setYear]);
+  }, [setMonth, setYear, resetDate]);
 
   return (
     <>
@@ -108,7 +116,8 @@ const ReservationForm = ({
             onSuccess: (res) => {
               console.log('✅ 예약 성공:', res);
               addReservation(data.scheduleId); //save id in localStorage
-              resetSelectedDate(); //🐛이거 해도 제출후 다시 열어보면, 이전 선택 날짜가 칠해져있음...뭔가 리렌더링 기회가 없는건가
+              resetSelectedDate(); //🐛이거 해도 제출후 다시 열어보면, 이전 선택 날짜가 칠해져있음...:스타일링은 date 담당이기 떄문이었다.
+              resetDate(); //이거까지 해야함
               setSelectedTime('');
               reset(); // 제출 후 폼 초기화
             },
