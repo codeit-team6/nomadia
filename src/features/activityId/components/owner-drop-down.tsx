@@ -23,7 +23,8 @@ const OwnerDropdown = ({
   const {
     openSecondModal,
     closeSecondModal,
-    activeReservationId,
+
+    activityId_secondModal,
     secondModalName,
   } = useModalStore();
 
@@ -31,9 +32,9 @@ const OwnerDropdown = ({
   const queryClient = useQueryClient();
   const router = useRouter();
   const handleConfirm = async () => {
-    if (!activeReservationId) return;
+    if (!activityId_secondModal) return;
     try {
-      await deleteActivities(activeReservationId);
+      await deleteActivities(activityId_secondModal);
       toast.success('삭제가 완료되었습니다.');
       await queryClient.invalidateQueries({ queryKey: ['activities'] });
       await queryClient.invalidateQueries({ queryKey: ['myActivities'] });

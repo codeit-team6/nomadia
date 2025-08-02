@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 import { modalContentClasses } from '@/shared/components/modal/libs/modalClasses';
@@ -39,17 +39,12 @@ const SecondModal = ({
     }
   }, [isSecondModalOpen, type, setSecondModalType]);
 
-  // 오버레이에 esc 이벤트 등록(closeModal)
+  // 모달에 먼저 포커스 -> esc동작 가능
+  const modalRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeSecondModal();
-    };
+    if (isSecondModalOpen && modalRef.current) modalRef.current.focus();
+  }, [isSecondModalOpen]);
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isSecondModalOpen, closeSecondModal, secondModalType]);
-
-  // return JSX
   if (isSecondModalOpen) {
     return createPortal(
       <>
@@ -63,6 +58,7 @@ const SecondModal = ({
         >
           {/* 모달 */}
           <div
+            ref={modalRef}
             className={cn(
               'pointer-events-auto rounded-[3rem] bg-white',
               modalContentClasses[secondModalType],
@@ -75,7 +71,7 @@ const SecondModal = ({
               }
             }}
             role="dialog"
-            tabIndex={-1}
+            tabIndex={0}
           >
             {/* 경고 이미지 */}
             {type === 'warning' && (

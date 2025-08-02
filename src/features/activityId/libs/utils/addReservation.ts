@@ -14,8 +14,10 @@ export const getMyResertvation = (): number[] => {
 
 export const removeReservation = (scheduleId: number | null) => {
   if (typeof window === 'undefined') return;
-  if (scheduleId === null)
+  if (scheduleId === null) {
     console.log('해당 스케줄은 "없는" 값으로, 로컬스토리지에서 삭제 못함.');
+    return;
+  }
 
   const saved = JSON.parse(
     localStorage.getItem('myReservation') || '[]',
