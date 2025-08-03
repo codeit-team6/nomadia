@@ -60,7 +60,7 @@ type FormData = z.infer<typeof registerSchema>;
 interface ActivityEditFormProps {
   activityId: ParamValue;
 }
-
+// activityId: ParamValue 를 받음 (동적 이동)
 const ActivityEditForm = ({ activityId }: ActivityEditFormProps) => {
   const {
     register,
@@ -80,6 +80,7 @@ const ActivityEditForm = ({ activityId }: ActivityEditFormProps) => {
   const [initialActivityData, setInitialActivityData] =
     useState<ActivityInfo | null>(null);
 
+  // activityId를 기반으로
   useEffect(() => {
     const fetchActivityData = async () => {
       try {
@@ -130,6 +131,11 @@ const ActivityEditForm = ({ activityId }: ActivityEditFormProps) => {
       return;
     }
 
+    if (!initialActivityData) {
+      toast.error('기존 체험 데이터를 불러오지 못했습니다.');
+      return;
+    }
+
     // 스케줄 처리 : 추가, 삭제 id 찾기
     const schedulesToAdd = data.schedules
       .filter((schedule) => !schedule.id)
@@ -140,7 +146,7 @@ const ActivityEditForm = ({ activityId }: ActivityEditFormProps) => {
         .filter((schedule) => schedule.id)
         .map((schedule) => schedule.id),
     );
-    const scheduleIdsToRemove = initialActivityData?.schedules
+    const scheduleIdsToRemove = initialActivityData.schedules
       .filter((schedule) => !currentScheduleIds.has(schedule.id))
       .map((schedule) => schedule.id);
 
@@ -152,7 +158,7 @@ const ActivityEditForm = ({ activityId }: ActivityEditFormProps) => {
     const subImageUrlsToAdd = data.subImages.filter(
       (url) => !initialSubImageUrls.has(url),
     );
-    const subImageIdsToRemove = initialActivityData?.subImages
+    const subImageIdsToRemove = initialActivityData.subImages
       .filter((img) => !currentImageUrls.has(img.imageUrl))
       .map((img) => img.id);
 
@@ -165,7 +171,7 @@ const ActivityEditForm = ({ activityId }: ActivityEditFormProps) => {
       address: data.address,
       bannerImageUrl: data.bannerImages,
       schedulesToAdd,
-      scheduleIdsToRemove,
+      schedulesToRemove: scheduleIdsToRemove,
       subImageUrlsToAdd,
       subImageIdsToRemove,
     };
