@@ -33,23 +33,22 @@ const ReserveCalendarPage = () => {
   const { month, setYear, setMonth } = useCalendarStore();
 
   useEffect(() => {
-    if (isDesktop) {
-      appearModal();
-    } else {
-      disappearModal();
-      setModalType(null);
-    }
-  }, [isDesktop, appearModal, disappearModal, setModalType]);
-
-  useEffect(() => {
     if (selectedActivityId) {
       setModalType('custom');
-      appearModal();
+      if (isDesktop) {
+        appearModal();
+      }
     } else {
       setModalType(null);
       disappearModal();
     }
-  }, [selectedActivityId, setModalType, appearModal, disappearModal]);
+  }, [
+    selectedActivityId,
+    isDesktop,
+    setModalType,
+    appearModal,
+    disappearModal,
+  ]);
 
   const handleDropdownOpen = () => {
     setShouldFetch(true);
