@@ -88,8 +88,10 @@ const AdaptiveModal = ({
         extraClassName={cn(
           !isDesktop &&
             'fixed bottom-0 left-0 w-full rounded-b-none transition-transform duration-300 ease-out',
+
           !isDesktop && (isVisible ? 'translate-y-0' : translateY),
           !isDefaultStyle && (!isVisible ? 'rounded-none' : ''),
+
           extraClassName,
         )}
         onClickOverlay={() => {
