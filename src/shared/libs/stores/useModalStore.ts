@@ -2,11 +2,18 @@ import { create } from 'zustand';
 
 interface ModalState {
   isModalOpen: boolean;
-  modalType: 'confirm' | 'warning' | 'custom';
+  modalType: 'confirm' | 'warning' | 'custom' | null;
   activeReservationId?: number | null;
   openModal: (reservationId?: number) => void;
   closeModal: () => void;
-  setModalType: (type: 'confirm' | 'warning' | 'custom') => void;
+  setModalType: (type: ModalState['modalType']) => void;
+
+  // NotificationModal
+  isNotificationOpen: boolean;
+  openNotification: () => void;
+  closeNotification: () => void;
+
+  // AdaptiveModal
   appear: boolean;
   appearModal: () => void;
   disappearModal: () => void;
@@ -17,12 +24,11 @@ interface ModalState {
 export const useModalStore = create<ModalState>((set) => ({
   // Modal
   isModalOpen: false,
-  modalType: 'confirm',
-  activeReservationId: null, // 기본값
+  modalType: null,
+  activeReservationId: null,
   openModal: (reservationId?: number) =>
     set({
       isModalOpen: true,
-      // reservationId가 전달되면 설정하고, 없으면 기존처럼 동작
       ...(reservationId !== undefined && {
         activeReservationId: reservationId,
       }),
@@ -32,12 +38,17 @@ export const useModalStore = create<ModalState>((set) => ({
       isModalOpen: false,
       activeReservationId: null,
     }),
-  setModalType: (type: 'confirm' | 'warning' | 'custom') =>
-    set({ modalType: type }),
+  setModalType: (type) => set({ modalType: type }),
+
+  // Notification 모달 관련
+  isNotificationOpen: false,
+  openNotification: () => set({ isNotificationOpen: true }),
+  closeNotification: () => set({ isNotificationOpen: false }),
+
   // AdaptiveModal
   appear: false,
-  appearModal: () => set({ appear: true }),
-  disappearModal: () => set({ appear: false }),
+  appearModal: () => set({ appear: true, modalType: 'custom' }),
+  disappearModal: () => set({ appear: false, modalType: null }),
   isDesktop: undefined,
   setIsDesktop: (state) => set({ isDesktop: state }),
 }));
