@@ -51,7 +51,7 @@ const Pagination = ({
   setPage,
   className = '',
 }: PaginationProps) => {
-  if (totalPages <= 0) return null;
+  if (totalPages <= 0) return;
 
   const PAGE_GROUP_SIZE = 5;
   const pageGroupNum = Math.ceil(currentPage / PAGE_GROUP_SIZE);
