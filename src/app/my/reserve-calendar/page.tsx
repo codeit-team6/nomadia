@@ -199,7 +199,7 @@ const ReserveCalendarPage = () => {
         </div>
 
         {selectedActivityId && (
-          <AdaptiveModal extraClassName="w-[34rem] h-[51.9rem] border border-gray-50 shadow-experience-card">
+          <AdaptiveModal extraClassName="w-[37.5rem] h-[50.8rem] md:w-[74.4rem] md:h-[39.7rem] lg:w-[34rem] lg:h-[51.9rem] border border-gray-50 shadow-experience-card">
             <div className="bg-main p-4 text-center text-white">예약목록</div>
 
             {selectedDate ? (
