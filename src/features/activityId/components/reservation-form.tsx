@@ -240,7 +240,7 @@ const ReservationForm = ({
                     >
                       <button
                         type="button"
-                        className="p-[1rem]"
+                        className="cursor-pointer p-[1rem]"
                         disabled={value <= 1}
                         onClick={() => {
                           field.onChange(value - 1);
@@ -260,7 +260,7 @@ const ReservationForm = ({
                       </p>
                       <button
                         type="button"
-                        className="p-[1rem]"
+                        className="cursor-pointer p-[1rem]"
                         onClick={() => {
                           field.onChange(value + 1);
                         }}
@@ -324,10 +324,11 @@ const ReservationForm = ({
                                   } else setSelectedTime('');
                                 }}
                                 className={cn(
-                                  'flex-center border-sub w-full rounded-[1.2rem] border-2 py-[1.4rem] text-[1.4rem] text-gray-950',
+                                  'flex-center border-sub w-full cursor-pointer rounded-[1.2rem] border-2 py-[1.4rem] text-[1.4rem] text-gray-950',
                                   isSelected &&
                                     'text-main border-sub-300 bg-sub',
-                                  didIBooked && 'bg-gray-50 text-gray-600',
+                                  didIBooked &&
+                                    'cursor-auto bg-gray-50 text-gray-600',
                                 )}
                               >
                                 {didIBooked ? (
@@ -400,7 +401,7 @@ const ReservationForm = ({
             disabled={!isLoggedIn}
             type="submit"
             className={cn(
-              'text-white',
+              'cursor-pointer text-white',
               !isValid && 'bg-gray-200',
               !appear && !isDesktop && 'border-main text-main border bg-white',
               isValid && 'bg-main text-white',
