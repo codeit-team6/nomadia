@@ -38,10 +38,18 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Run Lighthouse CI
         run: pnpm lighthouse:ci
+
+      - name: Upload Lighthouse HTML reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-html-reports
+          path: lighthouse-reports/
+          retention-days: 30
 
       - name: Upload Lighthouse results
         uses: actions/upload-artifact@v4
@@ -51,7 +59,7 @@ jobs:
           path: .lighthouseci/
           retention-days: 30
 
-      - name: Comment PR with Lighthouse results
+      - name: Comment PR with Korean Lighthouse results
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
@@ -64,19 +72,45 @@ jobs:
               if (fs.existsSync(resultsPath)) {
                 const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
                 
-                let comment = '## 🚀 Lighthouse CI Results\n\n';
+                let comment = '## �� Lighthouse CI 성능 테스트 결과\n\n';
                 
                 if (results.length === 0) {
-                  comment += '✅ All Lighthouse checks passed!\n';
+                  comment += '✅ 모든 Lighthouse 검사가 통과했습니다!\n';
                 } else {
-                  comment += '⚠️ Some Lighthouse checks failed:\n\n';
+                  comment += '⚠️ 일부 Lighthouse 검사에서 문제가 발견되었습니다:\n\n';
+                  
+                  // 한글 메시지 매핑
+                  const koreanMessages = {
+                    'largest-contentful-paint': '가장 큰 콘텐츠가 표시되는 시간 (LCP)',
+                    'first-contentful-paint': '첫 번째 콘텐츠가 표시되는 시간 (FCP)',
+                    'cumulative-layout-shift': '누적 레이아웃 이동 (CLS)',
+                    'total-blocking-time': '총 차단 시간 (TBT)',
+                    'categories:performance': '성능 점수',
+                    'categories:accessibility': '접근성 점수',
+                    'categories:seo': 'SEO 점수',
+                    'categories:best-practices': '모범 사례 점수'
+                  };
+                  
                   results.forEach(result => {
                     const status = result.passed ? '✅' : '❌';
-                    comment += `${status} **${result.auditTitle}**: ${result.actual}ms (기준: ${result.expected}ms)\n`;
+                    const koreanTitle = koreanMessages[result.auditId] || result.auditTitle;
+                    const value = result.auditId.includes('categories:') ? 
+                      `${(result.actual * 100).toFixed(0)}점` : 
+                      `${result.actual}ms`;
+                    const expected = result.auditId.includes('categories:') ? 
+                      `${(result.expected * 100).toFixed(0)}점 이상` : 
+                      `${result.expected}ms 이하`;
+                    
+                    comment += `${status} **${koreanTitle}**: ${value} (기준: ${expected})\n`;
                   });
                 }
                 
-                comment += '\n📊 [View detailed report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})';
+                comment += '\n📊 [상세 보고서 다운로드](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})';
+                comment += '\n\n�� **성능 개선 권장사항**:';
+                comment += '\n- 이미지 최적화 (WebP 포맷, 적절한 크기)';
+                comment += '\n- 폰트 사전 로드 및 최적화';
+                comment += '\n- 중요 리소스 사전 로드';
+                comment += '\n- CDN 사용 및 캐싱 개선';
                 
                 github.rest.issues.createComment({
                   issue_number: context.issue.number,
