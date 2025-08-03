@@ -52,6 +52,11 @@ const registerSchema = z.object({
 
 type FormData = z.infer<typeof registerSchema>;
 
+/**
+ * 체험 등록 폼 컴포넌트
+ * @description 체험 등록 폼 컴포넌트
+ * @author 김영현
+ */
 const ActivityRegistrationForm = () => {
   const {
     register,
