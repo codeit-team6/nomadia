@@ -12,6 +12,11 @@ import { useBookingQuery } from '../libs/hooks/useBookingQuery';
 import FilterButtons from './filter-buttons';
 import GroupedBookingCards from './group-booking-card';
 
+/**
+ * 예약 목록 컴포넌트
+ * @description 예약 목록 컴포넌트
+ * @author 김영현
+ */
 const BookingList = () => {
   const { data, isLoading, isError } = useBookingQuery();
   const [activeStatus, setActiveStatus] = useState('');
