@@ -52,13 +52,13 @@ const MyActivitiesCard = ({ activity }: MyActivitiesCardProps) => {
         </div>
         <div className="flex gap-[0.8rem]">
           <button
-            className="h-[2.9rem] w-[6.8rem] cursor-pointer rounded-[0.8rem] border border-gray-50 text-[1.4rem] font-medium text-gray-600 transition-colors hover:bg-gray-200 hover:text-white"
+            className="h-[2.9rem] w-[6.8rem] cursor-pointer rounded-[0.8rem] border border-gray-50 text-[1.4rem] font-medium text-gray-600 transition-colors hover:bg-gray-50"
             onClick={hadnleEdit}
           >
             수정하기
           </button>
           <button
-            className="h-[2.9rem] w-[6.8rem] cursor-pointer rounded-[0.8rem] bg-gray-50 text-[1.4rem] font-medium text-gray-600 transition-colors hover:bg-gray-200 hover:text-red-500"
+            className="h-[2.9rem] w-[6.8rem] cursor-pointer rounded-[0.8rem] bg-gray-50 text-[1.4rem] font-medium text-red-500 transition-colors hover:bg-gray-100"
             onClick={handleDelete}
           >
             삭제하기
