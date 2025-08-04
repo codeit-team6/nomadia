@@ -21,7 +21,7 @@ export const useEditActivityMutation = () => {
       const activityId = variables.id;
       toast.success('체험 수정이 완료되었습니다.');
       queryClient.invalidateQueries({
-        queryKey: ['activityId', String(activityId)],
+        queryKey: ['activityId', String(activityId)], //타입변환
       });
       queryClient.invalidateQueries({
         queryKey: ['schedule', activityId],
