@@ -53,41 +53,52 @@ const AdaptiveModal = ({
     closeModal,
     isDesktop,
     setIsDesktop,
+    modalType,
+    setModalType,
   } = useModalStore();
+
+  const isActive = modalType === 'custom';
+  const isVisible = appear && isActive;
   const isDefaultStyle = translateY === 'translate-y-full';
 
   // 모달 항시 렌더링 & 언마운트 시 다시 close로 리셋
   useEffect(() => {
-    openModal();
-    return () => {
-      closeModal();
-    };
-  }, [openModal, closeModal]);
+    if (isVisible) openModal();
+    else closeModal();
+  }, [isVisible, openModal, closeModal]);
 
   // 윈도우 사이즈 감지 및 설정 & 데스크탑으로 넘어가면 모달 자동으로 사라짐
   useEffect(() => {
     if (width && width >= 1024) {
       setIsDesktop(true);
-      disappearModal();
+      if (isActive) {
+        disappearModal();
+      }
     } else {
       setIsDesktop(false);
     }
-  }, [width, disappearModal, setIsDesktop]);
+  }, [width, disappearModal, setIsDesktop, isActive, setModalType]);
 
   return (
     <>
       <Modal
         type="custom"
-        hasOverlay={isDesktop ? false : appear ? true : false}
+        hasOverlay={isDesktop ? false : isVisible}
         isCenter={false}
         extraClassName={cn(
           !isDesktop &&
             'fixed bottom-0 left-0 w-full rounded-b-none transition-transform duration-300 ease-out',
-          !isDesktop && (appear ? 'translate-y-0' : translateY),
-          !isDefaultStyle && !isDesktop && (!appear ? 'rounded-none' : ''),
+
+          !isDesktop && (isVisible ? 'translate-y-0' : translateY),
+          !isDefaultStyle && (!isVisible ? 'rounded-none' : ''),
+
           extraClassName,
         )}
-        onClickOverlay={() => disappearModal()}
+        onClickOverlay={() => {
+          if (isActive) {
+            disappearModal();
+          }
+        }}
       >
         {children}
       </Modal>
