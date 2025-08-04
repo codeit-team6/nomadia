@@ -9,6 +9,7 @@ interface BookingCardContainerProps {
   reservation: Reservation;
   showDate?: boolean;
   showDivider?: boolean;
+  isPriority?: boolean;
 }
 
 /**
@@ -23,6 +24,7 @@ const BookingCardContainer = ({
   reservation,
   showDate = true,
   showDivider = true,
+  isPriority = false,
 }: BookingCardContainerProps) => {
   const { isModalOpen, activeReservationId, openModal, closeModal } =
     useModalStore();
@@ -50,6 +52,7 @@ const BookingCardContainer = ({
       onCancelClick={handleCancelClick}
       onReviewClick={handleReviewClick}
       onModalClose={closeModal}
+      isPriority={isPriority}
     />
   );
 };
