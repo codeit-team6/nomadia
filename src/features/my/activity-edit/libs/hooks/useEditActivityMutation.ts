@@ -17,7 +17,7 @@ export const useEditActivityMutation = () => {
   return useMutation({
     mutationFn: ({ id, payload }: EditActivityParams) =>
       editActivity(id, payload),
-    onSuccess: (variables) => {
+    onSuccess: (data, variables) => {
       const activityId = variables.id;
       toast.success('체험 수정이 완료되었습니다.');
       queryClient.invalidateQueries({
