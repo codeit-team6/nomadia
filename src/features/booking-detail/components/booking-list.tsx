@@ -9,6 +9,7 @@ import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner'
 import { sortDatesAscending } from '@/shared/libs/utils/parseDate';
 
 import { useBookingQuery } from '../libs/hooks/useBookingQuery';
+import { GetBookingResponse } from '../libs/types/booking';
 import FilterButtons from './filter-buttons';
 import GroupedBookingCards from './group-booking-card';
 
@@ -18,7 +19,11 @@ import GroupedBookingCards from './group-booking-card';
  * @author 김영현
  */
 const BookingList = () => {
-  const { data, isLoading, isError } = useBookingQuery();
+  const { data, isLoading, isError } = useBookingQuery() as {
+    data: GetBookingResponse | undefined;
+    isLoading: boolean;
+    isError: boolean;
+  };
   const [activeStatus, setActiveStatus] = useState('');
 
   // 날짜 기준 오름차순 정렬

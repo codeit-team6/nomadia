@@ -92,7 +92,7 @@ const ActivityEditForm = ({ activityId }: ActivityEditFormProps) => {
             category: data.category,
             description: data.description,
             address: data.address,
-            price: String(data.price), // formInput 수정 필요해보임
+            price: Number(data.price),
             bannerImages: data.bannerImageUrl,
             subImages: data.subImages.map((img) => img.imageUrl),
             schedules: data.schedules.map((schedule) => ({
@@ -137,18 +137,48 @@ const ActivityEditForm = ({ activityId }: ActivityEditFormProps) => {
     }
 
     // 스케줄 처리 : 추가, 삭제 id 찾기
-    const schedulesToAdd = data.schedules
-      .filter((schedule) => !schedule.id)
-      .map(({ date, startTime, endTime }) => ({ date, startTime, endTime }));
-
-    const currentScheduleIds = new Set(
-      data.schedules
-        .filter((schedule) => schedule.id)
-        .map((schedule) => schedule.id),
+    // 초기 스케줄 데이터를 Map으로 설정
+    const initialSchedulesMap = new Map(
+      initialActivityData.schedules.map((sch) => [sch.id, sch]),
     );
-    const scheduleIdsToRemove = initialActivityData.schedules
-      .filter((schedule) => !currentScheduleIds.has(schedule.id))
-      .map((schedule) => schedule.id);
+    const schedulesToAdd: {
+      date: string;
+      startTime: string;
+      endTime: string;
+    }[] = [];
+    const scheduleIdsToRemove: number[] = [];
+
+    data.schedules.forEach((schdule) => {
+      if (!schdule.id) {
+        schedulesToAdd.push({
+          date: schdule.date,
+          startTime: schdule.startTime,
+          endTime: schdule.endTime,
+        });
+      }
+    });
+    // 기존 스케줄과 비교하여 수정, 삭제 스케줄 찾기
+    initialSchedulesMap.forEach((initialSchedule, id) => {
+      const currentSchedule = data.schedules.find((sch) => sch.id === id);
+      if (!currentSchedule) {
+        // 폼에 없으면 삭제
+        scheduleIdsToRemove.push(id);
+      } else {
+        const isModified =
+          initialSchedule.date !== currentSchedule.date ||
+          initialSchedule.startTime !== currentSchedule.startTime ||
+          initialSchedule.endTime !== currentSchedule.endTime;
+        if (isModified) {
+          // 수정된 스케줄은 삭제 후 추가 리스트에 추가
+          scheduleIdsToRemove.push(id);
+          schedulesToAdd.push({
+            date: currentSchedule.date,
+            startTime: currentSchedule.startTime,
+            endTime: currentSchedule.endTime,
+          });
+        }
+      }
+    });
 
     // 배너 이미지 : 추가, 삭제
     const initialSubImageUrls = new Set(
@@ -171,7 +201,7 @@ const ActivityEditForm = ({ activityId }: ActivityEditFormProps) => {
       address: data.address,
       bannerImageUrl: data.bannerImages,
       schedulesToAdd,
-      schedulesToRemove: scheduleIdsToRemove,
+      scheduleIdsToRemove,
       subImageUrlsToAdd,
       subImageIdsToRemove,
     };

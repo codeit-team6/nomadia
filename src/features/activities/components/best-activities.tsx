@@ -102,11 +102,12 @@ const BestActivities = () => {
             }}
             className="best-activities !overflow-visible !px-0"
           >
-            {activities.map((activity) => (
+            {activities.map((activity, index) => (
               <SwiperSlide key={activity.id}>
                 <ActivityCard
                   activity={activity}
                   className="mb-[2.4rem] md:mb-[8rem]"
+                  isPriority={index < 4}
                 />
               </SwiperSlide>
             ))}

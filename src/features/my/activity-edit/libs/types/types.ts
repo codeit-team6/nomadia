@@ -20,8 +20,9 @@ export interface EditActivityRequest {
   price: number;
   address: string;
   bannerImageUrl: string;
+  subImageIdsToRemove: number[];
   subImageUrlsToAdd: string[];
-  schedulesToRemove: number[];
+  scheduleIdsToRemove: number[];
   schedulesToAdd: CreateSheduleBody[];
 }
 
