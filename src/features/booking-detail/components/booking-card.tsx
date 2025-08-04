@@ -23,10 +23,9 @@ interface BookingCardProps {
 }
 
 /**
+ * 예약 카드 UI 컴포넌트 - 순수한 렌더링만 담당
  * @description 예약 카드 UI 컴포넌트 - 순수한 렌더링만 담당
- *
  * @author 김영현
- *
  * @param reservation 예약 정보
  * @param showDate 날짜 표시 여부
  * @param showDivider 구분선 표시 여부
