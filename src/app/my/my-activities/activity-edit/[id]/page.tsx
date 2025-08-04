@@ -2,7 +2,7 @@ import { ParamValue } from 'next/dist/server/request/params';
 
 import ActivityEditForm from '@/features/my/activity-edit/components/activity-edit-form';
 
-const ActivityEditPage = ({ params }: { params: { id: ParamValue } }) => {
+const ActivityEditPage = async ({ params }: { params: { id: ParamValue } }) => {
   const activityId = params.id;
   return (
     <main>

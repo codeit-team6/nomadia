@@ -171,7 +171,7 @@ const ActivityEditForm = ({ activityId }: ActivityEditFormProps) => {
       address: data.address,
       bannerImageUrl: data.bannerImages,
       schedulesToAdd,
-      schedulesToRemove: scheduleIdsToRemove,
+      scheduleIdsToRemove,
       subImageUrlsToAdd,
       subImageIdsToRemove,
     };
