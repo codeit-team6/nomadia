@@ -107,9 +107,10 @@ const ReservationForm = ({
       const today = new Date();
       setYear(today.getFullYear());
       setMonth(today.getMonth());
+      resetSelectedDate();
       resetDate();
     };
-  }, [setMonth, setYear, resetDate]);
+  }, [setMonth, setYear, resetDate, resetSelectedDate]);
 
   return (
     <>
@@ -386,9 +387,9 @@ const ReservationForm = ({
               onClick={() => !appear && appearModal()}
               type="button"
             >
-              {formatDateToShortSlash(selectedDate)}
+              {selectedDate &&
+                `${formatDateToShortSlash(selectedDate)}  ${selectedTime}`}
               {selectedDate && !selectedTime && ', 시간을 선택해주세요'}
-              {selectedTime}
             </button>
           </div>
 
