@@ -2,6 +2,10 @@ import Image from 'next/image';
 import React from 'react';
 
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
+import {
+  generateResponsiveSizes,
+  optimizeImageQuality,
+} from '@/shared/libs/utils/imageOptimization';
 
 import { Reservation } from '../libs/types/booking';
 import {
@@ -20,6 +24,7 @@ interface BookingCardProps {
   onCancelClick?: () => void;
   onReviewClick?: () => void;
   onModalClose?: () => void;
+  isPriority?: boolean;
 }
 
 /**
@@ -42,6 +47,7 @@ const BookingCard = ({
   onCancelClick,
   onReviewClick,
   onModalClose,
+  isPriority = false,
 }: BookingCardProps) => {
   const statusLabel = getStatusLabel(reservation.status);
   const statusColorClass = getStatusColorClass(reservation.status);
@@ -63,9 +69,15 @@ const BookingCard = ({
             src={reservation.activity.bannerImageUrl}
             alt={reservation.activity.title}
             fill
-            quality={90}
-            loading="lazy"
+            quality={optimizeImageQuality(isPriority)}
+            priority={isPriority}
+            loading={isPriority ? undefined : 'lazy'}
             className="size-[13.6rem] object-cover md:size-[14rem] lg:size-[18.1rem]"
+            sizes={generateResponsiveSizes({
+              mobile: '100vw',
+              tablet: '50vw',
+              desktop: '25vw',
+            })}
           />
         </div>
 

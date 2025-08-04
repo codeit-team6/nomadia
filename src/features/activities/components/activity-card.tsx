@@ -9,6 +9,7 @@ import { Activity } from '@/shared/types/activity';
 interface ActivityCardProps {
   activity: Activity;
   className?: string;
+  isPriority?: boolean;
 }
 
 /**
@@ -20,6 +21,7 @@ interface ActivityCardProps {
 export const ActivityCard = ({
   activity,
   className = '',
+  isPriority = false,
 }: ActivityCardProps) => {
   const router = useRouter();
 
@@ -49,7 +51,8 @@ export const ActivityCard = ({
           fill
           className="rounded-t-[0.8rem] object-cover md:rounded-t-[1.8rem]"
           sizes="(max-width: 768px) 50vw, 25vw"
-          priority={false}
+          priority={isPriority}
+          quality={75}
         />
       </div>
 
