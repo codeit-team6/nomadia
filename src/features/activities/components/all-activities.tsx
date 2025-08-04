@@ -130,8 +130,12 @@ const AllActivities = ({ keyword }: AllActivitiesProps) => {
           ) : isError ? (
             <ErrorMessage className="col-span-2 lg:col-span-4" />
           ) : (
-            activities.map((activity) => (
-              <ActivityCard key={activity.id} activity={activity} />
+            activities.map((activity, index) => (
+              <ActivityCard
+                key={activity.id}
+                activity={activity}
+                isPriority={index < 8}
+              />
             ))
           )}
         </div>
