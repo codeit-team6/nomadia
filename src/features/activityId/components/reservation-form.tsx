@@ -69,6 +69,7 @@ const ReservationForm = ({
   const isTablet = useIsTablet();
   const { isLoggedIn } = useAuthStore();
   const { mutate } = useReservationMutation(activityId);
+  const [countUpdateForRender, setCountUpdateForRender] = useState(1); // 이후 리팩토링 시 - 필드값 수정하는거 제거하고, 이 상태값을 필드에 연결하는거로 변경
   const { data, isLoading, error } = useSchedulesQuery(activityId, {
     year: String(year),
     month: String(month + 1).padStart(2, '0'),
@@ -241,6 +242,7 @@ const ReservationForm = ({
                         disabled={value <= 1}
                         onClick={() => {
                           field.onChange(value - 1);
+                          setCountUpdateForRender((prev) => prev - 1);
                         }}
                       >
                         <Minus strokeWidth={1.5} size={20} />
@@ -260,6 +262,7 @@ const ReservationForm = ({
                         className="cursor-pointer p-[1rem]"
                         onClick={() => {
                           field.onChange(value + 1);
+                          setCountUpdateForRender((prev) => prev + 1);
                         }}
                       >
                         <Plus strokeWidth={1.5} size={20} />
@@ -372,7 +375,7 @@ const ReservationForm = ({
               )}
               {price && (
                 <span className="inline-block text-[1.8rem] leading-none font-bold text-gray-950">
-                  ₩{formatPrice(price * getValues('headCount'))}
+                  ₩{formatPrice(price * countUpdateForRender)}
                 </span>
               )}
               {!isDesktop && (
