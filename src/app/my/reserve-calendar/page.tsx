@@ -1,7 +1,7 @@
 'use client';
 import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { getActListApi } from '@/features/activities/libs/api/getActListApi';
 import { getReservationsByMonthApi } from '@/features/activities/libs/api/getReserveMonthApi';
@@ -10,6 +10,8 @@ import CalendarWithReservations from '@/shared/components/calendar/components/ca
 import { MonthReservations } from '@/shared/components/calendar/libs/types/data';
 import Dropdown from '@/shared/components/dropdown';
 import AdaptiveModal from '@/shared/components/modal/components/adaptive-modal/adaptive-modal';
+import ContentReservation from '@/shared/components/modal/components/adaptive-modal/content-reservation';
+import EmptyReservation from '@/shared/components/modal/components/adaptive-modal/empty-reservation';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
 import { Activity } from '@/shared/types/activity';
@@ -122,6 +124,11 @@ const ReserveCalendarPage = () => {
     }
   };
 
+  const selectedReservationsOfDate = useMemo(() => {
+    if (!selectedDate) return [];
+    return reservationArray.filter((res) => res.date === selectedDate);
+  }, [selectedDate, reservationArray]);
+
   return (
     <div className="flex flex-col items-start">
       <div className="mb-[2.4rem] w-full">
@@ -199,16 +206,21 @@ const ReserveCalendarPage = () => {
 
         {selectedActivityId && (
           <AdaptiveModal extraClassName="w-[37.5rem] h-[50.8rem] md:w-[74.4rem] md:h-[39.7rem] lg:w-[34rem] lg:h-[51.9rem] border border-gray-50 shadow-experience-card">
-            <div className="bg-main p-4 text-center text-white">예약목록</div>
-
             {selectedDate ? (
               <div className="p-4">
-                <p className="text-center text-gray-800">
-                  <strong>{selectedDate}</strong>의 예약 목록입니다.
-                </p>
+                {selectedReservationsOfDate &&
+                selectedReservationsOfDate.length > 0 ? (
+                  <ContentReservation
+                  // scheduleId={selectedActivityId}
+                  // dateString={selectedDate}
+                  // reservations={selectedReservationsOfDate}
+                  />
+                ) : (
+                  <EmptyReservation />
+                )}
               </div>
             ) : (
-              <div className="p-4 text-center text-gray-500">
+              <div className="txt-12-medium p-4 text-center text-gray-950">
                 날짜를 선택하면 예약 목록이 표시됩니다.
               </div>
             )}

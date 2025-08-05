@@ -68,14 +68,14 @@ const NotificationModal = () => {
     >
       <div className="relative flex h-[4.8rem] items-center justify-between border-b border-gray-100 px-[2.3rem]">
         <div className="txt-16-bold text-gray-950">
-          알림 <span className="text-gray-600">({notifications.length})</span>
+          알림 <span className="text-gray-950">{notifications.length}개</span>
         </div>
         <button
           onClick={closeNotification}
           aria-label="알림 모달 닫기"
           className="text-gray-500 hover:text-gray-700"
         >
-          <X className="size-[1.5rem]" />
+          <X className="size-[1.5rem] cursor-pointer" />
         </button>
       </div>
 
@@ -101,7 +101,7 @@ const NotificationModal = () => {
             return (
               <li
                 key={notification.id}
-                className={`relative h-[13.2rem] px-4 py-3 text-[1.4rem] text-gray-800 ${
+                className={`relative h-[13.2rem] px-[1.7rem] py-10 text-[1.4rem] text-gray-800 ${
                   isApproved ? 'bg-sub' : isRejected ? 'bg-white' : ''
                 }`}
               >
@@ -121,7 +121,7 @@ const NotificationModal = () => {
                 <button
                   onClick={handleDelete}
                   aria-label="알림 삭제"
-                  className="absolute right-3 bottom-3 text-gray-400 hover:text-red-500"
+                  className="absolute right-3 bottom-3 cursor-pointer text-gray-400 hover:text-red-500"
                 >
                   <Trash2 size={18} />
                 </button>
