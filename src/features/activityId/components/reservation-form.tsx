@@ -327,8 +327,9 @@ const ReservationForm = ({
                                 }}
                                 className={cn(
                                   'flex-center border-sub w-full cursor-pointer rounded-[1.2rem] border-2 py-[1.4rem] text-[1.4rem] text-gray-950',
-                                  isSelected &&
-                                    'text-main border-sub-300 bg-sub',
+                                  isSelected
+                                    ? 'text-main border-sub-300 bg-sub-50 hover:text-main-600 hover:bg-sub trans-colors-300 font-semibold'
+                                    : 'btn-action-white',
                                   didIBooked &&
                                     'cursor-auto bg-gray-50 text-gray-600',
                                 )}
@@ -402,10 +403,9 @@ const ReservationForm = ({
           <button
             type="submit"
             className={cn(
-              'cursor-pointer text-white',
-              !isValid && 'bg-gray-200',
+              'btn-action-blue bg-main cursor-pointer text-white',
+              (isLoggedIn || !isValid) && 'btn-action-gray bg-gray-200',
               !appear && !isDesktop && 'border-main text-main border bg-white',
-              isValid && 'bg-main text-white',
               'mt-[1.2rem] h-[5rem] w-full rounded-[1.4rem] py-[1.4rem] text-[1.6rem] font-bold',
               'z-100 lg:mt-0 lg:w-[13.5rem]',
             )}
