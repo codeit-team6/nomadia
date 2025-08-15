@@ -23,11 +23,12 @@ import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import CalendarForForm from '@/shared/components/calendar/components/calendar-for-form';
 import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatDateToYMD';
 import Modal from '@/shared/components/modal/components';
-import SecondModal from '@/shared/components/modal/components/second-modal/second-modal';
+import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
+// import SecondModal from '@/shared/components/modal/components/second-modal/second-modal';
 import { cn } from '@/shared/libs/cn';
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
-import { useModalStore } from '@/shared/libs/stores/useModalStore';
+// import { useModalStore } from '@/shared/libs/stores/useModalStore';
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
 
 const CALENDAR_STYLES = {
@@ -56,9 +57,12 @@ const ReservationForm = ({
     appear,
     disappearModal,
     appearModal,
-    secondModalName,
-    closeSecondModal,
-    openSecondModal,
+    // secondModalName,
+    // closeSecondModal,
+    // openSecondModal,
+    modalName,
+    closeModal,
+    openModal,
   } = useModalStore();
   const { isDesktop, isTablet } = useWindowSize();
   const [schedulesInDate, setSchedulesInDate] = useState<
@@ -126,7 +130,7 @@ const ReservationForm = ({
         onSubmit={handleSubmit((data) => {
           mutate(data, {
             onSuccess: () => {
-              openSecondModal(undefined, 'success');
+              openModal('success');
               addReservation(data.scheduleId); //save id in localStorage
               resetSelectedDate(); //🐛이거 해도 제출후 다시 열어보면, 이전 선택 날짜가 칠해져있음...:스타일링은 date 담당이기 떄문이었다.
               resetDate(); //이거까지 해야함
@@ -410,7 +414,7 @@ const ReservationForm = ({
             )}
             onClick={(e) => {
               if (!isLoggedIn) {
-                openSecondModal(undefined, 'need-login');
+                openModal('need-login');
                 return;
               }
               if (!isDesktop) {
@@ -440,29 +444,21 @@ const ReservationForm = ({
           </button>
         </section>
       </form>
-      {secondModalName === 'success' && (
-        <SecondModal type="confirm" extraClassName="md:pb-[1rem]">
+      {modalName === 'success' && (
+        <Modal type="confirm" extraClassName="md:pb-[1rem]">
           <Modal.Header>예약이 완료되었습니다.</Modal.Header>
           <div className="w-[18rem] md:w-[20rem]">
-            <Modal.Button
-              color="blue"
-              ariaLabel="확인"
-              onClick={closeSecondModal}
-            >
+            <Modal.Button color="blue" ariaLabel="확인" onClick={closeModal}>
               확인
             </Modal.Button>
           </div>
-        </SecondModal>
+        </Modal>
       )}
-      {secondModalName === 'need-login' && (
-        <SecondModal type="warning" extraClassName="md:pb-[1rem]">
+      {modalName === 'need-login' && (
+        <Modal type="warning" extraClassName="md:pb-[1rem]">
           <Modal.Header>로그인이 필요합니다.</Modal.Header>
           <div className="mb-0 flex w-[23.4rem] gap-2 md:w-[28.2rem] md:gap-3">
-            <Modal.Button
-              color="white"
-              ariaLabel="취소"
-              onClick={closeSecondModal}
-            >
+            <Modal.Button color="white" ariaLabel="취소" onClick={closeModal}>
               취소
             </Modal.Button>
             <Modal.Button
@@ -470,13 +466,13 @@ const ReservationForm = ({
               ariaLabel="로그인하기"
               onClick={() => {
                 router.push('/login');
-                closeSecondModal();
+                closeModal();
               }}
             >
               로그인 하기
             </Modal.Button>
           </div>
-        </SecondModal>
+        </Modal>
       )}
     </>
   );
