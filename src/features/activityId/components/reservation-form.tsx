@@ -7,7 +7,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { reservationFormStyle } from '@/features/activityId/libs/constants/variants';
-import { useIsTablet } from '@/features/activityId/libs/hooks/useIsTablet';
 import { useReservationMutation } from '@/features/activityId/libs/hooks/useReservationMutation';
 import { useSchedulesQuery } from '@/features/activityId/libs/hooks/useSchedulesQuery';
 import {
@@ -26,6 +25,7 @@ import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatD
 import Modal from '@/shared/components/modal/components';
 import SecondModal from '@/shared/components/modal/components/second-modal/second-modal';
 import { cn } from '@/shared/libs/cn';
+import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
@@ -56,18 +56,17 @@ const ReservationForm = ({
     appear,
     disappearModal,
     appearModal,
-    isDesktop,
     secondModalName,
     closeSecondModal,
     openSecondModal,
   } = useModalStore();
+  const { isDesktop, isTablet } = useWindowSize();
   const [schedulesInDate, setSchedulesInDate] = useState<
     TimeSlot[] | undefined
   >([]);
   const [scheduledDate, setScheduledDate] = useState<AvailableScheduleList>();
   const [selectedTime, setSelectedTime] = useState('');
   const [nextStep, setNextStep] = useState(false);
-  const isTablet = useIsTablet();
   const { isLoggedIn } = useAuthStore();
   const { mutate } = useReservationMutation(activityId);
   const [countUpdateForRender, setCountUpdateForRender] = useState(1); // 이후 리팩토링 시 - 필드값 수정하는거 제거하고, 이 상태값을 필드에 연결하는거로 변경
