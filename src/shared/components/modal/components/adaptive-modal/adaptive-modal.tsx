@@ -44,16 +44,9 @@ const AdaptiveModal = ({
   translateY?: string;
   children: ReactNode;
 }) => {
-  const { width } = useWindowSize();
+  const { isDesktop } = useWindowSize();
 
-  const {
-    openModal,
-    appear,
-    disappearModal,
-    closeModal,
-    isDesktop,
-    setIsDesktop,
-  } = useModalStore();
+  const { openModal, appear, disappearModal, closeModal } = useModalStore();
   const isDefaultStyle = translateY === 'translate-y-full';
 
   // 모달 항시 렌더링 & 언마운트 시 다시 close로 리셋
@@ -64,15 +57,11 @@ const AdaptiveModal = ({
     };
   }, [openModal, closeModal]);
 
-  // 윈도우 사이즈 감지 및 설정 & 데스크탑으로 넘어가면 모달 자동으로 사라짐
   useEffect(() => {
-    if (width && width >= 1024) {
-      setIsDesktop(true);
+    if (isDesktop) {
       disappearModal();
-    } else {
-      setIsDesktop(false);
     }
-  }, [width, disappearModal, setIsDesktop]);
+  }, [isDesktop, disappearModal]);
 
   return (
     <>
