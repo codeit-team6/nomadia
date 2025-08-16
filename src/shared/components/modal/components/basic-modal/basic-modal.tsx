@@ -56,7 +56,6 @@ const BasicModal = ({
         >
           {/* 모달 */}
           <ModalContent type={type} extraClassName={extraClassName}>
-            using basic modal
             {children}
           </ModalContent>
         </div>

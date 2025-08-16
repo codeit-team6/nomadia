@@ -445,19 +445,17 @@ const ReservationForm = ({
         </section>
       </form>
       {modalName === 'success' && (
-        <Modal type="confirm" extraClassName="md:pb-[1rem]">
+        <Modal type="confirm">
           <Modal.Header>예약이 완료되었습니다.</Modal.Header>
-          <div className="w-[18rem] md:w-[20rem]">
-            <Modal.Button color="blue" ariaLabel="확인" onClick={closeModal}>
-              확인
-            </Modal.Button>
-          </div>
+          <Modal.Button color="blue" ariaLabel="확인" onClick={closeModal}>
+            확인
+          </Modal.Button>
         </Modal>
       )}
       {modalName === 'need-login' && (
-        <Modal type="warning" extraClassName="md:pb-[1rem]">
+        <Modal type="warning">
           <Modal.Header>로그인이 필요합니다.</Modal.Header>
-          <div className="mb-0 flex w-[23.4rem] gap-2 md:w-[28.2rem] md:gap-3">
+          <div className="flex gap-[0.8rem] md:gap-[1.2rem]">
             <Modal.Button color="white" ariaLabel="취소" onClick={closeModal}>
               취소
             </Modal.Button>

@@ -66,9 +66,9 @@ const OwnerDropdown = ({
         </Dropdown>
       )}
       {modalName === 'delete' && (
-        <Modal type="warning" extraClassName="md:pb-[1rem]">
+        <Modal type="warning">
           <Modal.Header>체험을 삭제하시겠습니까?</Modal.Header>
-          <div className="mb-0 flex w-[23.4rem] gap-2 md:w-[28.2rem] md:gap-3">
+          <div className="flex gap-[0.8rem] md:gap-[1.2rem]">
             <Modal.Button color="white" ariaLabel="아니요" onClick={closeModal}>
               아니요
             </Modal.Button>
