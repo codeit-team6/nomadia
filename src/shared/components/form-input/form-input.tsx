@@ -10,7 +10,7 @@ import {
 } from 'react-hook-form';
 
 import Modal from '@/shared/components/modal/components';
-import { useModalStore } from '@/shared/libs/stores/useModalStore';
+import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 
 /**
  * 공통 입력 컴포넌트

@@ -1,14 +1,12 @@
 'use client';
-import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
 
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
-import { deleteActivities } from '@/features/my/my-activities/lib/api/myActivities.api';
 import Dropdown from '@/shared/components/dropdown';
 import Modal from '@/shared/components/modal/components';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
+import { useDeleteActivityMutation } from '@/shared/libs/hooks/useDeleteActivityMutation';
 
 const OwnerDropdown = ({
   ownerId,
@@ -17,26 +15,16 @@ const OwnerDropdown = ({
   ownerId: number | undefined;
   activityId: number;
 }) => {
-  const { user } = useAuthStore();
-  const isOwner = user?.id === ownerId;
   const { openModal, closeModal, modalName } = useModalStore();
-
-  // delete confirm
-  const queryClient = useQueryClient();
+  const { mutate } = useDeleteActivityMutation();
+  const { user } = useAuthStore();
   const router = useRouter();
-  const handleConfirm = async () => {
-    if (!activityId) return;
-    try {
-      await deleteActivities(activityId);
-      toast.success('삭제가 완료되었습니다.');
-      await queryClient.invalidateQueries({ queryKey: ['activities'] });
-      await queryClient.invalidateQueries({ queryKey: ['myActivities'] });
-      router.push('/activities');
-    } catch {
-      toast.error('삭제에 실패하였습니다.');
-    } finally {
-      closeModal();
-    }
+  const isOwner = user?.id === ownerId;
+
+  const handleDeleteConfirm = () => {
+    mutate(activityId);
+    closeModal();
+    router.push('/activities');
   };
 
   return (
@@ -84,7 +72,11 @@ const OwnerDropdown = ({
             <Modal.Button color="white" ariaLabel="아니요" onClick={closeModal}>
               아니요
             </Modal.Button>
-            <Modal.Button color="blue" ariaLabel="네" onClick={handleConfirm}>
+            <Modal.Button
+              color="blue"
+              ariaLabel="네"
+              onClick={handleDeleteConfirm}
+            >
               네
             </Modal.Button>
           </div>
