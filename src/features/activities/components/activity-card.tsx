@@ -72,7 +72,7 @@ export const ActivityCard = ({
               {Array.from({ length: activity.rating || 0 }, (_, idx) => (
                 <StarImage
                   key={idx}
-                  extraClassName="size-[1.2rem] md:size-[1.6rem] text-yellow-500"
+                  extraClassName="size-[1.2rem] md:size-[1.6rem]"
                 />
               ))}
             </div>
@@ -87,11 +87,19 @@ export const ActivityCard = ({
             )}
 
             {/* 리뷰 정보 */}
-            <span className="flex items-center gap-[0.3rem] text-[1.2rem] font-medium text-gray-400 md:text-[1.4rem]">
-              {activity.rating ? (
-                `리뷰 ${activity.reviewCount}개`
+            <span className="text-[1.2rem] font-medium text-gray-400 md:text-[1.4rem]">
+              {activity.rating && activity.rating > 0 ? (
+                <div className="flex items-center gap-[0.3rem]">
+                  {/* 별점 배지: 모바일에서는 숨김, 데스크톱에서만 표시 */}
+                  <div className="bg-main flex-center hidden h-[2rem] w-[3.5rem] rounded-[0.5rem] md:flex">
+                    <span className="text-[1.3rem] font-bold text-white">
+                      {(activity.rating * 2).toFixed(1)}
+                    </span>
+                  </div>{' '}
+                  <span>리뷰 {activity.reviewCount}개</span>
+                </div>
               ) : (
-                <>
+                <div className="flex items-center gap-[0.3rem]">
                   <Image
                     src="/images/icons/logo.svg"
                     alt="새로운 액티비티 아이콘"
@@ -99,10 +107,8 @@ export const ActivityCard = ({
                     height={12}
                     className="text-main size-[1.2rem] md:size-[1.4rem]"
                   />
-                  <span className="text-main text-[1.2rem] font-semibold md:text-[1.4rem]">
-                    새로운 액티비티
-                  </span>
-                </>
+                  <span className="text-main font-semibold">신규 체험</span>
+                </div>
               )}
             </span>
           </div>
@@ -111,10 +117,10 @@ export const ActivityCard = ({
         {/* 가격 */}
         <div className="mt-[2rem] flex justify-end gap-1">
           <span className="text-[1.5rem] leading-[1.8rem] font-bold text-gray-950 md:text-[1.8rem]">
-            ₩ {formatPrice(activity.price)}
-          </span>
-          <span className="text-[1.2rem] font-semibold text-gray-400 md:text-[1.6rem]">
-            /인
+            ₩ {formatPrice(activity.price)}{' '}
+            <span className="text-[1.2rem] font-semibold text-gray-400 md:text-[1.6rem]">
+              /인
+            </span>
           </span>
         </div>
       </div>
