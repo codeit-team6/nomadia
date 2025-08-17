@@ -98,8 +98,8 @@ export const ActivityCard = ({
               </span>
             </div>
 
-            {/* 오른쪽: 별점 배지 */}
-            {activity.reviewCount && activity.reviewCount > 0 ? (
+            {/* 오른쪽: 별점 배지 - 일단 숨김(0819) */}
+            {/* {activity.reviewCount && activity.reviewCount > 0 ? (
               <div className="bg-main flex-center h-[1.8rem] w-[3rem] rounded-[0.5rem] md:h-[2rem] md:w-[3.5rem]">
                 <span className="text-[1.2rem] font-bold text-white md:text-[1.3rem]">
                   {(activity.rating * 2).toFixed(1)}
@@ -107,7 +107,7 @@ export const ActivityCard = ({
               </div>
             ) : (
               ''
-            )}
+            )} */}
           </div>
         </div>
 
