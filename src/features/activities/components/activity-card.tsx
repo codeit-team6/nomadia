@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
+import EmptyStarImage from '@/shared/components/empty-star/empty-star';
 import StarImage from '@/shared/components/star';
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
 import { Activity } from '@/shared/types/activity';
@@ -69,48 +70,41 @@ export const ActivityCard = ({
           <div className="mt-[0.3rem] flex min-h-[1.8rem] items-center gap-[0.2rem]">
             {/* 별점 */}
             <div className="flex items-center">
-              {Array.from({ length: activity.rating || 0 }, (_, idx) => (
-                <StarImage
-                  key={idx}
-                  extraClassName="size-[1.2rem] md:size-[1.6rem]"
-                />
-              ))}
+              {Array.from({ length: 5 }, (_, idx) =>
+                activity.rating && idx < activity.rating ? (
+                  <StarImage
+                    key={idx}
+                    extraClassName="size-[1.2rem] md:size-[1.6rem]"
+                  />
+                ) : (
+                  <EmptyStarImage
+                    key={idx}
+                    extraClassName="size-[1.2rem] md:size-[1.6rem]"
+                  />
+                ),
+              )}
             </div>
 
             {/* Dot 구분자 */}
-            {activity.rating ? (
-              <span className="text-[1rem] text-gray-400 md:text-[1.4rem]">
-                •
-              </span>
-            ) : (
-              ''
-            )}
+            <span className="text-[1rem] text-gray-400 md:text-[1.4rem]">
+              •
+            </span>
 
             {/* 리뷰 정보 */}
             <div className="text-[1.2rem] font-medium text-gray-400 md:text-[1.4rem]">
-              {activity.rating && activity.rating > 0 ? (
-                <div className="flex items-center gap-[0.3rem]">
-                  {/* 별점 배지: 모바일에서는 숨김, 데스크톱에서만 표시 */}
+              <div className="flex items-center gap-[0.3rem]">
+                {/* 별점 배지: 리뷰가 있고 데스크톱에서만 표시 */}
+                {activity.reviewCount && activity.reviewCount > 0 ? (
                   <div className="bg-main hidden h-[2rem] w-[3.5rem] items-center justify-center rounded-[0.5rem] md:flex">
                     <span className="text-[1.3rem] font-bold text-white">
                       {(activity.rating * 2).toFixed(1)}
                     </span>
                   </div>
-                  {'  '}
-                  <span> 리뷰 {activity.reviewCount}개</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-[0.3rem]">
-                  <Image
-                    src="/images/icons/logo.svg"
-                    alt="새로운 액티비티 아이콘"
-                    width={12}
-                    height={12}
-                    className="text-main size-[1.2rem] md:size-[1.4rem]"
-                  />
-                  <span className="text-main font-semibold">신규 체험</span>
-                </div>
-              )}
+                ) : (
+                  ''
+                )}
+                <span> 리뷰 {activity.reviewCount}개</span>
+              </div>
             </div>
           </div>
         </div>
