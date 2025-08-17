@@ -87,7 +87,7 @@ export const ActivityCard = ({
             )}
 
             {/* 리뷰 정보 */}
-            <span className="text-[1.2rem] font-medium text-gray-400 md:text-[1.4rem]">
+            <div className="text-[1.2rem] font-medium text-gray-400 md:text-[1.4rem]">
               {activity.rating && activity.rating > 0 ? (
                 <div className="flex items-center gap-[0.3rem]">
                   {/* 별점 배지: 모바일에서는 숨김, 데스크톱에서만 표시 */}
@@ -111,7 +111,7 @@ export const ActivityCard = ({
                   <span className="text-main font-semibold">신규 체험</span>
                 </div>
               )}
-            </span>
+            </div>
           </div>
         </div>
 
