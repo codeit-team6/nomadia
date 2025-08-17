@@ -103,7 +103,9 @@ export const ActivityCard = ({
                 ) : (
                   ''
                 )}
-                <span> 리뷰 {activity.reviewCount}개</span>
+                <span className="ml-[0.3rem]">
+                  리뷰 {activity.reviewCount}개
+                </span>
               </div>
             </div>
           </div>
