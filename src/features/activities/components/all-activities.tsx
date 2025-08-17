@@ -106,8 +106,8 @@ const AllActivities = ({ keyword }: AllActivitiesProps) => {
 
       {/* 카테고리 스크롤 영역 */}
       <div className="relative mb-[2.4rem] md:mb-[3rem]">
-        {/* 스크롤 컨테이너 - 그림자 공간 확보 */}
-        <div className="category-scroll flex-center h-[4.8rem] flex-nowrap gap-[0.8rem] overflow-x-auto bg-white px-[1rem] whitespace-nowrap md:mb-[3rem] md:gap-[2rem]">
+        {/* 스크롤 컨테이너 */}
+        <div className="category-scroll flex flex-nowrap gap-[0.8rem] overflow-x-auto px-[1rem] py-[0.5rem] whitespace-nowrap md:mb-[3rem] md:gap-[2rem]">
           {CATEGORIES.map(({ name, icon: Icon }) => (
             <Button
               key={name}

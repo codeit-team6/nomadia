@@ -91,12 +91,13 @@ export const ActivityCard = ({
               {activity.rating && activity.rating > 0 ? (
                 <div className="flex items-center gap-[0.3rem]">
                   {/* 별점 배지: 모바일에서는 숨김, 데스크톱에서만 표시 */}
-                  <div className="bg-main flex-center hidden h-[2rem] w-[3.5rem] rounded-[0.5rem] md:flex">
+                  <div className="bg-main hidden h-[2rem] w-[3.5rem] items-center justify-center rounded-[0.5rem] md:flex">
                     <span className="text-[1.3rem] font-bold text-white">
                       {(activity.rating * 2).toFixed(1)}
                     </span>
-                  </div>{' '}
-                  <span>리뷰 {activity.reviewCount}개</span>
+                  </div>
+                  {'  '}
+                  <span> 리뷰 {activity.reviewCount}개</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-[0.3rem]">
