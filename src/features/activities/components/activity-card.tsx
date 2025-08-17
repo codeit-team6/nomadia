@@ -61,23 +61,55 @@ export const ActivityCard = ({
         {/* 제목과 별점 그룹 */}
         <div className="mt-[0.5rem] flex flex-col gap-[0.6rem]">
           {/* 제목 */}
-          <h3 className="line-clamp-1 text-[1.4rem] leading-[1.8rem] font-semibold text-gray-900 md:overflow-hidden md:text-[1.8rem] md:text-ellipsis md:whitespace-nowrap">
+          <h3 className="line-clamp-1 text-[1.4rem] leading-[1.8rem] font-semibold text-gray-900 md:overflow-hidden md:text-[1.6rem] md:text-ellipsis md:whitespace-nowrap">
             {activity.title}
           </h3>
-          {/* 별점과 리뷰 */}
-          <div className="flex items-center gap-[0.2rem] md:gap-[0.3rem]">
-            <StarImage extraClassName="size-[1.3rem] md:size-[2rem]" />
-            <span className="text-[1.2rem] font-medium text-gray-950 md:text-[1.4rem]">
-              {activity.rating}
-            </span>
-            <span className="text-[1.2rem] font-medium text-gray-400 md:text-[1.4rem]">
-              ({activity.reviewCount})
+
+          {/* 별점, 리뷰 정보 */}
+          <div className="mt-[0.3rem] flex min-h-[1.8rem] items-center gap-[0.2rem]">
+            {/* 별점 */}
+            <div className="flex items-center">
+              {Array.from({ length: activity.rating || 0 }, (_, idx) => (
+                <StarImage
+                  key={idx}
+                  extraClassName="size-[1.2rem] md:size-[1.6rem] text-yellow-500"
+                />
+              ))}
+            </div>
+
+            {/* Dot 구분자 */}
+            {activity.rating ? (
+              <span className="text-[1rem] text-gray-400 md:text-[1.4rem]">
+                •
+              </span>
+            ) : (
+              ''
+            )}
+
+            {/* 리뷰 정보 */}
+            <span className="flex items-center gap-[0.3rem] text-[1.2rem] font-medium text-gray-400 md:text-[1.4rem]">
+              {activity.rating ? (
+                `리뷰 ${activity.reviewCount}개`
+              ) : (
+                <>
+                  <Image
+                    src="/images/icons/logo.svg"
+                    alt="새로운 액티비티 아이콘"
+                    width={12}
+                    height={12}
+                    className="text-main size-[1.2rem] md:size-[1.4rem]"
+                  />
+                  <span className="text-main text-[1.2rem] font-semibold md:text-[1.4rem]">
+                    새로운 액티비티
+                  </span>
+                </>
+              )}
             </span>
           </div>
         </div>
 
         {/* 가격 */}
-        <div className="mt-[2rem] flex items-baseline gap-1">
+        <div className="mt-[2rem] flex justify-end gap-1">
           <span className="text-[1.5rem] leading-[1.8rem] font-bold text-gray-950 md:text-[1.8rem]">
             ₩ {formatPrice(activity.price)}
           </span>
