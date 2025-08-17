@@ -1,3 +1,4 @@
+'use client';
 import { ReactNode, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -26,8 +27,8 @@ const BasicModal = ({
   const { isModalOpen, closeModal, setModalType } = useModalStore();
 
   useKeydownEsc(closeModal, isModalOpen);
-  // 마운트 시 전역 타입 등록 - modal-button, modal-header에서 사용
   useEffect(() => {
+    // 마운트 시 전역 타입 등록 - modal-button, modal-header에서 사용
     if (isModalOpen) {
       setModalType(type);
     }

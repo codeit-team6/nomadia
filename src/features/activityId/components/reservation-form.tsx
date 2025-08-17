@@ -413,6 +413,9 @@ const ReservationForm = ({
               'z-100 lg:mt-0 lg:w-[13.5rem]',
             )}
             onClick={(e) => {
+              if (!isValid) {
+                e.preventDefault();
+              }
               if (!isLoggedIn) {
                 openModal('need-login');
                 return;
@@ -424,17 +427,14 @@ const ReservationForm = ({
                 if (!isTablet) {
                   if (appear && !nextStep) {
                     setNextStep(true);
-                    e.preventDefault();
                   }
                   if (appear && nextStep) {
                     disappearModal();
                     setNextStep(false);
-                    e.preventDefault();
                   }
                 } else {
                   if (appear) {
                     disappearModal();
-                    e.preventDefault();
                   }
                 }
               }

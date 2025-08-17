@@ -16,15 +16,14 @@ const OwnerDropdown = ({
   activityId: number;
 }) => {
   const { openModal, closeModal, modalName } = useModalStore();
-  const { mutate } = useDeleteActivityMutation();
+  const { mutate: deleteMutate } = useDeleteActivityMutation();
   const { user } = useAuthStore();
   const router = useRouter();
   const isOwner = user?.id === ownerId;
 
   const handleDeleteConfirm = () => {
-    mutate(activityId);
+    deleteMutate(activityId, { onSuccess: () => router.push('/activities') });
     closeModal();
-    router.push('/activities');
   };
 
   return (

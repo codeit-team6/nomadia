@@ -16,7 +16,7 @@ import { Header } from '@/shared/components/modal/components/modal-header';
  * @example
  * ```tsx
  * const { openModal, closeModal, modalName } = useModalStore();
- *  <button onClick={openModal('delete');}></button> // 모달 이름: delete
+ *   <button onClick={() => openModal('delete')}></button> // 모달 이름: delete
  *  {modalName === 'delete' && ( // 모달 이름 체크 후 렌더링 여부 결정
         <Modal type="warning">
           <Modal.Header>체험을 삭제하시겠습니까?</Modal.Header>
