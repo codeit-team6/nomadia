@@ -24,9 +24,9 @@ import useWindowSize from '@/shared/libs/hooks/useWindowSize';
  *   - 이런 경우 임시 `<div>`의 className으로 작성 및 저장 후, 자동 정렬 결과를 복붙하는 방법을 추천합니다.
  * @example
  * ```jsx
- * <AdaptiveCopy translateY={'translate-y-[calc(100%-132px)]'}>
+ * <AdaptiveModal translateY={'translate-y-[calc(100%-132px)]'}>
         <div className="size-72 bg-amber-300 text-5xl">반응형 모달 내용물</div>
-   </AdaptiveCopy>
+   </AdaptiveModal>
  * ```
  */
 //✨
