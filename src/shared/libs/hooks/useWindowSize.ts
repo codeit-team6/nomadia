@@ -3,18 +3,20 @@ import { useEffect, useState } from 'react';
 interface WindowSize {
   width: number | undefined;
   height: number | undefined;
-  isDesktop: boolean | undefined;
-  isTablet: boolean | undefined;
-  isMobile: boolean | undefined;
+  isDesktop: boolean;
+  isTablet: boolean;
+  isMobile: boolean;
+  ready: boolean;
 }
 
 const useWindowSize = (): WindowSize => {
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: undefined,
     height: undefined,
-    isDesktop: undefined,
-    isTablet: undefined,
-    isMobile: undefined,
+    isDesktop: false,
+    isTablet: false,
+    isMobile: false,
+    ready: false,
   });
 
   useEffect(() => {
@@ -29,6 +31,7 @@ const useWindowSize = (): WindowSize => {
         isDesktop: width >= 1024,
         isTablet: width >= 768 && width < 1024,
         isMobile: width < 768,
+        ready: true,
       });
     };
 
