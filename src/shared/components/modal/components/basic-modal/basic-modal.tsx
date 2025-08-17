@@ -1,7 +1,8 @@
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import ModalContent from '@/shared/components/modal/components/modal-content';
+import { useKeydownEsc } from '@/shared/components/modal/libs/hooks/useKeydownEsc';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 
 /**
@@ -24,6 +25,7 @@ const BasicModal = ({
 }) => {
   const { isModalOpen, closeModal, setModalType } = useModalStore();
 
+  useKeydownEsc(closeModal, isModalOpen);
   // 마운트 시 전역 타입 등록 - modal-button, modal-header에서 사용
   useEffect(() => {
     if (isModalOpen) {
@@ -31,26 +33,14 @@ const BasicModal = ({
     }
   }, [isModalOpen, type, setModalType]);
 
-  // 모달에 먼저 포커스 -> esc동작 가능
-  const modalRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (isModalOpen && modalRef.current) modalRef.current.focus();
-  }, [isModalOpen]);
-
   if (isModalOpen) {
     return createPortal(
       <>
         {/* 오버레이 */}
         <div
-          ref={modalRef}
           className="flex-center fixed inset-0 z-100 bg-black/50"
           onClick={() => {
             closeModal();
-          }}
-          onKeyDown={(e) => {
-            if (e.key === 'Escape') {
-              closeModal();
-            }
           }}
           role="presentation"
         >

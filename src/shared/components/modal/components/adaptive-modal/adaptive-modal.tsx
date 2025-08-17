@@ -2,6 +2,7 @@
 import { ReactNode, useEffect } from 'react';
 
 import ModalContent from '@/shared/components/modal/components/modal-content';
+import { useKeydownEsc } from '@/shared/components/modal/libs/hooks/useKeydownEsc';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 import { cn } from '@/shared/libs/cn';
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
@@ -43,6 +44,7 @@ const AdaptiveModal = ({
   const { appear, disappearModal } = useModalStore();
   const isDefaultStyle = translateY === 'translate-y-full';
 
+  useKeydownEsc(disappearModal, appear);
   useEffect(() => {
     if (isDesktop) {
       disappearModal();
