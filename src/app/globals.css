@@ -232,15 +232,6 @@
     overflow: hidden;
   }
 
-  /* 카테고리 스크롤 그라데이션 페이드아웃 - 버튼에서 사용*/
-  .category-fade-left {
-    background: linear-gradient(to right, white 0%, transparent 100%);
-  }
-
-  .category-fade-right {
-    background: linear-gradient(to left, white 0%, transparent 100%);
-  }
-
   /* 텍스트 관련 유틸리티 - 타이포그래피 */
   .txt-11-medium {
     font-size: 1.1rem;
