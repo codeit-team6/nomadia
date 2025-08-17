@@ -215,12 +215,26 @@
 
   /* 체험 카드 그림자 유틸리티 클래스 - Card Shadow Utility Class */
   .shadow-experience-card {
-    box-shadow: 0 2.25px 13.5px 0 rgba(156, 180, 202, 0.2);
+    box-shadow: 0 2px 12px 0 rgba(156, 180, 202, 0.2);
+  }
+
+  /* 카테고리 버튼용 그림자 */
+  .shadow-category-button {
+    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.1);
   }
 
   .best-activities .swiper-slide {
     border-radius: 1.2rem;
     overflow: hidden;
+  }
+
+  /* 카테고리 스크롤 그라데이션 페이드아웃 - 버튼에서 사용*/
+  .category-fade-left {
+    background: linear-gradient(to right, white 0%, transparent 100%);
+  }
+
+  .category-fade-right {
+    background: linear-gradient(to left, white 0%, transparent 100%);
   }
 
   /* 텍스트 관련 유틸리티 - 타이포그래피 */
