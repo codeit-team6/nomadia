@@ -1,12 +1,12 @@
 'use client';
 import axios from 'axios';
-import { ArrowLeft, Minus, Plus } from 'lucide-react';
+import { ArrowLeft, Minus, Plus, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { reservationFormStyle } from '@/features/activityId/libs/constants/variants';
-import { useIsTablet } from '@/features/activityId/libs/hooks/useIsTablet';
 import { useReservationMutation } from '@/features/activityId/libs/hooks/useReservationMutation';
 import { useSchedulesQuery } from '@/features/activityId/libs/hooks/useSchedulesQuery';
 import {
@@ -18,12 +18,14 @@ import {
   addReservation,
   getMyResertvation,
 } from '@/features/activityId/libs/utils/addReservation';
+import { formatDateToShortSlash } from '@/features/activityId/libs/utils/formatDateToShortSlash';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import CalendarForForm from '@/shared/components/calendar/components/calendar-for-form';
 import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatDateToYMD';
 import Modal from '@/shared/components/modal/components';
 import SecondModal from '@/shared/components/modal/components/second-modal/second-modal';
 import { cn } from '@/shared/libs/cn';
+import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 import { useModalStore } from '@/shared/libs/stores/useModalStore';
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
@@ -54,24 +56,25 @@ const ReservationForm = ({
     appear,
     disappearModal,
     appearModal,
-    isDesktop,
     secondModalName,
     closeSecondModal,
     openSecondModal,
   } = useModalStore();
+  const { isDesktop, isTablet } = useWindowSize();
   const [schedulesInDate, setSchedulesInDate] = useState<
     TimeSlot[] | undefined
   >([]);
   const [scheduledDate, setScheduledDate] = useState<AvailableScheduleList>();
   const [selectedTime, setSelectedTime] = useState('');
   const [nextStep, setNextStep] = useState(false);
-  const isTablet = useIsTablet();
   const { isLoggedIn } = useAuthStore();
   const { mutate } = useReservationMutation(activityId);
+  const [countUpdateForRender, setCountUpdateForRender] = useState(1); // 이후 리팩토링 시 - 필드값 수정하는거 제거하고, 이 상태값을 필드에 연결하는거로 변경
   const { data, isLoading, error } = useSchedulesQuery(activityId, {
     year: String(year),
     month: String(month + 1).padStart(2, '0'),
   });
+  const router = useRouter();
 
   // 리액트훅폼
   const {
@@ -90,7 +93,6 @@ const ReservationForm = ({
     const today = formatDateToYMD(new Date());
     const notYetPassed = data?.filter((schedule) => schedule.date >= today);
     setScheduledDate(notYetPassed);
-    console.log(today);
   }, [data, isLoading, error]);
 
   // 선택한 날짜가 바뀌면, 이전에 선택한 스케줄을 취소함. 새로운 날짜에 스케줄이 존재하면 TimeSlot선택지를 보여주기 위해 schedulesInDate 업데이트
@@ -107,9 +109,10 @@ const ReservationForm = ({
       const today = new Date();
       setYear(today.getFullYear());
       setMonth(today.getMonth());
+      resetSelectedDate();
       resetDate();
     };
-  }, [setMonth, setYear, resetDate]);
+  }, [setMonth, setYear, resetDate, resetSelectedDate]);
 
   return (
     <>
@@ -121,10 +124,8 @@ const ReservationForm = ({
       <form
         // data: { scheduleId, headCount }
         onSubmit={handleSubmit((data) => {
-          console.log('제출', data, typeof getValues('scheduleId'));
           mutate(data, {
-            onSuccess: (res) => {
-              console.log('✅ 예약 성공:', res);
+            onSuccess: () => {
               openSecondModal(undefined, 'success');
               addReservation(data.scheduleId); //save id in localStorage
               resetSelectedDate(); //🐛이거 해도 제출후 다시 열어보면, 이전 선택 날짜가 칠해져있음...:스타일링은 date 담당이기 떄문이었다.
@@ -133,7 +134,6 @@ const ReservationForm = ({
               reset(); // 제출 후 폼 초기화
             },
             onError: (err) => {
-              console.error('❌ 예약 실패:', err);
               if (axios.isAxiosError(err)) {
                 const errorMessage = err.response?.data.message;
                 toast.error(`<예약 실패>❗️ ${errorMessage}`);
@@ -143,6 +143,12 @@ const ReservationForm = ({
         })}
         className="shadow-experience-card flex flex-col overflow-auto p-[2.4rem] pb-[1.8rem] md:px-[3rem] lg:!rounded-[3rem] lg:p-[3rem]"
       >
+        {/* X 버튼 */}
+        {!isDesktop && appear && (
+          <button onClick={disappearModal}>
+            <X className="absolute top-[2.4rem] right-[2.4rem] md:right-[3rem]" />
+          </button>
+        )}
         {/* 모바일 - 스텝2(인원 체크) */}
         {!isDesktop && !isTablet && appear && nextStep && (
           <>
@@ -216,6 +222,7 @@ const ReservationForm = ({
                       'mb-[3rem] flex items-center justify-between',
                       'lg:my-[2.4rem]',
                       !isDesktop && !nextStep && 'hidden md:block',
+                      isTablet && 'flex-col items-start',
                     )}
                   >
                     <label
@@ -232,10 +239,11 @@ const ReservationForm = ({
                     >
                       <button
                         type="button"
-                        className="p-[1rem]"
+                        className="cursor-pointer p-[1rem]"
                         disabled={value <= 1}
                         onClick={() => {
                           field.onChange(value - 1);
+                          setCountUpdateForRender((prev) => prev - 1);
                         }}
                       >
                         <Minus strokeWidth={1.5} size={20} />
@@ -252,9 +260,10 @@ const ReservationForm = ({
                       </p>
                       <button
                         type="button"
-                        className="p-[1rem]"
+                        className="cursor-pointer p-[1rem]"
                         onClick={() => {
                           field.onChange(value + 1);
+                          setCountUpdateForRender((prev) => prev + 1);
                         }}
                       >
                         <Plus strokeWidth={1.5} size={20} />
@@ -316,10 +325,12 @@ const ReservationForm = ({
                                   } else setSelectedTime('');
                                 }}
                                 className={cn(
-                                  'flex-center border-sub w-full rounded-[1.2rem] border-2 py-[1.4rem] text-[1.4rem] text-gray-950',
-                                  isSelected &&
-                                    'text-main border-sub-300 bg-sub',
-                                  didIBooked && 'bg-gray-50 text-gray-600',
+                                  'flex-center border-sub w-full cursor-pointer rounded-[1.2rem] border-2 py-[1.4rem] text-[1.4rem] text-gray-950',
+                                  didIBooked
+                                    ? 'cursor-auto bg-gray-50 text-gray-600'
+                                    : isSelected
+                                      ? 'text-main border-sub-300 bg-sub-50 hover:text-main-600 hover:bg-sub trans-colors-200 font-semibold'
+                                      : 'btn-action-white',
                                 )}
                               >
                                 {didIBooked ? (
@@ -366,7 +377,7 @@ const ReservationForm = ({
               )}
               {price && (
                 <span className="inline-block text-[1.8rem] leading-none font-bold text-gray-950">
-                  ₩{formatPrice(price * getValues('headCount'))}
+                  ₩{formatPrice(price * countUpdateForRender)}
                 </span>
               )}
               {!isDesktop && (
@@ -377,27 +388,34 @@ const ReservationForm = ({
             </p>
             {/* 00/00/00 00:00~00:00 */}
             <button
-              className="text-main text-[1.6rem] font-bold underline underline-offset-4 lg:hidden"
+              className="text-main cursor-pointer text-[1.6rem] font-bold underline underline-offset-4 lg:hidden"
               onClick={() => !appear && appearModal()}
               type="button"
             >
-              {selectedDate} {selectedTime}
-              {/* 날짜 포맷해야함 formatToYYMMDD */}
+              {selectedDate &&
+                `${formatDateToShortSlash(selectedDate)}  ${selectedTime}`}
+              {selectedDate && !selectedTime && ', 시간을 선택해주세요'}
             </button>
           </div>
 
           {/* 예약하기/확인 버튼 */}
           <button
-            disabled={!isLoggedIn}
             type="submit"
             className={cn(
-              isValid && isLoggedIn ? 'bg-main' : 'bg-gray-200',
-              appear && !isValid ? 'bg-gray-300' : '',
-              'mt-[1.2rem] w-full rounded-[1.4rem] py-[1.4rem] text-[1.6rem] font-bold text-white',
-              'h-[5rem] lg:mt-0 lg:w-[13.5rem]',
-              'z-100',
+              isValid
+                ? 'btn-action-blue bg-main text-white'
+                : isDesktop
+                  ? 'btn-action-gray bg-gray-200 text-white'
+                  : appear
+                    ? 'btn-action-gray bg-gray-200 text-white'
+                    : 'btn-action-white border-main text-main border bg-white',
+              'z-100 mt-[1.2rem] h-[5rem] w-full cursor-pointer rounded-[1.4rem] py-[1.4rem] text-[1.6rem] font-bold lg:mt-0 lg:w-[13.5rem]',
             )}
             onClick={(e) => {
+              if (!isLoggedIn) {
+                openSecondModal(undefined, 'need-login');
+                return;
+              }
               if (!isDesktop) {
                 if (!appear && !isValid) {
                   appearModal();
@@ -435,6 +453,30 @@ const ReservationForm = ({
               onClick={closeSecondModal}
             >
               확인
+            </Modal.Button>
+          </div>
+        </SecondModal>
+      )}
+      {secondModalName === 'need-login' && (
+        <SecondModal type="warning" extraClassName="md:pb-[1rem]">
+          <Modal.Header>로그인이 필요합니다.</Modal.Header>
+          <div className="mb-0 flex w-[23.4rem] gap-2 md:w-[28.2rem] md:gap-3">
+            <Modal.Button
+              color="white"
+              ariaLabel="취소"
+              onClick={closeSecondModal}
+            >
+              취소
+            </Modal.Button>
+            <Modal.Button
+              color="blue"
+              ariaLabel="로그인하기"
+              onClick={() => {
+                router.push('/login');
+                closeSecondModal();
+              }}
+            >
+              로그인 하기
             </Modal.Button>
           </div>
         </SecondModal>

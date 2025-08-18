@@ -17,7 +17,9 @@
     "lighthouse:upload": "lhci upload",
     "lighthouse:ci": "pnpm lighthouse",
     "lighthouse:open": "open .lighthouseci/lhr-*.html",
-    "lighthouse:results": "echo 'Lighthouse 결과 파일:' && ls -la .lighthouseci/"
+    "lighthouse:results": "echo 'Lighthouse 결과 파일:' && ls -la .lighthouseci/",
+    "lighthouse:html": "lhci autorun --output=html --output-path=./lighthouse-reports",
+    "lighthouse:open-html": "open lighthouse-reports/*.html"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -35,6 +37,7 @@
     "axios": "1.11.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
     "framer-motion": "^12.23.9",
     "lucide-react": "^0.525.0",
     "next": "15.3.5",

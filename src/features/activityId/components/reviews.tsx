@@ -12,9 +12,12 @@ import StarImage from '@/shared/components/star';
 import { cn } from '@/shared/libs/cn';
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
 
+import { formatDateWithDots } from '../libs/utils/formatDateWithDots';
+
 const Reviews = ({ activityId }: { activityId: number }) => {
   const [page, setPage] = useState(1);
   const { data } = useReviewsQuery(activityId, { page: page, size: 3 });
+  const isPageNecessary = data && data.totalCount > 0;
   return (
     <>
       <section
@@ -66,7 +69,7 @@ const Reviews = ({ activityId }: { activityId: number }) => {
                     dateTime={review.createdAt}
                     className="text-[1.2rem] font-semibold text-gray-400"
                   >
-                    {review.createdAt}
+                    {formatDateWithDots(review.createdAt)}
                   </time>
                 </header>
                 <section className="mt-[0.4rem] mb-[0.8rem] flex items-center">
@@ -82,7 +85,7 @@ const Reviews = ({ activityId }: { activityId: number }) => {
           );
         })}
       </ul>
-      {data?.totalCount && (
+      {isPageNecessary && (
         <Pagination
           totalPages={data?.totalCount}
           currentPage={page}
