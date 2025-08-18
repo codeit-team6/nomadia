@@ -12,8 +12,9 @@ import Dropdown from '@/shared/components/dropdown';
 import AdaptiveModal from '@/shared/components/modal/components/adaptive-modal/adaptive-modal';
 import ContentReservation from '@/shared/components/modal/components/adaptive-modal/content-reservation';
 import EmptyReservation from '@/shared/components/modal/components/adaptive-modal/empty-reservation';
+import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
+import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
-import { useModalStore } from '@/shared/libs/stores/useModalStore';
 import { Activity } from '@/shared/types/activity';
 
 const ReserveCalendarPage = () => {
@@ -30,26 +31,19 @@ const ReserveCalendarPage = () => {
   );
   const [shouldFetch, setShouldFetch] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const { setModalType, appearModal, disappearModal, isDesktop } =
-    useModalStore();
+  const { appearModal, disappearModal } = useModalStore();
+  const { isDesktop } = useWindowSize();
   const { month, setYear, setMonth } = useCalendarStore();
 
   useEffect(() => {
     if (selectedActivityId) {
-      setModalType('custom');
       if (isDesktop) {
         appearModal();
       }
     } else {
       disappearModal();
     }
-  }, [
-    selectedActivityId,
-    isDesktop,
-    setModalType,
-    appearModal,
-    disappearModal,
-  ]);
+  }, [selectedActivityId, isDesktop, appearModal, disappearModal]);
 
   const handleDropdownOpen = () => {
     setShouldFetch(true);
@@ -57,7 +51,6 @@ const ReserveCalendarPage = () => {
 
   const handleDateClick = (dateStr: string) => {
     setSelectedDate(dateStr);
-    setModalType('custom');
     appearModal();
   };
 
