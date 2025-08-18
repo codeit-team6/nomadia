@@ -64,32 +64,21 @@ const ReserveCalendarPage = () => {
     setSelectedDate(dateStr);
 
     if (!selectedActivityId || !accessToken) {
-      console.warn('[⚠️] activityId 또는 토큰 없음');
       setSelectedScheduleId(null);
       return;
     }
 
     try {
-      console.log('[📡] 날짜별 예약 스케줄 조회 API 호출 시작', {
-        actId: selectedActivityId,
-        date: dateStr,
-      });
-
       const res = await getReservations({
         actId: selectedActivityId,
         date: dateStr,
         token: accessToken,
       });
 
-      console.log('[✅] 예약 스케줄 API 응답:', res);
-
-      // 서버 응답에서 scheduleId 찾기
       const scheduleIdFromApi = res?.[0]?.scheduleId ?? null;
       if (scheduleIdFromApi) {
-        console.log('[🗓️] scheduleId 추출 성공:', scheduleIdFromApi);
         setSelectedScheduleId(scheduleIdFromApi);
       } else {
-        console.warn('[⚠️] 해당 날짜에 scheduleId 없음');
         setSelectedScheduleId(null);
       }
     } catch (err) {
@@ -261,7 +250,7 @@ const ReserveCalendarPage = () => {
                 <ContentReservation
                   teamId="15-6"
                   activityId={Number(selectedActivityId)}
-                  scheduleId={selectedScheduleId}
+                  scheduleId={selectedScheduleId ? [selectedScheduleId] : []}
                   status={'pending'}
                   selectedDate={selectedDate || ''}
                   onStatusChange={updateReservationStatus}
