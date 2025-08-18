@@ -327,10 +327,11 @@ const ReservationForm = ({
                                 }}
                                 className={cn(
                                   'flex-center border-sub w-full cursor-pointer rounded-[1.2rem] border-2 py-[1.4rem] text-[1.4rem] text-gray-950',
-                                  isSelected &&
-                                    'text-main border-sub-300 bg-sub',
-                                  didIBooked &&
-                                    'cursor-auto bg-gray-50 text-gray-600',
+                                  didIBooked
+                                    ? 'cursor-auto bg-gray-50 text-gray-600'
+                                    : isSelected
+                                      ? 'text-main border-sub-300 bg-sub-50 hover:text-main-600 hover:bg-sub trans-colors-200 font-semibold'
+                                      : 'btn-action-white',
                                 )}
                               >
                                 {didIBooked ? (
@@ -388,7 +389,7 @@ const ReservationForm = ({
             </p>
             {/* 00/00/00 00:00~00:00 */}
             <button
-              className="text-main text-[1.6rem] font-bold underline underline-offset-4 lg:hidden"
+              className="text-main cursor-pointer text-[1.6rem] font-bold underline underline-offset-4 lg:hidden"
               onClick={() => !appear && appearModal()}
               type="button"
             >
@@ -402,12 +403,14 @@ const ReservationForm = ({
           <button
             type="submit"
             className={cn(
-              'cursor-pointer text-white',
-              !isValid && 'bg-gray-200',
-              !appear && !isDesktop && 'border-main text-main border bg-white',
-              isValid && 'bg-main text-white',
-              'mt-[1.2rem] h-[5rem] w-full rounded-[1.4rem] py-[1.4rem] text-[1.6rem] font-bold',
-              'z-100 lg:mt-0 lg:w-[13.5rem]',
+              isValid
+                ? 'btn-action-blue bg-main text-white'
+                : isDesktop
+                  ? 'btn-action-gray bg-gray-200 text-white'
+                  : appear
+                    ? 'btn-action-gray bg-gray-200 text-white'
+                    : 'btn-action-white border-main text-main border bg-white',
+              'z-100 mt-[1.2rem] h-[5rem] w-full cursor-pointer rounded-[1.4rem] py-[1.4rem] text-[1.6rem] font-bold lg:mt-0 lg:w-[13.5rem]',
             )}
             onClick={(e) => {
               if (!isLoggedIn) {
