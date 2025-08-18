@@ -17,7 +17,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-white text-[1.4rem] font-medium text-gray-950 rounded-[0.8rem] shadow-category-button hover:text-main md:text-[1.6rem]',
+          'bg-white text-[1.4rem] font-medium text-gray-950 rounded-full shadow-category-button hover:text-main md:text-[1.6rem]',
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline:
@@ -28,12 +28,12 @@ const buttonVariants = cva(
           'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline',
         selected:
-          'text-[1.4rem] font-medium bg-gray-hover text-white md:text-[1.6rem] rounded-[0.8rem] shadow-category-button',
+          'text-[1.4rem] font-medium bg-gray-hover text-white md:text-[1.6rem] rounded-full shadow-category-button',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
-        sm: 'h-[3rem] gap-[0.4rem] px-[2rem]',
-        md: 'h-[4rem] gap-2 px-4 has-[>svg]:px-3',
+        sm: 'h-[3rem] gap-[0.4rem] px-[2rem] py-[2rem] ',
+        md: 'h-[4rem] gap-2 px-4 has-[>svg]:px-3 py-[2rem] rounded-[0.8rem]',
         lg: 'h-[4.4rem] gap-2.5 px-5 has-[>svg]:px-4',
         icon: 'size-9',
       },

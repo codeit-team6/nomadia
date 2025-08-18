@@ -67,47 +67,47 @@ export const ActivityCard = ({
           </h3>
 
           {/* 별점, 리뷰 정보 */}
-          <div className="mt-[0.3rem] flex min-h-[1.8rem] items-center gap-[0.2rem]">
-            {/* 별점 */}
-            <div className="flex items-center">
-              {Array.from({ length: 5 }, (_, idx) =>
-                activity.rating && idx < activity.rating ? (
-                  <StarImage
-                    key={idx}
-                    extraClassName="size-[1.2rem] md:size-[1.6rem]"
-                  />
-                ) : (
-                  <EmptyStarImage
-                    key={idx}
-                    extraClassName="size-[1.2rem] md:size-[1.6rem]"
-                  />
-                ),
-              )}
+          <div className="mt-[0.3rem] flex min-h-[1.8rem] items-center justify-between">
+            {/* 왼쪽: 별점과 리뷰 정보 */}
+            <div className="flex items-center gap-[0.2rem]">
+              {/* 별점 */}
+              <div className="flex items-center">
+                {Array.from({ length: 5 }, (_, idx) =>
+                  activity.rating && idx < activity.rating ? (
+                    <StarImage
+                      key={idx}
+                      extraClassName="size-[1.2rem] md:size-[1.6rem]"
+                    />
+                  ) : (
+                    <EmptyStarImage
+                      key={idx}
+                      extraClassName="size-[1.2rem] md:size-[1.6rem]"
+                    />
+                  ),
+                )}
+              </div>
+
+              {/* Dot 구분자 */}
+              <span className="text-[1rem] text-gray-400 md:text-[1.4rem]">
+                •
+              </span>
+              <span className="mr-[0.3rem]">
+                <span className="text-[1.2rem] font-medium text-gray-400 md:text-[1.4rem]">
+                  ({activity.reviewCount})
+                </span>
+              </span>
             </div>
 
-            {/* Dot 구분자 */}
-            <span className="text-[1rem] text-gray-400 md:text-[1.4rem]">
-              •
-            </span>
-
-            {/* 리뷰 정보 */}
-            <div className="text-[1.2rem] font-medium text-gray-400 md:text-[1.4rem]">
-              <div className="flex items-center gap-[0.3rem]">
-                {/* 별점 배지: 리뷰가 있고 데스크톱에서만 표시 */}
-                {activity.reviewCount && activity.reviewCount > 0 ? (
-                  <div className="bg-main hidden h-[2rem] w-[3.5rem] items-center justify-center rounded-[0.5rem] md:flex">
-                    <span className="text-[1.3rem] font-bold text-white">
-                      {(activity.rating * 2).toFixed(1)}
-                    </span>
-                  </div>
-                ) : (
-                  ''
-                )}
-                <span className="ml-[0.3rem]">
-                  리뷰 {activity.reviewCount}개
+            {/* 오른쪽: 별점 배지 */}
+            {activity.reviewCount && activity.reviewCount > 0 ? (
+              <div className="bg-main flex-center h-[1.8rem] w-[3rem] rounded-[0.5rem] md:h-[2rem] md:w-[3.5rem]">
+                <span className="text-[1.2rem] font-bold text-white md:text-[1.3rem]">
+                  {(activity.rating * 2).toFixed(1)}
                 </span>
               </div>
-            </div>
+            ) : (
+              ''
+            )}
           </div>
         </div>
 
