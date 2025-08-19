@@ -107,7 +107,7 @@ export const ActivityCard = ({
               </div>
             ) : (
               ''
-            )} */}
+            ) */}
           </div>
         </div>
 
