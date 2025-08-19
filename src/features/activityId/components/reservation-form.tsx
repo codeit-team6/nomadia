@@ -27,7 +27,6 @@ import { useModalStore } from '@/shared/components/modal/libs/stores/useModalSto
 // import SecondModal from '@/shared/components/modal/components/second-modal/second-modal';
 import { cn } from '@/shared/libs/cn';
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
-import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 // import { useModalStore } from '@/shared/libs/stores/useModalStore';
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
@@ -65,7 +64,6 @@ const ReservationForm = ({
     closeModal,
     openModal,
   } = useModalStore();
-  const { isDesktop, isTablet } = useWindowSize();
   const { isDesktop, isTablet } = useWindowSize();
   const [schedulesInDate, setSchedulesInDate] = useState<
     TimeSlot[] | undefined
