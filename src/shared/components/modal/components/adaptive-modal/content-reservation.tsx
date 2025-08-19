@@ -1,208 +1,251 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
-interface Reservation {
+import { getReserveTimeApi } from '@/features/activities/libs/api/getReserveTimeApi';
+import { updateReservationStatus } from '@/features/activities/libs/api/updateReservation';
+import { useAuthStore } from '@/features/auth/stores/useAuthStore';
+
+export type DisplayReservation = {
   id: string;
   nickname: string;
-  peopleCount: number;
-  status: '신청' | '승인' | '거절';
-  timeSlot: string;
-}
+  headCount: number;
+  status: 'pending' | 'confirmed' | 'declined';
+  startTime: string;
+  endTime: string;
+};
 
 interface ContentReservationProps {
-  scheduleId: string;
-  dateString: string;
-  reservations: Reservation[];
-  timeSlots?: string[];
+  teamId: string;
+  activityId: number;
+  scheduleId: number[];
+  status: 'pending' | 'confirmed' | 'declined';
+  selectedDate: string;
+  onStatusChange?: (
+    reservationId: string,
+    newStatus: 'confirmed' | 'declined',
+  ) => void;
 }
 
-const ContentReservation: React.FC<ContentReservationProps> = ({
-  scheduleId: _scheduleId,
-  dateString,
-  reservations,
-  timeSlots = ['14:00 - 15:00', '15:00 - 16:00', '16:00 - 17:00'],
+export const ContentReservation: React.FC<ContentReservationProps> = ({
+  teamId,
+  activityId,
+  scheduleId,
+  selectedDate,
+  onStatusChange,
 }) => {
-  // const tabs = ['신청', '승인', '거절'] as const;
-  // type Tab = (typeof tabs)[number];
-  const [selectedTime, setSelectedTime] = useState(timeSlots[0]);
-  // const [tab, setTab] = useState<Tab>('신청');
+  const [reservations, setReservations] = useState<DisplayReservation[]>([]);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<
+    'pending' | 'confirmed' | 'declined'
+  >('pending');
+  const token = useAuthStore((state) => state.accessToken);
 
+  useEffect(() => {
+    if (!teamId || !activityId || !scheduleId || !token || !selectedDate)
+      return;
+
+    Promise.all(
+      scheduleId.map((id) =>
+        Promise.all([
+          getReserveTimeApi(activityId, id, 'pending'),
+          getReserveTimeApi(activityId, id, 'confirmed'),
+          getReserveTimeApi(activityId, id, 'declined'),
+        ]),
+      ),
+    )
+      .then((results) => {
+        const allReservations: DisplayReservation[] = results.flatMap(
+          (resGroup) =>
+            resGroup.flatMap((res) =>
+              res.reservations.map((r) => ({
+                id: String(r.id),
+                nickname: r.nickname,
+                headCount: r.headCount,
+                status:
+                  (r.status as 'pending' | 'confirmed' | 'declined') ||
+                  'pending',
+                startTime: r.startTime,
+                endTime: r.endTime,
+              })),
+            ),
+        );
+        setReservations(allReservations);
+
+        // 모든 시간대 목록
+        const slots = [
+          ...new Set(
+            allReservations.map((r) => `${r.startTime} - ${r.endTime}`),
+          ),
+        ];
+        setSelectedTimeSlot((prev) => prev ?? slots[0] ?? null);
+      })
+      .catch((err) => {
+        console.error(err);
+        setReservations([]);
+        setSelectedTimeSlot(null);
+      });
+  }, [teamId, activityId, scheduleId, token, selectedDate]);
+
+  // 드롭다운에 보여줄 시간대
+  const timeSlots = useMemo(() => {
+    return [
+      ...new Set(reservations.map((r) => `${r.startTime} - ${r.endTime}`)),
+    ];
+  }, [reservations]);
+
+  // 선택된 시간대 + 상태에 따른 예약 내역 필터링
   const filteredReservations = useMemo(() => {
-    return reservations.filter((r) => r.timeSlot === selectedTime);
-  }, [reservations, selectedTime]);
+    return reservations.filter((r) => {
+      const statusMatch =
+        activeTab === 'pending'
+          ? r.status === 'pending' || !r.status
+          : r.status === activeTab;
 
-  React.useEffect(() => {
-    setSelectedTime(timeSlots[0]);
-  }, [timeSlots]);
+      const timeMatch = selectedTimeSlot
+        ? `${r.startTime} - ${r.endTime}` === selectedTimeSlot
+        : true;
+      return statusMatch && timeMatch;
+    });
+  }, [reservations, selectedTimeSlot, activeTab]);
+
+  // 예약 상태 변경
+  const handleStatusChange = async (
+    reservationId: string,
+    newStatus: 'confirmed' | 'declined',
+  ) => {
+    try {
+      await updateReservationStatus(
+        teamId,
+        activityId,
+        Number(reservationId),
+        newStatus,
+      );
+      setReservations((prev) =>
+        prev.map((r) =>
+          r.id === reservationId ? { ...r, status: newStatus } : r,
+        ),
+      );
+      onStatusChange?.(reservationId, newStatus);
+    } catch (error) {
+      console.error(error);
+      alert('예약 상태 업데이트 실패');
+    }
+  };
 
   return (
-    <div
-      style={{
-        width: 300,
-        borderRadius: 20,
-        padding: 20,
-        boxShadow: '0 0 15px rgba(0,0,0,0.05)',
-        fontFamily: 'Noto Sans KR, sans-serif',
-      }}
-    >
-      {/* 날짜 */}
-      <h3 style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 15 }}>
-        {dateString}
-      </h3>
+    <div className="mx-auto max-w-md p-4">
+      <h1 className="txt-20-bold mb-6 text-center">{selectedDate}</h1>
 
-      {/* 상태 탭 */}
-      <div
-        style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}
-      >
-        {/* {tabs.map((t: Tab) => (
-          <div
-            key={t}
-            onClick={() => setTab(t as Tab)}
-            style={{
-              cursor: 'pointer',
-              fontWeight: tab === t ? 'bold' : 'normal',
-              color: tab === t ? '#2563EB' : '#777',
-              margin: '0 10px',
-              borderBottom:
-                tab === t ? '2px solid #2563EB' : '2px solid transparent',
-              paddingBottom: 5,
-            }}
-          >
-            {t}
-          </div>
-        ))} */}
+      <div className="txt-14-bold mb-4 flex border-b">
+        <button
+          className={`flex-1 py-2 text-center ${
+            activeTab === 'pending' ? 'border-main border-b-2' : 'text-gray-400'
+          }`}
+          onClick={() => setActiveTab('pending')}
+        >
+          신청{' '}
+          {
+            reservations.filter(
+              (r) =>
+                r.status === 'pending' &&
+                (selectedTimeSlot
+                  ? `${r.startTime} - ${r.endTime}` === selectedTimeSlot
+                  : true),
+            ).length
+          }
+        </button>
+        <button
+          className={`flex-1 py-2 text-center ${
+            activeTab === 'confirmed'
+              ? 'border-main border-b-2'
+              : 'text-gray-400'
+          }`}
+          onClick={() => setActiveTab('confirmed')}
+        >
+          승인{' '}
+          {
+            reservations.filter(
+              (r) =>
+                r.status === 'confirmed' &&
+                (selectedTimeSlot
+                  ? `${r.startTime} - ${r.endTime}` === selectedTimeSlot
+                  : true),
+            ).length
+          }
+        </button>
+        <button
+          className={`flex-1 py-2 text-center ${
+            activeTab === 'declined'
+              ? 'border-main border-b-2'
+              : 'text-gray-400'
+          }`}
+          onClick={() => setActiveTab('declined')}
+        >
+          거절{' '}
+          {
+            reservations.filter(
+              (r) =>
+                r.status === 'declined' &&
+                (selectedTimeSlot
+                  ? `${r.startTime} - ${r.endTime}` === selectedTimeSlot
+                  : true),
+            ).length
+          }
+        </button>
       </div>
 
-      {/* 예약 시간 선택 */}
-      <div style={{ marginBottom: 15 }}>
-        <div style={{ fontWeight: 'bold', marginBottom: 6 }}>예약 시간</div>
+      <div className="mb-6">
+        <div className="txt-14-bold mb-1 block">예약 시간</div>
         <select
-          value={selectedTime}
-          onChange={(e) => setSelectedTime(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '8px 12px',
-            borderRadius: 8,
-            border: '1px solid #ccc',
-            fontSize: 14,
-          }}
+          className="txt-14-medium h-[4.4rem] w-full rounded-2xl border p-4"
+          value={selectedTimeSlot ?? ''}
+          onChange={(e) => setSelectedTimeSlot(e.target.value || null)}
         >
-          {timeSlots.map((slot) => (
-            <option key={slot} value={slot}>
-              {slot}
+          {timeSlots.map((timeSlot) => (
+            <option key={timeSlot} value={timeSlot}>
+              {timeSlot}
             </option>
           ))}
         </select>
       </div>
 
-      {/* 예약 내역 */}
       <div>
-        <div style={{ fontWeight: 'bold', marginBottom: 6 }}>예약 내역</div>
-        <div
-          style={{
-            border: '1px solid #eee',
-            borderRadius: 12,
-            padding: 10,
-            maxHeight: 200,
-            overflowY: 'auto',
-          }}
-        >
-          {filteredReservations.length === 0 ? (
-            <div style={{ color: '#999', textAlign: 'center' }}>
-              예약이 없습니다.
-            </div>
-          ) : (
-            filteredReservations.map(({ id, nickname, peopleCount }) => (
-              <div
-                key={id}
-                style={{
-                  backgroundColor: '#f9f9f9',
-                  padding: 10,
-                  borderRadius: 10,
-                  marginBottom: 10,
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  fontSize: 14,
-                }}
-              >
-                <div>
-                  <div>닉네임 {nickname}</div>
-                  <div>인원 {peopleCount}명</div>
-                </div>
-                <div>
+        <div className="txt-14-bold mb-2 block">예약 내역</div>
+
+        <div className="space-y-4">
+          {filteredReservations.map(({ id, nickname, headCount }) => (
+            <div
+              key={id}
+              className="txt-13-medium flex items-center justify-between rounded-2xl border bg-white p-4"
+            >
+              <div>
+                <div>닉네임: {nickname}</div>
+                <div>인원: {headCount}명</div>
+              </div>
+              {activeTab === 'pending' && (
+                <div className="flex flex-col space-y-2">
                   <button
-                    style={{
-                      marginRight: 8,
-                      backgroundColor: '#eee',
-                      borderRadius: 10,
-                      border: 'none',
-                      padding: '5px 10px',
-                      fontSize: 12,
-                      cursor: 'pointer',
-                    }}
+                    className="txt-12-medium rounded border px-3 py-1"
+                    onClick={() => handleStatusChange(id, 'confirmed')}
                   >
                     승인하기
                   </button>
                   <button
-                    style={{
-                      backgroundColor: '#eee',
-                      borderRadius: 10,
-                      border: 'none',
-                      padding: '5px 10px',
-                      fontSize: 12,
-                      cursor: 'pointer',
-                    }}
+                    className="txt-12-medium rounded border px-3 py-1 text-sm"
+                    onClick={() => handleStatusChange(id, 'declined')}
                   >
                     거절하기
                   </button>
                 </div>
-              </div>
-            ))
+              )}
+            </div>
+          ))}
+          {filteredReservations.length === 0 && (
+            <p className="text-center text-gray-500">
+              선택한 시간대에 해당 상태의 예약이 없습니다.
+            </p>
           )}
         </div>
       </div>
     </div>
   );
 };
-
-// 예시 목데이터와 사용 예시
-const mockReservations: Reservation[] = [
-  {
-    id: '1',
-    nickname: '정만철',
-    peopleCount: 10,
-    status: '신청',
-    timeSlot: '14:00 - 15:00',
-  },
-  {
-    id: '2',
-    nickname: '김혜지',
-    peopleCount: 5,
-    status: '승인',
-    timeSlot: '14:00 - 15:00',
-  },
-  {
-    id: '3',
-    nickname: '박찬호',
-    peopleCount: 2,
-    status: '거절',
-    timeSlot: '15:00 - 16:00',
-  },
-  {
-    id: '4',
-    nickname: '이수지',
-    peopleCount: 3,
-    status: '신청',
-    timeSlot: '14:00 - 15:00',
-  },
-];
-
-export default function App() {
-  return (
-    <ContentReservation
-      scheduleId="activity-123"
-      dateString="23년 2월 10일"
-      reservations={mockReservations}
-    />
-  );
-}
