@@ -47,7 +47,7 @@ const CalendarWithReservations = ({
   calendarWidth?: string;
   dayOfWeekStyle?: string;
   cellStyle?: string;
-  onCellClick?: (dateStr: string) => void;
+  onCellClick?: (dateStr: string, scheduleId: number | null) => void;
 }) => {
   const { year, month, date, setDate, setSelectedDate } = useCalendarStore();
   const { thisMonthDays } = getMonthRange(year, month);
@@ -57,7 +57,15 @@ const CalendarWithReservations = ({
     setSelectedDate(year, month, day);
     if (onCellClick) {
       const dateStr = formatDateToYMD(new Date(year, month, day));
-      onCellClick(dateStr);
+
+      const matchingReservation = reservationArray.find((res) => {
+        const rDateStr = res.date.split('T')[0];
+        return rDateStr === dateStr;
+      });
+
+      const scheduleId = matchingReservation?.scheduleId ?? null;
+
+      onCellClick(dateStr, scheduleId);
     }
   };
 
