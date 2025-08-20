@@ -18,7 +18,7 @@ interface CalendarState {
 const today = new Date();
 
 export const useCalendarStore = create<CalendarState>((set, get) => ({
-  selectedDate: null, //기본 null로 두고, 캘린더에 따라서 기본 설정을 해두던지 알아서 해야할듯.
+  selectedDate: null,
   year: today.getFullYear(),
   month: today.getMonth(),
   date: null,

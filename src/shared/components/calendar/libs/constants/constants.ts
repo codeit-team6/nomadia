@@ -1,4 +1,5 @@
-export const monthName = [
+export const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+export const MONTH_NAME = [
   'January',
   'February',
   'March',

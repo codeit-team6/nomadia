@@ -21,14 +21,12 @@ import {
 import { formatDateToShortSlash } from '@/features/activityId/libs/utils/formatDateToShortSlash';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import CalendarForForm from '@/shared/components/calendar/components/calendar-for-form';
+import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCalendarStore';
 import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatDateToYMD';
 import Modal from '@/shared/components/modal/components';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
-// import SecondModal from '@/shared/components/modal/components/second-modal/second-modal';
 import { cn } from '@/shared/libs/cn';
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
-import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
-// import { useModalStore } from '@/shared/libs/stores/useModalStore';
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
 
 const CALENDAR_STYLES = {
@@ -57,9 +55,6 @@ const ReservationForm = ({
     appear,
     disappearModal,
     appearModal,
-    // secondModalName,
-    // closeSecondModal,
-    // openSecondModal,
     modalName,
     closeModal,
     openModal,
@@ -72,7 +67,7 @@ const ReservationForm = ({
   const [selectedTime, setSelectedTime] = useState('');
   const [nextStep, setNextStep] = useState(false);
   const { isLoggedIn } = useAuthStore();
-  const { mutate } = useReservationMutation(activityId);
+  const { mutate } = useReservationMutation();
   const [countUpdateForRender, setCountUpdateForRender] = useState(1); // 이후 리팩토링 시 - 필드값 수정하는거 제거하고, 이 상태값을 필드에 연결하는거로 변경
   const { data, isLoading, error } = useSchedulesQuery(activityId, {
     year: String(year),
@@ -126,24 +121,26 @@ const ReservationForm = ({
       {!appear && <hr className="lg:hidden" />}
       <div className="hidden">{activityId}</div>
       <form
-        // data: { scheduleId, headCount }
         onSubmit={handleSubmit((data) => {
-          mutate(data, {
-            onSuccess: () => {
-              openModal('success');
-              addReservation(data.scheduleId); //save id in localStorage
-              resetSelectedDate(); //🐛이거 해도 제출후 다시 열어보면, 이전 선택 날짜가 칠해져있음...:스타일링은 date 담당이기 떄문이었다.
-              resetDate(); //이거까지 해야함
-              setSelectedTime('');
-              reset(); // 제출 후 폼 초기화
+          mutate(
+            { activityId, body: data }, // data: { scheduleId, headCount }
+            {
+              onSuccess: () => {
+                openModal('success');
+                addReservation(data.scheduleId); //save id in localStorage
+                resetSelectedDate(); //🐛이거 해도 제출후 다시 열어보면, 이전 선택 날짜가 칠해져있음...:스타일링은 date 담당이기 떄문이었다.
+                resetDate(); //이거까지 해야함
+                setSelectedTime('');
+                reset(); // 제출 후 폼 초기화
+              },
+              onError: (err) => {
+                if (axios.isAxiosError(err)) {
+                  const errorMessage = err.response?.data.message;
+                  toast.error(`<예약 실패>❗️ ${errorMessage}`);
+                }
+              },
             },
-            onError: (err) => {
-              if (axios.isAxiosError(err)) {
-                const errorMessage = err.response?.data.message;
-                toast.error(`<예약 실패>❗️ ${errorMessage}`);
-              }
-            },
-          });
+          );
         })}
         className="shadow-experience-card flex flex-col overflow-auto p-[2.4rem] pb-[1.8rem] md:px-[3rem] lg:!rounded-[3rem] lg:p-[3rem]"
       >
@@ -198,7 +195,6 @@ const ReservationForm = ({
             <div className="flex-center">
               <CalendarForForm
                 scheduleArray={scheduledDate}
-                isForReservation={true}
                 calendarWidth={CALENDAR_STYLES.calendarWidth}
                 dayOfWeekStyle={CALENDAR_STYLES.dayOfWeekStyle}
                 cellStyle={CALENDAR_STYLES.cellStyle}

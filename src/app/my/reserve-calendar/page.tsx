@@ -9,6 +9,7 @@ import { getReservations } from '@/features/activities/libs/api/getReserveDayApi
 import { getReservationsByMonthApi } from '@/features/activities/libs/api/getReserveMonthApi';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import CalendarWithReservations from '@/shared/components/calendar/components/calendar-with-reservations';
+import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCalendarStore';
 import { MonthReservations } from '@/shared/components/calendar/libs/types/data';
 import Dropdown from '@/shared/components/dropdown';
 import AdaptiveModal from '@/shared/components/modal/components/adaptive-modal/adaptive-modal';
@@ -16,7 +17,6 @@ import { ContentReservation } from '@/shared/components/modal/components/adaptiv
 import EmptyReservation from '@/shared/components/modal/components/adaptive-modal/empty-reservation';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
-import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 import { Activity } from '@/shared/types/activity';
 
 const ReserveCalendarPage = () => {
@@ -33,12 +33,12 @@ const ReserveCalendarPage = () => {
   );
   const [shouldFetch, setShouldFetch] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-const [selectedScheduleId, setSelectedScheduleId] = useState<number | null>(
+  const [selectedScheduleId, setSelectedScheduleId] = useState<number | null>(
     null,
   );
 
-  const { setModalType, appearModal, disappearModal, isDesktop } =
-    useModalStore();
+  const { setModalType, appearModal, disappearModal } = useModalStore();
+  const { isDesktop } = useWindowSize();
   const { month, setYear, setMonth } = useCalendarStore();
   const { accessToken } = useAuthStore();
 

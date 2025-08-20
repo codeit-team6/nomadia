@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 
-import DayOfWeek from '@/shared/components/calendar/components/day-of-week';
-import NotThisMonth from '@/shared/components/calendar/components/not-this-month';
+import DayOfWeek from '@/shared/components/calendar/components/fragments/day-of-week';
+import NotThisMonth from '@/shared/components/calendar/components/fragments/not-this-month';
+import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCalendarStore';
 import { getMonthRange } from '@/shared/components/calendar/libs/utils/getMonthRange';
-import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 
 interface CalendarProps {
   inactiveCellStyle?: string;
@@ -11,6 +11,7 @@ interface CalendarProps {
   children?: ReactNode;
 }
 
+// 요일 + 날짜
 const DaysOfMonth = ({
   inactiveCellStyle,
   dayOfWeekStyle,
@@ -29,7 +30,6 @@ const DaysOfMonth = ({
       {children}
       {/* 다음달 날짜*/}
       <NotThisMonth daysArray={trailingDays} cellStyle={inactiveCellStyle} />
-      {/* </div> */}
     </div>
   );
 };
