@@ -1,7 +1,7 @@
 'use client';
 import axios from 'axios';
 import { ArrowLeft, Minus, Plus, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -113,6 +113,7 @@ const ReservationForm = ({
     };
   }, [setMonth, setYear, resetDate, resetSelectedDate]);
 
+  const pathname = usePathname();
   return (
     <>
       {/* 캘린더 컴포넌트 사용 */}
@@ -462,6 +463,7 @@ const ReservationForm = ({
               color="blue"
               ariaLabel="로그인하기"
               onClick={() => {
+                sessionStorage.setItem('redirectAfterLogin', pathname);
                 router.push('/login');
                 closeModal();
               }}
