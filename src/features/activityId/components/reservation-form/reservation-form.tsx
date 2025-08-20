@@ -1,11 +1,13 @@
 'use client';
 import axios from 'axios';
 import { ArrowLeft, Minus, Plus, X } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
+import NeedLoginModal from '@/features/activityId/components/reservation-form/modal-need-login';
+import SuccessModal from '@/features/activityId/components/reservation-form/modal-success';
 import SubmitButton from '@/features/activityId/components/reservation-form/submit-button';
 import { reservationFormStyle } from '@/features/activityId/libs/constants/variants';
 import { useReservationMutation } from '@/features/activityId/libs/hooks/useReservationMutation';
@@ -23,7 +25,6 @@ import { formatDateToShortSlash } from '@/features/activityId/libs/utils/formatD
 import CalendarForForm from '@/shared/components/calendar/components/calendar-for-form';
 import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCalendarStore';
 import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatDateToYMD';
-import Modal from '@/shared/components/modal/components';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 import { cn } from '@/shared/libs/cn';
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
@@ -51,14 +52,8 @@ const ReservationForm = ({
     setYear,
     resetDate,
   } = useCalendarStore();
-  const {
-    appear,
-    disappearModal,
-    appearModal,
-    modalName,
-    closeModal,
-    openModal,
-  } = useModalStore();
+  const { appear, disappearModal, appearModal, modalName, openModal } =
+    useModalStore();
   const { isDesktop, isTablet, isMobile } = useWindowSize();
   const [schedulesInDate, setSchedulesInDate] = useState<
     TimeSlot[] | undefined
@@ -72,7 +67,6 @@ const ReservationForm = ({
     year: String(year),
     month: String(month + 1).padStart(2, '0'),
   });
-  const router = useRouter();
 
   // 리액트훅폼
   const {
@@ -404,35 +398,8 @@ const ReservationForm = ({
           />
         </section>
       </form>
-      {modalName === 'success' && (
-        <Modal type="confirm">
-          <Modal.Header>예약이 완료되었습니다.</Modal.Header>
-          <Modal.Button color="blue" ariaLabel="확인" onClick={closeModal}>
-            확인
-          </Modal.Button>
-        </Modal>
-      )}
-      {modalName === 'need-login' && (
-        <Modal type="warning">
-          <Modal.Header>로그인이 필요합니다.</Modal.Header>
-          <div className="flex gap-[0.8rem] md:gap-[1.2rem]">
-            <Modal.Button color="white" ariaLabel="취소" onClick={closeModal}>
-              취소
-            </Modal.Button>
-            <Modal.Button
-              color="blue"
-              ariaLabel="로그인하기"
-              onClick={() => {
-                sessionStorage.setItem('redirectAfterLogin', pathname);
-                router.push('/login');
-                closeModal();
-              }}
-            >
-              로그인 하기
-            </Modal.Button>
-          </div>
-        </Modal>
-      )}
+      {modalName === 'success' && <SuccessModal />}
+      {modalName === 'need-login' && <NeedLoginModal pathname={pathname} />}
     </>
   );
 };
