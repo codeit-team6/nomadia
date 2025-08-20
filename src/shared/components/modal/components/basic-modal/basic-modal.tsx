@@ -35,40 +35,38 @@ const BasicModal = ({
     }
   }, [isModalOpen, type, setModalType]);
 
-  if (isModalOpen) {
-    return createPortal(
-      <AnimatePresence>
-        {isModalOpen && (
-          <>
-            {/* 오버레이 */}
+  return createPortal(
+    <AnimatePresence>
+      {isModalOpen && (
+        <>
+          {/* 오버레이 */}
+          <motion.div
+            className="flex-center fixed inset-0 z-100 bg-black/50"
+            onClick={() => {
+              closeModal();
+            }}
+            role="presentation"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+          >
+            {/* 모달 */}
             <motion.div
-              className="flex-center fixed inset-0 z-100 bg-black/50"
-              onClick={() => {
-                closeModal();
-              }}
-              role="presentation"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, ease: 'easeInOut' }}
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
             >
-              <motion.div
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.8 }}
-              >
-                {/* 모달 */}
-                <ModalContent type={type} extraClassName={extraClassName}>
-                  {children}
-                </ModalContent>
-              </motion.div>
+              <ModalContent type={type} extraClassName={extraClassName}>
+                {children}
+              </ModalContent>
             </motion.div>
-          </>
-        )}
-      </AnimatePresence>,
-      document.body,
-    );
-  }
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>,
+    document.body,
+  );
 };
 
 export default BasicModal;

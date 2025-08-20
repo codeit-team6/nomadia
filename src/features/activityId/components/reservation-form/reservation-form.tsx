@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
+import SubmitButton from '@/features/activityId/components/reservation-form/submit-button';
 import { reservationFormStyle } from '@/features/activityId/libs/constants/variants';
 import { useReservationMutation } from '@/features/activityId/libs/hooks/useReservationMutation';
 import { useSchedulesQuery } from '@/features/activityId/libs/hooks/useSchedulesQuery';
@@ -19,7 +20,6 @@ import {
   getMyResertvation,
 } from '@/features/activityId/libs/utils/addReservation';
 import { formatDateToShortSlash } from '@/features/activityId/libs/utils/formatDateToShortSlash';
-import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import CalendarForForm from '@/shared/components/calendar/components/calendar-for-form';
 import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCalendarStore';
 import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatDateToYMD';
@@ -59,14 +59,13 @@ const ReservationForm = ({
     closeModal,
     openModal,
   } = useModalStore();
-  const { isDesktop, isTablet } = useWindowSize();
+  const { isDesktop, isTablet, isMobile } = useWindowSize();
   const [schedulesInDate, setSchedulesInDate] = useState<
     TimeSlot[] | undefined
   >([]);
   const [scheduledDate, setScheduledDate] = useState<AvailableScheduleList>();
   const [selectedTime, setSelectedTime] = useState('');
   const [nextStep, setNextStep] = useState(false);
-  const { isLoggedIn } = useAuthStore();
   const { mutate } = useReservationMutation();
   const [countUpdateForRender, setCountUpdateForRender] = useState(1); // 이후 리팩토링 시 - 필드값 수정하는거 제거하고, 이 상태값을 필드에 연결하는거로 변경
   const { data, isLoading, error } = useSchedulesQuery(activityId, {
@@ -152,7 +151,7 @@ const ReservationForm = ({
           </button>
         )}
         {/* 모바일 - 스텝2(인원 체크) */}
-        {!isDesktop && !isTablet && appear && nextStep && (
+        {isMobile && appear && nextStep && (
           <>
             <button
               className="flex items-center gap-[0.6rem]"
@@ -187,9 +186,7 @@ const ReservationForm = ({
           )}
         >
           {/* 날짜 선택 캘린더(폼 제출 값에는 미반영) */}
-          <section
-            className={cn(!isDesktop && !isTablet && nextStep && 'hidden')}
-          >
+          <section className={cn(isMobile && nextStep && 'hidden')}>
             <h2 className="mb-[0.8rem] text-[1.8rem] font-bold text-gray-950 md:mb-[2.4rem] lg:mb-[0.8rem]">
               날짜
             </h2>
@@ -284,7 +281,7 @@ const ReservationForm = ({
                   <section
                     className={cn(
                       'mb-[3.6rem]',
-                      !isDesktop && !isTablet && nextStep && 'hidden',
+                      isMobile && nextStep && 'hidden',
                       'lg:mb-0',
                     )}
                   >
@@ -400,48 +397,11 @@ const ReservationForm = ({
           </div>
 
           {/* 예약하기/확인 버튼 */}
-          <button
-            type="submit"
-            className={cn(
-              isValid
-                ? 'btn-action-blue bg-main text-white'
-                : isDesktop
-                  ? 'btn-action-gray bg-gray-200 text-white'
-                  : appear
-                    ? 'btn-action-gray bg-gray-200 text-white'
-                    : 'btn-action-white border-main text-main border bg-white',
-              'z-100 mt-[1.2rem] h-[5rem] w-full cursor-pointer rounded-[1.4rem] py-[1.4rem] text-[1.6rem] font-bold lg:mt-0 lg:w-[13.5rem]',
-            )}
-            onClick={(e) => {
-              if (!isValid) {
-                e.preventDefault();
-              }
-              if (!isLoggedIn) {
-                openModal('need-login');
-                return;
-              }
-              if (!isDesktop) {
-                if (!appear && !isValid) {
-                  appearModal();
-                }
-                if (!isTablet) {
-                  if (appear && !nextStep) {
-                    setNextStep(true);
-                  }
-                  if (appear && nextStep) {
-                    disappearModal();
-                    setNextStep(false);
-                  }
-                } else {
-                  if (appear) {
-                    disappearModal();
-                  }
-                }
-              }
-            }}
-          >
-            {isDesktop ? '예약하기' : !appear ? '예약하기' : '확인'}
-          </button>
+          <SubmitButton
+            isValid={isValid}
+            nextStep={nextStep}
+            setNextStep={setNextStep}
+          />
         </section>
       </form>
       {modalName === 'success' && (
