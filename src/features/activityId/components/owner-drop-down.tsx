@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
-import Dropdown from '@/shared/components/dropdown';
+import Dropdown from '@/shared/components/dropdown/dropdown';
 import Modal from '@/shared/components/modal/components';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 import { useDeleteActivityMutation } from '@/shared/libs/hooks/useDeleteActivityMutation';
