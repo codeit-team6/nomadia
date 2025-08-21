@@ -236,7 +236,7 @@ const ActivityRegistrationForm = () => {
           className={`h-[4.1rem] w-[16rem] cursor-pointer rounded-[1.2rem] text-center text-[1.4rem] font-bold text-white md:h-[4.8rem] md:w-[16rem] md:rounded-[1.6rem] md:text-[1.6rem] lg:h-[5.2rem] lg:w-[18rem] ${
             registrationMutation.isPending
               ? 'cursor-not-allowed bg-gray-400'
-              : 'bg-main hover:bg-blue-500'
+              : 'bg-main btn-action-blue'
           }`}
         >
           {registrationMutation.isPending ? '등록 중...' : '체험 등록하기'}
