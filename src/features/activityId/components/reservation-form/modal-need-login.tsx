@@ -1,3 +1,4 @@
+'use client';
 import { usePathname, useRouter } from 'next/navigation';
 
 import Modal from '@/shared/components/modal/components';

@@ -14,9 +14,11 @@ export const useRedirectAfterSuccess = () => {
 
   const redirect = (path: string) => {
     const redirectTo = sessionStorage.getItem('redirectAfterSuccess');
-    if (redirectTo) {
-      router.push(redirectTo);
+    const isValidPath =
+      redirectTo?.startsWith('/') && !redirectTo.startsWith('//'); // 오픈 리다이렉트 취약점 방지
+    if (redirectTo && isValidPath) {
       sessionStorage.removeItem('redirectAfterSuccess');
+      router.push(redirectTo);
     } else {
       router.push(path);
     }

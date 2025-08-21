@@ -3,7 +3,6 @@ import axios from 'axios';
 import { ArrowLeft, Minus, Plus, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
 import NeedLoginModal from '@/features/activityId/components/reservation-form/modal-need-login';
 import SuccessModal from '@/features/activityId/components/reservation-form/modal-success';
@@ -127,8 +126,10 @@ const ReservationForm = ({
               },
               onError: (err) => {
                 if (axios.isAxiosError(err)) {
-                  const errorMessage = err.response?.data.message;
-                  toast.error(`<예약 실패>❗️ ${errorMessage}`);
+                  const errorMessage =
+                    err.response?.data.message ??
+                    '일시적인 오류가 발생했습니다.';
+                  alert(`<예약 실패> ${errorMessage}`);
                 }
               },
             },
