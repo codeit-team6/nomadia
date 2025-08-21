@@ -91,28 +91,27 @@ export const ActivityCard = ({
               <span className="text-[1rem] text-gray-400 md:text-[1.4rem]">
                 •
               </span>
+
+              {/* 별점 상세 점수 표기(소수점 한자리까지) */}
+              {activity.reviewCount && activity.reviewCount > 0 ? (
+                <span className="text-[1.2rem] font-bold text-gray-800 md:text-[1.4rem]">
+                  {(activity.rating * 2).toFixed(1)}
+                </span>
+              ) : (
+                ''
+              )}
+
               <span className="mr-[0.3rem]">
-                <span className="text-[1.2rem] font-medium text-gray-400 md:text-[1.4rem]">
+                <span className="text-[1.2rem] font-medium text-gray-600 md:text-[1.4rem]">
                   ({activity.reviewCount})
                 </span>
               </span>
             </div>
-
-            {/* 오른쪽: 별점 배지 - 일단 숨김(0819) */}
-            {/* {activity.reviewCount && activity.reviewCount > 0 ? (
-              <div className="bg-main flex-center h-[1.8rem] w-[3rem] rounded-[0.5rem] md:h-[2rem] md:w-[3.5rem]">
-                <span className="text-[1.2rem] font-bold text-white md:text-[1.3rem]">
-                  {(activity.rating * 2).toFixed(1)}
-                </span>
-              </div>
-            ) : (
-              ''
-            ) */}
           </div>
         </div>
 
         {/* 가격 */}
-        <div className="mt-[2rem] flex justify-end gap-1">
+        <div className="mt-[2rem] flex justify-start gap-1">
           <span className="text-[1.5rem] leading-[1.8rem] font-bold text-gray-950 md:text-[1.8rem]">
             ₩ {formatPrice(activity.price)}{' '}
             <span className="text-[1.2rem] font-semibold text-gray-400 md:text-[1.6rem]">
