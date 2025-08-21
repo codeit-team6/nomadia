@@ -18,16 +18,6 @@ const SubmitButton = ({
   const { isDesktop, isTablet, isMobile } = useWindowSize();
   const { appear, appearModal, disappearModal, openModal } = useModalStore();
 
-  const handleException = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!isValid || appear) {
-      e.preventDefault();
-    }
-    if (!isLoggedIn) {
-      openModal('need-login');
-      return;
-    }
-  };
-
   const handleAppear = () => {
     if (!isDesktop && !appear && !isValid) {
       appearModal();
@@ -59,7 +49,14 @@ const SubmitButton = ({
               : 'btn-action-white border-main text-main border bg-white',
       )}
       onClick={(e) => {
-        handleException(e); // 예외처리
+        // 예외 처리
+        if (!isValid || appear) {
+          e.preventDefault();
+        }
+        if (!isLoggedIn) {
+          openModal('need-login');
+          return;
+        }
         handleAppear(); // handle appear in !isDesktop
         handleNextStep(); // handle nextStep in Mobile
       }}
