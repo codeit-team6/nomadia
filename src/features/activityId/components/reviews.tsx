@@ -8,7 +8,7 @@ import { activityIdStyle } from '@/features/activityId/libs/constants/variants';
 import { useReviewsQuery } from '@/features/activityId/libs/hooks/useReviewsQuery';
 import { formatRating } from '@/features/activityId/libs/utils/formatRating';
 import Pagination from '@/shared/components/pagination/pagination';
-import StarImage from '@/shared/components/star';
+import StarImage from '@/shared/components/star/star';
 import { cn } from '@/shared/libs/cn';
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
 

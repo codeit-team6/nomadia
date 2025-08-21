@@ -12,7 +12,7 @@ import SubImages from '@/features/activityId/components/sub-images';
 import { activityIdStyle } from '@/features/activityId/libs/constants/variants';
 import { useActivityIdQuery } from '@/features/activityId/libs/hooks/useActivityIdQuery';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
-import StarImage from '@/shared/components/star';
+import StarImage from '@/shared/components/star/star';
 
 const ActivityPage = () => {
   const { id } = useParams();
