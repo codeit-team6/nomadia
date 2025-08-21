@@ -64,7 +64,7 @@ export const FormInput = <T extends FieldValues>({
   const [showPassword, setShowPassword] = useState(false);
   const isPasswordField = type === 'password';
 
-  const { openModal, closeModal } = useModalStore();
+  const { openModal, closeModal, modalName } = useModalStore();
 
   // 공통 스타일 클래스
   const baseInputClass = `w-full bg-white rounded-[1.2rem] border px-[1.6rem] text-[1.4rem] focus:outline-0 md:text-[1.6rem] ${
@@ -156,13 +156,13 @@ export const FormInput = <T extends FieldValues>({
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                openModal();
+                openModal('address-search');
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
                   e.stopPropagation();
-                  openModal();
+                  openModal('address-search');
                 }
               }}
               aria-label={placeholder}
@@ -172,20 +172,22 @@ export const FormInput = <T extends FieldValues>({
               </span>
               <Search className="h-[2rem] w-[2rem] text-gray-500 md:h-[2.4rem] md:w-[2.4rem]" />
             </button>
-            <Modal type="custom" extraClassName="md: w-[60rem] h-[50rem]">
-              <div>
-                <DaumPostcode
-                  onComplete={(data) => {
-                    // 주소 선택 완료 시 입력 필드에 값 설정
-                    const fullAddress = data.address;
-                    if (setValue) {
-                      setValue(name, fullAddress);
-                    }
-                    closeModal();
-                  }}
-                />
-              </div>
-            </Modal>
+            {modalName === 'address-search' && (
+              <Modal type="custom" extraClassName="md: w-[60rem] h-[50rem]">
+                <div>
+                  <DaumPostcode
+                    onComplete={(data) => {
+                      // 주소 선택 완료 시 입력 필드에 값 설정
+                      const fullAddress = data.address;
+                      if (setValue) {
+                        setValue(name, fullAddress);
+                      }
+                      closeModal();
+                    }}
+                  />
+                </div>
+              </Modal>
+            )}
           </div>
         );
 
