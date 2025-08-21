@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { ActivityCard } from '@/features/activities/components/activity-card';
 import useResActivitiesQuery from '@/features/activities/libs/hooks/useResActivitiesQuery';
-import Dropdown from '@/shared/components/dropdown';
+import Dropdown from '@/shared/components/dropdown/dropdown';
 import { ErrorMessage } from '@/shared/components/error-message/error-message';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import Pagination from '@/shared/components/pagination/pagination';
