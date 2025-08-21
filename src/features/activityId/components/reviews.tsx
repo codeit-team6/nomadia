@@ -34,7 +34,7 @@ const Reviews = ({ activityId }: { activityId: number }) => {
         </header>
         <h3 className="flex-center mb-[3rem] flex-col gap-[0.6rem]">
           <span className="block text-[2.4rem] font-semibold text-gray-950">
-            {data?.averageRating}
+            {data?.averageRating.toFixed(1)}
           </span>
           <span className="block text-[1.4rem] font-bold text-gray-950">
             {formatRating(data?.averageRating, data?.totalCount)}

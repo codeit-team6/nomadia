@@ -53,7 +53,7 @@ const ActivityPage = () => {
               <div className="mb-[1rem] flex items-center gap-[0.6rem] text-[1.4rem] leading-none text-gray-700">
                 <StarImage />
                 <p>
-                  {data?.rating}({data?.reviewCount})
+                  {data?.rating.toFixed(1)} ({data?.reviewCount})
                 </p>
               </div>
               <div className="flex items-center gap-[0.2rem] text-[1.4rem] leading-none text-gray-700">
