@@ -24,7 +24,6 @@ const Header = () => {
   const handleLogout = () => {
     queryClient.clear();
     logout();
-
     router.push('/activities');
   };
 
