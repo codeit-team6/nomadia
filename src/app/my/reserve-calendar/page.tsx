@@ -12,7 +12,7 @@ import { ContentReservation } from '@/features/reservation-state/components/cont
 import EmptyReservation from '@/features/reservation-state/components/empty-reservation';
 import CalendarWithReservations from '@/shared/components/calendar/components/calendar-with-reservations';
 import { MonthReservations } from '@/shared/components/calendar/libs/types/data';
-import Dropdown from '@/shared/components/dropdown';
+import Dropdown from '@/shared/components/dropdown/dropdown';
 import AdaptiveModal from '@/shared/components/modal/components/adaptive-modal/adaptive-modal';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
