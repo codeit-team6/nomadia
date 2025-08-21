@@ -1,11 +1,12 @@
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import Modal from '@/shared/components/modal/components';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 
-const NeedLoginModal = ({ pathname }: { pathname: string }) => {
+const NeedLoginModal = () => {
   const { closeModal } = useModalStore();
   const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <Modal type="warning">
@@ -18,7 +19,7 @@ const NeedLoginModal = ({ pathname }: { pathname: string }) => {
           color="blue"
           ariaLabel="로그인하기"
           onClick={() => {
-            sessionStorage.setItem('redirectAfterLogin', pathname);
+            sessionStorage.setItem('redirectAfterSuccess', pathname);
             router.push('/login');
             closeModal();
           }}

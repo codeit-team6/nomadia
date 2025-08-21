@@ -7,7 +7,9 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import NotificationButton from '@/features/activities/components/notification-button';
+import { useSavePathActivityId } from '@/features/activityId/libs/hooks/useSavePathActivityId';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
+import { useRedirectAfterSuccess } from '@/features/auth/utils/hooks/useRedirectAfterSuccess';
 import { useMyProfile } from '@/features/my/profile/lib/hooks/useMyProfile';
 import Dropdown from '@/shared/components/dropdown/dropdown';
 import useHydration from '@/shared/libs/hooks/useHydration';
@@ -20,11 +22,24 @@ const Header = () => {
   const router = useRouter();
   const { data: myData } = useMyProfile();
   const queryClient = useQueryClient();
+  const redirectAfterLogout = useRedirectAfterSuccess();
+  const savePathActivityId = useSavePathActivityId();
 
   const handleLogout = () => {
     queryClient.clear();
     logout();
-    router.push('/activities');
+    savePathActivityId();
+    redirectAfterLogout('/activities');
+  };
+
+  const handleLogin = () => {
+    savePathActivityId();
+    router.push('/login');
+  };
+
+  const handleSignup = () => {
+    savePathActivityId();
+    router.push('/signup');
   };
 
   if (!hydrated) return null;
@@ -109,14 +124,10 @@ const Header = () => {
           <>
             {/* 비로그인 상태일 때 */}
             <li>
-              <Link href="/login" className="">
-                로그인
-              </Link>
+              <button onClick={handleLogin}>로그인</button>
             </li>
             <li>
-              <Link href="/signup" className="">
-                회원가입
-              </Link>
+              <button onClick={handleSignup}>회원가입</button>
             </li>
           </>
         )}

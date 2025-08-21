@@ -1,7 +1,6 @@
 'use client';
 import axios from 'axios';
 import { ArrowLeft, Minus, Plus, X } from 'lucide-react';
-import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -106,7 +105,6 @@ const ReservationForm = ({
     };
   }, [setMonth, setYear, resetDate, resetSelectedDate]);
 
-  const pathname = usePathname();
   return (
     <>
       {/* 캘린더 컴포넌트 사용 */}
@@ -399,7 +397,8 @@ const ReservationForm = ({
         </section>
       </form>
       {modalName === 'success' && <SuccessModal />}
-      {modalName === 'need-login' && <NeedLoginModal pathname={pathname} />}
+
+      {modalName === 'need-login' && <NeedLoginModal />}
     </>
   );
 };
