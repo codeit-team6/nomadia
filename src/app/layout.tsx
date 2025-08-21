@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import { Providers } from '@/app/providers';
-import Footer from '@/shared/components/footer';
+import Footer from '@/shared/components/footer/footer';
 import HeaderWrapper from '@/shared/components/header/header-wrapper';
 
 const pretendard = localFont({

@@ -9,7 +9,7 @@ import React from 'react';
 import NotificationButton from '@/features/activities/components/notification-button';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import { useMyProfile } from '@/features/my/profile/lib/hooks/useMyProfile';
-import Dropdown from '@/shared/components/dropdown';
+import Dropdown from '@/shared/components/dropdown/dropdown';
 import useHydration from '@/shared/libs/hooks/useHydration';
 
 const Header = () => {
