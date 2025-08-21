@@ -66,6 +66,13 @@ export const FormInput = <T extends FieldValues>({
 
   const { openModal, closeModal, modalName } = useModalStore();
 
+  // 주소 검색 모달 열기 함수
+  const handleAddressSearch = (e: React.MouseEvent | React.KeyboardEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openModal('address-search');
+  };
+
   // 공통 스타일 클래스
   const baseInputClass = `w-full bg-white rounded-[1.2rem] border px-[1.6rem] text-[1.4rem] focus:outline-0 md:text-[1.6rem] ${
     error ? 'border-red-500' : 'border-gray-200'
@@ -153,16 +160,12 @@ export const FormInput = <T extends FieldValues>({
               type="button"
               id={name}
               className={`${baseInputClass} flex h-[4.4rem] cursor-pointer items-center justify-between md:h-[4.8rem]`}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                openModal('address-search');
-              }}
+              onClick={handleAddressSearch}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
                   e.stopPropagation();
-                  openModal('address-search');
+                  handleAddressSearch(e);
                 }
               }}
               aria-label={placeholder}
