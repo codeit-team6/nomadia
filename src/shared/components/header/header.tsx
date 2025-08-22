@@ -26,32 +26,10 @@ const Header = () => {
   const queryClient = useQueryClient();
   const redirectAfterLogout = useRedirectAfterSuccess();
   const savePathActivityId = useSavePathActivityId();
-
-  // const handleLogout = () => {
-  //   queryClient.clear();
-  //   logout();
-  //   savePathActivityId();
-  //   redirectAfterLogout('/activities');
-  // };
-
-  // const handleLogin = () => {
-  //   savePathActivityId();
-  //   router.push('/login');
-  // };
-
-  // const handleSignup = () => {
-  //   savePathActivityId();
-  //   router.push('/signup');
-  // };
-
-  // if (!hydrated) return null;
-
-  // ✅ 모달 제어
   const { openModal, closeModal, modalName } = useModalStore();
 
   if (!hydrated) return null;
 
-  // ✅ 모달에서 "확인" 눌렀을 때 실행
   const handleLogoutConfirm = () => {
     queryClient.clear();
     logout();
@@ -92,7 +70,6 @@ const Header = () => {
               <li className="text-gray-100">|</li>
 
               {/* 드롭다운 */}
-
               <Dropdown
                 trigger={
                   <button className="flex cursor-pointer items-center gap-3">
@@ -165,7 +142,7 @@ const Header = () => {
         </ul>
       </nav>
 
-      {/* ✅ 로그아웃 모달 */}
+      {/* 로그아웃 모달 */}
       {modalName === 'logout' && (
         <LogoutConfirmModal
           onClose={closeModal}
