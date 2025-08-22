@@ -1,11 +1,11 @@
 import { defaultDayOfWeekStyle } from '@/shared/components/calendar/libs/constants/calendarStyles';
+import { DAYS } from '@/shared/components/calendar/libs/constants/constants';
 import { cn } from '@/shared/libs/cn';
 
 const DayOfWeek = ({ dayOfWeekStyle }: { dayOfWeekStyle?: string }) => {
-  const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   return (
     <>
-      {days.map((day, i) => (
+      {DAYS.map((day, i) => (
         <div
           key={`${i}-${day}`}
           className={cn('select-none', defaultDayOfWeekStyle, dayOfWeekStyle)}

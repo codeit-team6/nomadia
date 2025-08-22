@@ -11,11 +11,11 @@ import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import { ContentReservation } from '@/features/reservation-state/components/content-reservation';
 import EmptyReservation from '@/features/reservation-state/components/empty-reservation';
 import CalendarWithReservations from '@/shared/components/calendar/components/calendar-with-reservations';
+import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCalendarStore';
 import { MonthReservations } from '@/shared/components/calendar/libs/types/data';
 import Dropdown from '@/shared/components/dropdown/dropdown';
 import AdaptiveModal from '@/shared/components/modal/components/adaptive-modal/adaptive-modal';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
-import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 import { Activity } from '@/shared/types/activity';
 
 const ReserveCalendarPage = () => {

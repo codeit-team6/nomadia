@@ -1,5 +1,6 @@
 'use client';
-import { ReactNode, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ReactNode, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import ModalContent from '@/shared/components/modal/components/modal-content';
@@ -25,35 +26,61 @@ const BasicModal = ({
   children: ReactNode;
 }) => {
   const { isModalOpen, closeModal, setModalType } = useModalStore();
+  const [isIconLoaded, setIsIconLoaded] = useState(false);
+  useKeydownEsc(closeModal, isModalOpen, isIconLoaded);
 
-  useKeydownEsc(closeModal, isModalOpen);
+  // 마운트 시 전역 타입 등록 - modal-button, modal-header에서 사용
   useEffect(() => {
-    // 마운트 시 전역 타입 등록 - modal-button, modal-header에서 사용
     if (isModalOpen) {
       setModalType(type);
     }
   }, [isModalOpen, type, setModalType]);
 
-  if (isModalOpen) {
-    return createPortal(
-      <>
-        {/* 오버레이 */}
-        <div
-          className="flex-center fixed inset-0 z-100 bg-black/50"
-          onClick={() => {
-            closeModal();
-          }}
-          role="presentation"
-        >
-          {/* 모달 */}
-          <ModalContent type={type} extraClassName={extraClassName}>
-            {children}
-          </ModalContent>
-        </div>
-      </>,
-      document.body,
-    );
-  }
+  //warning 이미지를 미리 캐시에 로드
+  useEffect(() => {
+    if (type !== 'warning') setIsIconLoaded(true);
+    const img = new window.Image();
+    img.src = '/images/warning.svg';
+    img.onload = () => {
+      setIsIconLoaded(true); // 이미지가 다 로드된 후 모달 오픈
+    };
+  }, [type]);
+
+  return createPortal(
+    <AnimatePresence>
+      {isModalOpen && (
+        <>
+          {/* 오버레이 */}
+          <motion.div
+            className="flex-center fixed inset-0 z-100 bg-black/50"
+            onClick={() => {
+              if (!isIconLoaded) return;
+              closeModal();
+            }}
+            role="presentation"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+          >
+            {/* 모달 */}
+            {isIconLoaded && (
+              <motion.div
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.8 }}
+              >
+                <ModalContent type={type} extraClassName={extraClassName}>
+                  {children}
+                </ModalContent>
+              </motion.div>
+            )}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>,
+    document.body,
+  );
 };
 
 export default BasicModal;

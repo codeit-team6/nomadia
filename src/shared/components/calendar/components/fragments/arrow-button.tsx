@@ -1,16 +1,15 @@
 'use client';
 import Image from 'next/image';
 
+import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCalendarStore';
 import { cn } from '@/shared/libs/cn';
-import { useCalendarStore } from '@/shared/libs/stores/useCalendarStore';
 
-const ArrowButton = ({
-  type,
-  extraClassName,
-}: {
+interface ArrowButtonProps {
   type: 'left' | 'right';
   extraClassName?: string;
-}) => {
+}
+
+const ArrowButton = ({ type, extraClassName }: ArrowButtonProps) => {
   const { month, year, setMonth, setYear } = useCalendarStore();
   const isRight = type === 'right';
 

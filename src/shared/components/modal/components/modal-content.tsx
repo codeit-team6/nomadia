@@ -6,7 +6,6 @@ import { modalContentClasses } from '@/shared/components/modal/libs/modalClasses
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 import { cn } from '@/shared/libs/cn';
 
-//✨
 const ModalContent = ({
   type,
   children,
@@ -50,6 +49,7 @@ const ModalContent = ({
             width={49}
             height={49}
             className="md:size-[8.8rem]"
+            priority
           />
         )}
         {children}
