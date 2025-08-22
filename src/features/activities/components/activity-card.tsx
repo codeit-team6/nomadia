@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import EmptyStarImage from '@/shared/components/empty-star/empty-star';
-import StarImage from '@/shared/components/star';
+import StarImage from '@/shared/components/star/star';
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
 import { Activity } from '@/shared/types/activity';
 

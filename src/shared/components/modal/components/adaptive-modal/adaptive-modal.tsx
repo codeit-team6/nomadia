@@ -44,7 +44,7 @@ const AdaptiveModal = ({
   const { appear, disappearModal } = useModalStore();
   const isDefaultStyle = translateY === 'translate-y-full';
 
-  useKeydownEsc(disappearModal, appear);
+  useKeydownEsc(disappearModal, appear, true);
   useEffect(() => {
     if (isDesktop) {
       disappearModal();
