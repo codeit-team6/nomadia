@@ -64,7 +64,10 @@ const AdaptiveModal = ({
         className={cn(
           !isDesktop &&
             'fixed bottom-0 left-0 z-90 max-h-[90vh] w-full rounded-t-[3rem] transition-transform duration-300 ease-out',
-          !isDesktop && (appear ? 'translate-y-0 overflow-scroll' : translateY),
+          !isDesktop &&
+            (appear
+              ? 'category-scroll translate-y-0 overflow-scroll'
+              : translateY),
         )}
       >
         <ModalContent
