@@ -1,8 +1,10 @@
 'use client';
+import { GalleryThumbnails } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
 
+import SubImagesModal from '@/features/activityId/components/sub-images-modal';
 import { SubImages as SubImagesType } from '@/features/activityId/libs/types/activityInfo';
+import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 import { cn } from '@/shared/libs/cn';
 
 // 이미지랑 본문은 ssr로 해보고 싶은데, 이미지 클릭해서 바뀌는거 하려면 useState사용해야 하고... 그리고 체험예약 페이지라 5분간격으로 재요청 보내는데,
@@ -12,66 +14,57 @@ import { cn } from '@/shared/libs/cn';
 // 대표이미지는 SSR로, 그 뒤에 CSR로 교체해본다거나(?)
 
 const SubImages = ({ images }: { images: SubImagesType[] | undefined }) => {
-  const [representImage, setRepresentImage] = useState(images && images[0]);
-  const [imageChanged, setImageChanged] = useState(-1);
-
   const length = images?.length;
-  const imagesToShow = images?.slice(1, length);
+  const { modalName, openModal } = useModalStore();
 
   return (
-    <div className="flex-center w-full min-w-[32.7rem] flex-col md:w-[68.4rem] lg:w-[67rem]">
-      {/* 대표 이미지 */}
-      {representImage && (
-        <div className="relative mb-[0.8rem] h-[24.5rem] w-full overflow-hidden rounded-[2.4rem] bg-gray-50 md:mb-[1.2rem] md:h-[40rem]">
-          <Image
-            src={representImage.imageUrl}
-            alt="representative-image"
-            fill
-            className="object-cover"
-          />
-        </div>
-      )}
-      {/* 상세 이미지 */}
-      <div className="flex gap-[0.6rem] md:gap-[1.2rem]">
-        {imagesToShow?.map((image, idx) => {
-          return (
-            <button
-              key={idx}
-              className={cn(
-                'relative h-[8rem] w-[10.5rem] overflow-hidden rounded-2xl bg-gray-50 md:h-[14rem] md:w-[22rem] md:rounded-3xl lg:w-[21.5rem]',
-                length === 2
-                  ? 'w-[21.6rem] md:h-[16rem] md:w-[44.2rem] lg:w-[44.2rem]'
-                  : '',
-              )}
-              onClick={() => {
-                if (representImage === image) {
-                  setRepresentImage(images && images[0]);
-                  setImageChanged(-1);
-                } else {
-                  setRepresentImage(image);
-                  setImageChanged(idx);
-                }
-              }}
-            >
-              <Image
-                src={image.imageUrl}
-                alt="detail-image"
-                fill
-                className="object-cover"
-              />
-              <div
-                className={cn(
-                  'flex-center text-bold absolute inset-0 bg-black/30 text-[1.3rem] text-white opacity-0 transition-opacity duration-300 hover:opacity-100 md:text-[1.8rem]',
-                  imageChanged === idx && 'opacity-100',
-                )}
+    <>
+      {images && (
+        <>
+          <div
+            className={cn(
+              // w-full + aspect클래스명으로 반응형 시 비율 유지
+              'relative mb-[2rem] aspect-[5/3] w-full gap-2 overflow-hidden rounded-[1.6rem] md:gap-3 md:rounded-[2rem] lg:mb-[3.6rem]',
+              length === 2 && 'grid grid-cols-2',
+              length === 3 && 'grid grid-cols-[2fr_1fr]',
+              length === 4 && 'grid grid-cols-[3fr_1fr] grid-rows-3',
+            )}
+          >
+            {images.map((image, i) => {
+              return (
+                <button
+                  key={i}
+                  className={cn(
+                    'relative size-full',
+                    length === 3 && i === 0 && 'row-span-2',
+                    length === 4 && i === 0 && 'row-span-3',
+                  )}
+                  onClick={() => openModal('image-modal')}
+                >
+                  <Image
+                    key={i}
+                    src={image.imageUrl}
+                    alt="activity-image"
+                    fill
+                    className="object-cover"
+                  />
+                </button>
+              );
+            })}
+            {length && length > 1 && (
+              <button
+                className="flex-center btn-action-blue absolute right-[1.6rem] bottom-[1.6rem] gap-[0.4rem] rounded-[0.6rem] bg-white px-[0.8rem] py-[0.4rem] text-[1.2rem] md:right-[2.4rem] md:bottom-[2.4rem] md:gap-[0.6rem] md:rounded-[0.6rem] md:px-[1.2rem] md:py-[0.8rem] md:text-[1.4rem]"
+                onClick={() => openModal('image-modal')}
               >
-                닫기
-              </div>
-            </button>
-          );
-        })}
-      </div>
-    </div>
+                <GalleryThumbnails className="size-[1rem] md:size-[1.8rem]" />
+                이미지 전체
+              </button>
+            )}
+          </div>
+          {modalName === 'image-modal' && <SubImagesModal images={images} />}
+        </>
+      )}
+    </>
   );
 };
 

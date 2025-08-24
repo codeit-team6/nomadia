@@ -36,62 +36,64 @@ const ActivityPage = () => {
   if (isLoading || !data) return <LoadingSpinner />;
 
   return (
-    <div className="mx-auto w-fit justify-center p-[2.4rem]">
+    <div className="mx-auto w-full justify-center p-[2.4rem] md:px-[4rem] lg:max-w-[120rem] lg:pt-[1.6rem]">
+      {/* 체험 이미지 */}
+      <SubImages images={data?.subImages} />
       <div
-        className={cn(
-          isDesktop &&
-            'grid grid-cols-[1fr_41.9rem] grid-rows-[auto_auto] gap-[4rem]',
-        )}
+        className={cn(isDesktop && 'grid grid-cols-[1fr_41.9rem] gap-[4rem]')}
       >
-        {/* 체험 이미지 */}
-        <SubImages images={data?.subImages} />
-        {/* 타이틀 헤더 */}
-        <header className="row-span-2 flex flex-col gap-[5rem]">
-          <div>
-            <div className="mt-[2rem] flex items-start justify-between">
-              <div>
-                <div className="text-[1.4rem] font-medium text-gray-700">
-                  {data?.category}
+        {/* 체험 상세 */}
+        <div>
+          {/* 타이틀 헤더 */}
+
+          <header className="flex flex-col gap-[5rem]">
+            <div>
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="text-[1.4rem] font-medium text-gray-700">
+                    {data?.category}
+                  </div>
+                  <h1 className={activityIdStyle.h1}>{data?.title}</h1>
                 </div>
-                <h1 className={activityIdStyle.h1}>{data?.title}</h1>
+                <OwnerDropdown ownerId={data?.userId} activityId={Number(id)} />
               </div>
-              <OwnerDropdown ownerId={data?.userId} activityId={Number(id)} />
+              {/* 별점 & 후기 & 구분선 */}
+              <div className="mb-[1rem] flex items-center gap-[0.6rem] text-[1.4rem] leading-none text-gray-700">
+                <StarImage />
+                <p>
+                  {data?.rating.toFixed(1)} ({data?.reviewCount})
+                </p>
+              </div>
+              <div className="flex items-center gap-[0.2rem] text-[1.4rem] leading-none text-gray-700">
+                <Image
+                  src="/images/icons/map-spot.svg"
+                  width={16}
+                  height={16}
+                  alt={'address'}
+                />
+                <p>{data?.address}</p>
+              </div>
             </div>
-            {/* 별점 & 후기 & 구분선 */}
-            <div className="mb-[1rem] flex items-center gap-[0.6rem] text-[1.4rem] leading-none text-gray-700">
-              <StarImage />
-              <p>
-                {data?.rating.toFixed(1)} ({data?.reviewCount})
-              </p>
-            </div>
-            <div className="flex items-center gap-[0.2rem] text-[1.4rem] leading-none text-gray-700">
-              <Image
-                src="/images/icons/map-spot.svg"
-                width={16}
-                height={16}
-                alt={'address'}
-              />
-              <p>{data?.address}</p>
-            </div>
+          </header>
+
+          {/* 체험 상세 정보 */}
+          <div className="">
+            <hr className="mt-[2rem] mb-[2rem]" />
+            {/* 체험 설명 */}
+            <section>
+              <h2 className={activityIdStyle.h2}>체험 설명</h2>
+              <p className={activityIdStyle.content}>{data?.description}</p>
+            </section>
+            <hr className="mt-[2rem] mb-[2rem]" />
+            {/* 오시는 길 */}
+            <AddressWithMap address={data?.address} />
+            <hr className="mb-[2rem] lg:mb-[4rem]" />
+            {/* 체험 후기 */}
+            <Reviews activityId={Number(id)} />
           </div>
-          {/* 체험 예약 캘린더 */}
-          <ReservationModal price={data?.price} activityId={Number(id)} />
-        </header>
-        {/* 체험 상세 정보 */}
-        <div className="">
-          {!isDesktop && <hr className="mt-[2rem] mb-[2rem]" />}
-          {/* 체험 설명 */}
-          <section>
-            <h2 className={activityIdStyle.h2}>체험 설명</h2>
-            <p className={activityIdStyle.content}>{data?.description}</p>
-          </section>
-          <hr className="mt-[2rem] mb-[2rem]" />
-          {/* 오시는 길 */}
-          <AddressWithMap address={data?.address} />
-          <hr className="mb-[2rem] lg:mb-[4rem]" />
-          {/* 체험 후기 */}
-          <Reviews activityId={Number(id)} />
         </div>
+        {/* 체험 예약 캘린더 */}
+        <ReservationModal price={data?.price} activityId={Number(id)} />
       </div>
     </div>
   );
