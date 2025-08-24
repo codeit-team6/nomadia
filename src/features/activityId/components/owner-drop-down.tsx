@@ -30,6 +30,7 @@ const OwnerDropdown = ({
     <>
       {isOwner && (
         <Dropdown
+          dropdownClassName="absolute top-8 right-2"
           trigger={
             <button>
               <Image
