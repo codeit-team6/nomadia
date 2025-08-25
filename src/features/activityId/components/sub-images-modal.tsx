@@ -9,6 +9,7 @@ import { useModalStore } from '@/shared/components/modal/libs/stores/useModalSto
 const SubImagesModal = ({ images }: { images: SubImagesType[] }) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const { closeModal } = useModalStore();
+  if (!images || images.length === 0) closeModal();
 
   return (
     <>
@@ -17,12 +18,18 @@ const SubImagesModal = ({ images }: { images: SubImagesType[] }) => {
         extraClassName="relative h-[85vh] w-[90vw] p-0 py-[5rem] md:px-[5rem] md:pt-[2rem] md:pb-[3rem] lg:pb-[2rem]"
       >
         {/* 닫기 버튼 */}
-        <X
-          size={30}
-          color="black"
-          className="absolute top-[1.4rem] right-[1.4rem]"
+        <button
           onClick={() => closeModal()}
-        />
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') closeModal();
+          }}
+        >
+          <X
+            size={30}
+            color="black"
+            className="absolute top-[1.4rem] right-[1.4rem]"
+          />
+        </button>
         {/* 대표 이미지 */}
         <div className="grid size-full grid-rows-[1fr_6rem] flex-col gap-[1rem] md:grid-rows-[1fr_7rem]">
           <div className="relative size-full">
