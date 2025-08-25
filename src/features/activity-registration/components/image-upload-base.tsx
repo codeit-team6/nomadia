@@ -3,7 +3,6 @@
 import { CirclePlus, X } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
-import { toast } from 'sonner';
 
 import {
   createImageFormData,
@@ -127,7 +126,6 @@ const ImageUploadBase = ({
     // 파일 유효성 검사 (4MB 제한)
     const validation = validateImageFile(file, 4);
     if (!validation.isValid) {
-      toast.error(validation.error);
       return;
     }
 
@@ -262,7 +260,7 @@ const ImageUploadBase = ({
             <button
               type="button"
               onClick={() => handleRemoveImage(index)}
-              className="bg-opacity-70 flex-center absolute -top-[0.5rem] -right-[0.7rem] h-[2rem] w-[2rem] rounded-full bg-gray-950 text-white md:h-[2.6rem] md:w-[2.6rem]"
+              className="bg-opacity-70 flex-center absolute -top-[0.5rem] -right-[0.7rem] h-[2rem] w-[2rem] cursor-pointer rounded-full bg-gray-950 text-white md:h-[2.6rem] md:w-[2.6rem]"
             >
               <X size={10} className="font-bold md:size-[1.8rem]" />
             </button>
