@@ -43,7 +43,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div
-      className={`mx-auto flex justify-center px-[2.4rem] py-[3rem] md:w-[73.2rem] md:gap-[3rem] lg:min-w-[102.8rem] lg:gap-[5rem]`}
+      className={`mx-auto flex justify-center px-[2.4rem] py-[3rem] md:w-[73.2rem] md:gap-[3rem] lg:min-w-[102.4rem] lg:gap-[5rem]`}
     >
       {/* 모바일에서만 보이는 뒤로가기 버튼 */}
       {isMobile && !isMyPageRoot && (
