@@ -168,7 +168,7 @@ const ReserveCalendarPage = () => {
           내 체험의 내역들을 한 눈에 확인할 수 있습니다.
         </p>
 
-        <div className="mt-[1.8rem] md:w-[47.6rem] lg:w-[64rem]">
+        <div className="mt-[1.8rem] md:w-[47.6rem] lg:w-[63.6rem]">
           <Dropdown
             trigger={
               <div
@@ -178,12 +178,12 @@ const ReserveCalendarPage = () => {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') handleDropdownOpen();
                 }}
-                className="shadow-experience-card flex h-[5.4rem] w-full cursor-pointer items-center justify-end rounded-[1rem] border border-gray-100 bg-white pr-[2.6rem] text-[1.4rem] text-gray-950 md:text-[1.6rem]"
+                className="shadow-experience-card flex h-[5.4rem] w-full cursor-pointer items-center justify-end rounded-[1rem] border border-gray-100 bg-white text-[1.4rem] text-gray-950 md:text-[1.6rem]"
               >
                 <span className="mr-auto pl-[2.6rem]">
                   {selectedActivityTitle}
                 </span>
-                <ChevronDown className="size-[2rem]" />
+                <ChevronDown className="mr-[2rem] size-[2rem]" />
               </div>
             }
             dropdownClassName="w-full bg-white shadow-experience-card rounded-[1rem] border border-gray-100 px-[2.6rem]"
@@ -210,7 +210,7 @@ const ReserveCalendarPage = () => {
       </div>
 
       <div className="flex gap-8">
-        <div className="md:w-[47.6rem] lg:w-[64rem]">
+        <div className="md:w-[47.6rem] lg:w-[63.6rem]">
           {selectedActivityId ? (
             <CalendarWithReservations
               reservationArray={reservationArray}

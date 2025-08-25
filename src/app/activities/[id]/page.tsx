@@ -13,10 +13,13 @@ import { activityIdStyle } from '@/features/activityId/libs/constants/variants';
 import { useActivityIdQuery } from '@/features/activityId/libs/hooks/useActivityIdQuery';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import StarImage from '@/shared/components/star/star';
+import { cn } from '@/shared/libs/cn';
+import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 
 const ActivityPage = () => {
   const { id } = useParams();
   const { data, isLoading, isError, error } = useActivityIdQuery(id);
+  const { isDesktop } = useWindowSize();
   const router = useRouter();
   if (isError) {
     if (error instanceof AxiosError && error.response) {
@@ -33,14 +36,19 @@ const ActivityPage = () => {
   if (isLoading || !data) return <LoadingSpinner />;
 
   return (
-    <div className="flex-center flex-col p-[2.4rem]">
-      <div>
-        <div className="flex flex-col gap-[2rem] md:gap-[2.4rem] lg:flex-row lg:gap-[4rem]">
-          <SubImages images={data?.subImages} />
-          <div className="relative">
-            {/* 타이틀 헤더 */}
-            <header className="order-2 lg:w-[41rem]">
-              <div className="mt-[2rem] flex items-start justify-between">
+    <div className="mx-auto w-full justify-center p-[2.4rem] md:px-[4rem] lg:max-w-[120rem] lg:pt-[1.6rem]">
+      {/* 체험 이미지 */}
+      <SubImages images={data?.subImages} />
+      <div
+        className={cn(isDesktop && 'grid grid-cols-[1fr_41.9rem] gap-[4rem]')}
+      >
+        {/* 체험 상세 */}
+        <div>
+          {/* 타이틀 헤더 */}
+
+          <header className="flex flex-col gap-[5rem]">
+            <div>
+              <div className="flex items-start justify-between">
                 <div>
                   <div className="text-[1.4rem] font-medium text-gray-700">
                     {data?.category}
@@ -65,27 +73,27 @@ const ActivityPage = () => {
                 />
                 <p>{data?.address}</p>
               </div>
-            </header>
-            {/* 체험 예약 캘린더 */}
-            <section className="lg:absolute lg:top-[21rem] lg:left-0">
-              <ReservationModal price={data?.price} activityId={Number(id)} />
+            </div>
+          </header>
+
+          {/* 체험 상세 정보 */}
+          <div className="">
+            <hr className="mt-[2rem] mb-[2rem]" />
+            {/* 체험 설명 */}
+            <section>
+              <h2 className={activityIdStyle.h2}>체험 설명</h2>
+              <p className={activityIdStyle.content}>{data?.description}</p>
             </section>
+            <hr className="mt-[2rem] mb-[2rem]" />
+            {/* 오시는 길 */}
+            <AddressWithMap address={data?.address} />
+            <hr className="mb-[2rem] lg:mb-[4rem]" />
+            {/* 체험 후기 */}
+            <Reviews activityId={Number(id)} />
           </div>
         </div>
-        <div className="lg:w-[67rem]">
-          <hr className="mt-[2rem] mb-[2rem]" />
-          {/* 체험 설명 */}
-          <section>
-            <h2 className={activityIdStyle.h2}>체험 설명</h2>
-            <p className={activityIdStyle.content}>{data?.description}</p>
-          </section>
-          <hr className="mt-[2rem] mb-[2rem]" />
-          {/* 오시는 길 */}
-          <AddressWithMap address={data?.address} />
-          <hr className="mb-[2rem] lg:mb-[4rem]" />
-          {/* 체험 후기 */}
-          <Reviews activityId={Number(id)} />
-        </div>
+        {/* 체험 예약 캘린더 */}
+        <ReservationModal price={data?.price} activityId={Number(id)} />
       </div>
     </div>
   );
