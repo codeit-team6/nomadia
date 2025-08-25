@@ -135,7 +135,7 @@ const ReservationForm = ({
             },
           );
         })}
-        className="shadow-experience-card flex flex-col overflow-auto p-[2.4rem] pb-[1.8rem] md:px-[3rem] lg:!rounded-[3rem] lg:p-[3rem]"
+        className="shadow-experience-card flex flex-col overflow-auto p-[2.4rem] pb-[1.8rem] md:px-[4rem] lg:!rounded-[3rem] lg:p-[3rem]"
       >
         {/* X 버튼 */}
         {!isDesktop && appear && (
