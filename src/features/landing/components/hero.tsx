@@ -63,7 +63,7 @@ const Hero = ({ swiperRef, ActivityCard, router }: HeroProps) => {
             </button>
             <button
               className="bg-sub text-main max-w-xs flex-1 cursor-pointer rounded-full px-8 py-3 text-[1.4rem] font-semibold transition-colors hover:opacity-80 md:text-[1.8rem]"
-              onClick={() => router.push('/activities')}
+              onClick={() => router.push('/login')}
             >
               호스트 되기
             </button>
