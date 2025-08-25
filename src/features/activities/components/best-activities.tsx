@@ -56,17 +56,17 @@ const BestActivities = () => {
         <div className="flex gap-2">
           <button
             onClick={handlePrevSlide}
-            className="hover:bg-sub-300 border-sub rounded-full border-1 bg-white p-2 transition-colors"
+            className="btn-action-carousel border-sub cursor-pointer rounded-full border-1 bg-white p-2 transition-colors"
             aria-label="이전"
           >
-            <ChevronLeft className="text-main h-[1.8rem] w-[1.8rem] cursor-pointer md:h-[2.8rem] md:w-[2.8rem]" />
+            <ChevronLeft className="text-main h-[1.8rem] w-[1.8rem] md:h-[2.8rem] md:w-[2.8rem]" />
           </button>
           <button
             onClick={handleNextSlide}
-            className="hover:bg-sub-300 border-sub rounded-full border-1 bg-white p-2 transition-colors"
+            className="btn-action-carousel border-sub cursor-pointer rounded-full border-1 bg-white p-2 transition-colors"
             aria-label="다음"
           >
-            <ChevronRight className="text-main h-[1.8rem] w-[1.8rem] cursor-pointer md:h-[2.8rem] md:w-[2.8rem]" />
+            <ChevronRight className="text-main h-[1.8rem] w-[1.8rem] md:h-[2.8rem] md:w-[2.8rem]" />
           </button>
         </div>
       </div>
