@@ -95,7 +95,7 @@ export const ActivityCard = ({
               {/* 별점 상세 점수 표기(소수점 한자리까지) */}
               {activity.reviewCount && activity.reviewCount > 0 ? (
                 <span className="text-[1.2rem] font-bold text-gray-800 md:text-[1.4rem]">
-                  {(activity.rating * 2).toFixed(1)}
+                  {activity.rating.toFixed(1)}
                 </span>
               ) : (
                 ''
