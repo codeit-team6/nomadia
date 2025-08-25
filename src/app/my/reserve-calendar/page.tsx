@@ -41,12 +41,12 @@ const ReserveCalendarPage = () => {
   const { accessToken } = useAuthStore();
 
   useEffect(() => {
-    if (selectedActivityId) {
+    if (selectedDate) {
       appearModal();
     } else {
       disappearModal();
     }
-  }, [selectedActivityId, appearModal, disappearModal]);
+  }, [selectedDate, appearModal, disappearModal]);
 
   const handleDropdownOpen = () => {
     setShouldFetch(true);
