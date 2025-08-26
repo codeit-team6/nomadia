@@ -4,6 +4,7 @@ import type { Swiper as SwiperType } from 'swiper';
 import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import { ErrorMessage } from '@/shared/components/error-message/error-message';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import useActivity from '@/shared/libs/hooks/useActivityQuery';
@@ -26,6 +27,18 @@ const Hero = ({ swiperRef, ActivityCard, router }: HeroProps) => {
     page: 1,
     size: 8,
   });
+
+  // 로그인 여부 확인
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+
+  // 버튼 클릭 핸들러
+  const handleButtonClick = () => {
+    if (isLoggedIn) {
+      router.push('/my/my-activities');
+    } else {
+      router.push('/login');
+    }
+  };
 
   const activities = data?.activities ?? [];
 
@@ -63,7 +76,7 @@ const Hero = ({ swiperRef, ActivityCard, router }: HeroProps) => {
             </button>
             <button
               className="bg-sub text-main btn-action-landing-white max-w-xs flex-1 cursor-pointer rounded-full px-8 py-3 text-[1.4rem] font-semibold transition-colors md:text-[1.8rem]"
-              onClick={() => router.push('/login')}
+              onClick={handleButtonClick}
             >
               호스트 되기
             </button>
