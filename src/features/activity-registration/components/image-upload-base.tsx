@@ -129,6 +129,8 @@ const ImageUploadBase = ({
       return;
     }
 
+    // 중복 체크 비활성화 (사용자가 원하는 대로 이미지를 업로드할 수 있도록)
+
     // 로컬 이미지 URL 생성 (미리보기용)
     const localUrl = URL.createObjectURL(file);
 
@@ -183,7 +185,13 @@ const ImageUploadBase = ({
   // 파일 입력 클릭 핸들러
   const handleUploadClick = () => {
     if (canAddMore) {
+      // 파일 입력 value 초기화 (동일한 파일 재선택을 위해)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
       fileInputRef.current?.click();
+    } else {
+      alert('더 이상 이미지를 추가할 수 없습니다.');
     }
   };
 
@@ -281,7 +289,9 @@ const ImageUploadBase = ({
         type="file"
         name={name}
         accept="image/*"
-        onChange={(e) => handleFileSelect(e.target.files)}
+        onChange={(e) => {
+          handleFileSelect(e.target.files);
+        }}
         className="hidden"
       />
 
