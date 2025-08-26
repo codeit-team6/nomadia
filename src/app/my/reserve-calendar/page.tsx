@@ -33,15 +33,20 @@ const ReserveCalendarPage = () => {
     null,
   );
   const [shouldFetch, setShouldFetch] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedScheduleId, setSelectedScheduleId] = useState<number | null>(
     null,
   );
 
   const { appear, appearModal, disappearModal } = useModalStore();
   const { isDesktop } = useWindowSize();
-  const { month, setYear, setMonth, resetDate, resetSelectedDate } =
-    useCalendarStore();
+  const {
+    month,
+    setYear,
+    setMonth,
+    resetDate,
+    resetSelectedDate,
+    selectedDate,
+  } = useCalendarStore();
   const { accessToken } = useAuthStore();
 
   const selectedCellRef = useRef<HTMLButtonElement | null>(null);
@@ -54,7 +59,7 @@ const ReserveCalendarPage = () => {
     }
   }, [selectedDate, appearModal, disappearModal, isDesktop]);
 
-  // 모달 닫히면 날짜 선택 해제(isSelected스타일 해제), selectedDate는 그대로 남아있을거임
+  // 모달 닫히면(disappear) 날짜 선택 해제
   useEffect(() => {
     if (!appear && !isDesktop) {
       resetDate();
@@ -67,8 +72,6 @@ const ReserveCalendarPage = () => {
   };
 
   const handleDateClick = async (dateStr: string) => {
-    setSelectedDate(dateStr);
-
     if (!selectedActivityId || !accessToken) {
       setSelectedScheduleId(null);
       return;
@@ -114,13 +117,14 @@ const ReserveCalendarPage = () => {
     setSelectedActivityTitle(title);
     const activityId = String(id);
     setSelectedActivityId(activityId);
-    setSelectedDate(null);
     setSelectedScheduleId(null);
+    resetDate();
+    resetSelectedDate();
 
     try {
       const currentYear = new Date().getFullYear();
       const monthsToFetch = 12;
-      let earliestDate: Date | null = null;
+      let earliestDate: Date | null = null; // 이건 뭘 위한 조건인지?
       let allReservations: MonthReservations[] = [];
 
       for (let i = 0; i < monthsToFetch; i++) {
@@ -251,7 +255,7 @@ const ReserveCalendarPage = () => {
 
         {selectedActivityId && (
           <div style={modalPositionStyle}>
-            <AdaptiveModal extraClassName="shadow-experience-card category-scroll h-[50.8rem] overflow-scroll border border-gray-50 md:h-[39.7rem] lg:h-[44.4rem]">
+            <AdaptiveModal extraClassName="shadow-experience-card category-scroll h-[50.8rem] overflow-scroll border border-gray-50 md:h-[39.7rem] lg:h-[44.4rem] lg:w-[32.3rem]">
               <div className="p-4">
                 {selectedReservationsOfDate.length > 0 ? (
                   <ContentReservation

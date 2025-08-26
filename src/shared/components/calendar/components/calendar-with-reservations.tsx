@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import ArrowButton from '@/shared/components/calendar/components/fragments/arrow-button';
 import DaysOfMonth from '@/shared/components/calendar/components/fragments/days-of-month';
 import { cellStyleForCWR } from '@/shared/components/calendar/libs/constants/calendarStyles';
@@ -46,7 +48,15 @@ const CalendarWithReservations = ({
   onCellClick?: (dateStr: string, scheduleId: number | null) => void;
   selectedCellRef: React.RefObject<HTMLButtonElement | null>;
 }) => {
-  const { year, month, date, setDate, setSelectedDate } = useCalendarStore();
+  const {
+    year,
+    month,
+    date,
+    setDate,
+    setSelectedDate,
+    resetDate,
+    resetSelectedDate,
+  } = useCalendarStore();
   const { thisMonthDays } = getMonthRange(year, month);
 
   const handleClick = (day: number) => {
@@ -65,6 +75,15 @@ const CalendarWithReservations = ({
       onCellClick(dateStr, scheduleId);
     }
   };
+
+  //언마운트시 선택한 날짜 리셋
+  //전역함수에 캘린더상태값 전부다 리셋하는 함수 하나 만들까
+  useEffect(() => {
+    return () => {
+      resetDate();
+      resetSelectedDate();
+    };
+  }, [resetDate, resetSelectedDate]);
 
   return (
     <div>
