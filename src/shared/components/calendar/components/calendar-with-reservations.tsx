@@ -37,12 +37,14 @@ const CalendarWithReservations = ({
   dayOfWeekStyle,
   cellStyle,
   onCellClick,
+  selectedCellRef,
 }: {
   reservationArray: MonthReservations[];
   calendarWidth?: string;
   dayOfWeekStyle?: string;
   cellStyle?: string;
   onCellClick?: (dateStr: string, scheduleId: number | null) => void;
+  selectedCellRef: React.RefObject<HTMLButtonElement | null>;
 }) => {
   const { year, month, date, setDate, setSelectedDate } = useCalendarStore();
   const { thisMonthDays } = getMonthRange(year, month);
@@ -105,6 +107,7 @@ const CalendarWithReservations = ({
                 key={day}
                 onKeyDown={(e) => e.key === 'Enter' && handleClick(day)}
                 onClick={() => handleClick(day)}
+                ref={isSelected ? selectedCellRef : undefined}
                 // 이번달 날짜 칸 스타일
                 className={cn(
                   !isSelected ? 'hover:bg-sub' : 'hover:bg-orange-100',

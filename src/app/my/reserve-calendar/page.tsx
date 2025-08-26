@@ -2,7 +2,7 @@
 
 import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { getActListApi } from '@/features/activities/libs/api/getActListApi';
 import { getReservations } from '@/features/activities/libs/api/getReserveDayApi';
@@ -10,12 +10,14 @@ import { getReservationsByMonthApi } from '@/features/activities/libs/api/getRes
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import { ContentReservation } from '@/features/reservation-state/components/content-reservation';
 import EmptyReservation from '@/features/reservation-state/components/empty-reservation';
+import { useResStateModalPosition } from '@/features/reservation-state/libs/calcStateModalPosition';
 import CalendarWithReservations from '@/shared/components/calendar/components/calendar-with-reservations';
 import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCalendarStore';
 import { MonthReservations } from '@/shared/components/calendar/libs/types/data';
 import Dropdown from '@/shared/components/dropdown/dropdown';
 import AdaptiveModal from '@/shared/components/modal/components/adaptive-modal/adaptive-modal';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
+import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 import { Activity } from '@/shared/types/activity';
 
 const ReserveCalendarPage = () => {
@@ -36,17 +38,29 @@ const ReserveCalendarPage = () => {
     null,
   );
 
-  const { appearModal, disappearModal } = useModalStore();
-  const { month, setYear, setMonth } = useCalendarStore();
+  const { appear, appearModal, disappearModal } = useModalStore();
+  const { isDesktop } = useWindowSize();
+  const { month, setYear, setMonth, resetDate, resetSelectedDate } =
+    useCalendarStore();
   const { accessToken } = useAuthStore();
 
+  const selectedCellRef = useRef<HTMLButtonElement | null>(null);
+
   useEffect(() => {
-    if (selectedDate) {
+    if (selectedDate && !isDesktop) {
       appearModal();
     } else {
       disappearModal();
     }
-  }, [selectedDate, appearModal, disappearModal]);
+  }, [selectedDate, appearModal, disappearModal, isDesktop]);
+
+  // 모달 닫히면 날짜 선택 해제(isSelected스타일 해제), selectedDate는 그대로 남아있을거임
+  useEffect(() => {
+    if (!appear && !isDesktop) {
+      resetDate();
+      resetSelectedDate();
+    }
+  }, [appear, isDesktop, resetDate, resetSelectedDate]);
 
   const handleDropdownOpen = () => {
     setShouldFetch(true);
@@ -160,6 +174,7 @@ const ReserveCalendarPage = () => {
     });
   }, [selectedDate, reservationArray]);
 
+  const modalPositionStyle = useResStateModalPosition(selectedCellRef);
   return (
     <div className="flex flex-col items-start">
       <div className="mb-[2.4rem] w-full">
@@ -217,6 +232,7 @@ const ReserveCalendarPage = () => {
               calendarWidth="w-full md:rounded-[2rem] border border-gray-50 shadow-experience-card"
               dayOfWeekStyle="w-[5.35rem] md:w-[6.8rem] lg:w-[9.143rem]"
               onCellClick={handleDateClick}
+              selectedCellRef={selectedCellRef}
             />
           ) : (
             <div className="mt-24 flex flex-col items-center justify-center">
@@ -234,22 +250,24 @@ const ReserveCalendarPage = () => {
         </div>
 
         {selectedActivityId && (
-          <AdaptiveModal extraClassName="w-[37.5rem] h-[50.8rem] md:w-[74.4rem] md:h-[39.7rem] lg:w-[34rem] lg:h-[51.9rem] border border-gray-50 shadow-experience-card">
-            <div className="p-4">
-              {selectedReservationsOfDate.length > 0 ? (
-                <ContentReservation
-                  teamId="15-6"
-                  activityId={Number(selectedActivityId)}
-                  scheduleId={selectedScheduleId ? [selectedScheduleId] : []}
-                  status={'pending'}
-                  selectedDate={selectedDate || ''}
-                  onStatusChange={updateReservationStatus}
-                />
-              ) : (
-                <EmptyReservation />
-              )}
-            </div>
-          </AdaptiveModal>
+          <div style={modalPositionStyle}>
+            <AdaptiveModal extraClassName="shadow-experience-card category-scroll h-[50.8rem] overflow-scroll border border-gray-50 md:h-[39.7rem] lg:h-[44.4rem]">
+              <div className="p-4">
+                {selectedReservationsOfDate.length > 0 ? (
+                  <ContentReservation
+                    teamId="15-6"
+                    activityId={Number(selectedActivityId)}
+                    scheduleId={selectedScheduleId ? [selectedScheduleId] : []}
+                    status={'pending'}
+                    selectedDate={selectedDate || ''}
+                    onStatusChange={updateReservationStatus}
+                  />
+                ) : (
+                  <EmptyReservation />
+                )}
+              </div>
+            </AdaptiveModal>
+          </div>
         )}
       </div>
     </div>
