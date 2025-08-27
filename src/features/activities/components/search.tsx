@@ -1,9 +1,12 @@
 'use client';
 
+import { Search as SearchIcon, X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
+import { getActListApi } from '@/features/activities/libs/api/getActListApi';
 import Dropdown from '@/shared/components/dropdown/dropdown';
+import { Button } from '@/shared/components/modal/components/modal-button';
 import { searchVariant } from '@/shared/libs/constants/searchVariant';
 
 interface SearchProps {
@@ -13,30 +16,23 @@ interface SearchProps {
 
 const Search: React.FC<SearchProps> = ({
   placeholder = '내가 원하는 체험은',
-  setKeyword: externalSetKeyword, // 부모에서 내려줄 수도 있음
+  setKeyword: externalSetKeyword,
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  // URL 기본값
-  const defaultValue = searchParams.get('search') ?? '';
+  const defaultValue = searchParams.get('keyword') ?? '';
   const defaultRegion = searchParams.get('region') ?? '';
   const defaultCategory = searchParams.get('category') ?? '';
-  const defaultTime = searchParams.get('time') ?? '';
 
   // 상태
   const [keyword, setKeyword] = useState(defaultValue);
   const [region, setRegion] = useState(defaultRegion);
   const [category, setCategory] = useState(defaultCategory);
-  const [time, setTime] = useState(defaultTime);
   const [isFocused, setIsFocused] = useState(false);
 
-  useEffect(() => {
-    setKeyword(defaultValue);
-    setRegion(defaultRegion);
-    setCategory(defaultCategory);
-    setTime(defaultTime);
-  }, [defaultValue, defaultRegion, defaultCategory, defaultTime]);
+  const [regionOptions, setRegionOptions] = useState<string[]>([]);
+  const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
 
   useEffect(() => {
     if (externalSetKeyword) {
@@ -44,15 +40,38 @@ const Search: React.FC<SearchProps> = ({
     }
   }, [keyword, externalSetKeyword]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { activities } = await getActListApi();
+
+        // 지역
+        const addresses = activities
+          .map((act) => act.address?.split(' ')[0])
+          .filter((addr): addr is string => Boolean(addr));
+        setRegionOptions([...new Set(addresses)]);
+
+        // 카테고리
+        const categories = activities
+          .map((act) => act.category)
+          .filter((cat): cat is string => Boolean(cat));
+        setCategoryOptions([...new Set(categories)]);
+      } catch (err) {
+        console.error('데이터 불러오기 실패:', err);
+      }
+    };
+    fetchData();
+  }, []);
+
   const handleSearch = () => {
     const params = new URLSearchParams();
 
-    if (keyword.trim()) params.set('search', keyword.trim());
-    if (region) params.set('region', region);
-    if (category) params.set('category', category);
-    if (time) params.set('time', time);
+    if (keyword.trim()) params.set('keyword', keyword.trim());
+    if (region.trim()) params.set('region', region.trim());
+    if (category.trim()) params.set('category', category.trim());
 
-    router.push(`/activities${params.toString() ? `?${params}` : ''}`);
+    params.set('page', '1');
+    router.push(`/activities?${params.toString()}`);
   };
 
   const style = searchVariant.main;
@@ -61,7 +80,7 @@ const Search: React.FC<SearchProps> = ({
     'flex w-[20rem] items-center justify-between rounded txt-14-medium text-gray-700 bg-transparent hover:bg-gray-50';
 
   const dropdownMenuClass =
-    'mt-1 w-full bg-white rounded shadow-md txt-12-medium';
+    'mt-1 w-full bg-white rounded shadow-md txt-14-medium';
 
   const optionBtnClass =
     'w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-50';
@@ -70,8 +89,6 @@ const Search: React.FC<SearchProps> = ({
     <div className={style.wrapper}>
       <p className={style.title}>무엇을 체험하고 싶으신가요?</p>
       <div className={style.inputBox}>
-        {/* <SearchIcon className="text-gray-950" size={24} /> */}
-
         <input
           type="text"
           value={keyword}
@@ -83,38 +100,53 @@ const Search: React.FC<SearchProps> = ({
           className={style.input}
         />
 
+        <div className="mx-5 h-12 border-r border-gray-300"></div>
+
         {/* 지역 */}
-        <Dropdown
-          trigger={
-            <button type="button" className={dropdownBtnClass}>
-              <span>{region || '지역'}</span>
-            </button>
-          }
-          dropdownClassName={dropdownMenuClass}
-        >
-          {['서울', '경기', '부산'].map((option) => (
+        <div className="flex items-center gap-2">
+          <Dropdown
+            trigger={
+              <button type="button" className={dropdownBtnClass}>
+                <span>{region || '지역'}</span>
+              </button>
+            }
+            dropdownClassName={dropdownMenuClass}
+          >
+            {regionOptions.map((option) => (
+              <button
+                key={option}
+                type="button"
+                className={optionBtnClass}
+                onClick={() => setRegion(option)}
+              >
+                {option}
+              </button>
+            ))}
+          </Dropdown>
+          {region && (
             <button
-              key={option}
               type="button"
-              className={optionBtnClass}
-              onClick={() => setRegion(option)}
+              onClick={() => setRegion('')}
+              className="text-gray-400 hover:text-gray-600"
             >
-              {option}
+              <X className="size-6" />
             </button>
-          ))}
-        </Dropdown>
+          )}
+        </div>
+
+        <div className="mx-5 h-12 border-r border-gray-300"></div>
 
         {/* 카테고리 */}
-        <Dropdown
-          trigger={
-            <button type="button" className={dropdownBtnClass}>
-              <span>{category || '카테고리'}</span>
-            </button>
-          }
-          dropdownClassName={dropdownMenuClass}
-        >
-          {['문화,예술', '식음료', '스포츠', '투어', '관광', '웰빙'].map(
-            (option) => (
+        <div className="flex items-center gap-2">
+          <Dropdown
+            trigger={
+              <button type="button" className={dropdownBtnClass}>
+                <span>{category || '카테고리'}</span>
+              </button>
+            }
+            dropdownClassName={dropdownMenuClass}
+          >
+            {categoryOptions.map((option) => (
               <button
                 key={option}
                 type="button"
@@ -123,38 +155,29 @@ const Search: React.FC<SearchProps> = ({
               >
                 {option}
               </button>
-            ),
-          )}
-        </Dropdown>
-
-        {/* 시간 */}
-        <Dropdown
-          trigger={
-            <button type="button" className={dropdownBtnClass}>
-              <span>{time || '날짜'}</span>
-            </button>
-          }
-          dropdownClassName={dropdownMenuClass}
-        >
-          {['13:00-14:00', '14:00-15:00', '15:00-16:00'].map((option) => (
+            ))}
+          </Dropdown>
+          {category && (
             <button
-              key={option}
               type="button"
-              className={optionBtnClass}
-              onClick={() => setTime(option)}
+              onClick={() => setCategory('')}
+              className="text-gray-400 hover:text-gray-600"
             >
-              {option}
+              <X className="size-6" />
             </button>
-          ))}
-        </Dropdown>
+          )}
+        </div>
 
-        <button
-          type="button"
+        <div className="mx-5 h-12 border-r border-gray-300"></div>
+
+        <Button
+          color="blue"
+          ariaLabel="검색하기"
           onClick={handleSearch}
-          className={`${style.button} cursor-pointer`}
+          extraClassName={`${style.button} mx-7 flex items-center justify-center !w-[5rem] !h-[5rem] rounded-full`}
         >
-          검색하기
-        </button>
+          <SearchIcon className="h-8 w-8" />
+        </Button>
       </div>
     </div>
   );

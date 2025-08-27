@@ -1,20 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import React from 'react';
 
 import { ActivityCard } from '@/features/activities/components/activity-card';
 import useResActivitiesQuery from '@/features/activities/libs/hooks/useResActivitiesQuery';
 import Pagination from '@/shared/components/pagination/pagination';
 
-interface SearchResultProps {
-  keyword: string;
-}
+const SearchResults = () => {
+  const searchParams = useSearchParams();
 
-const SearchResults = ({ keyword }: SearchResultProps) => {
-  const [page, setPage] = useState(1);
+  const keyword = searchParams.get('keyword') ?? '';
+  const region = searchParams.get('region') ?? '';
+  const category = searchParams.get('category') ?? '';
+  const page = Number(searchParams.get('page') ?? 1);
+
+  const combinedKeyword = region ? `${region} ${keyword}`.trim() : keyword;
 
   const { data, isLoading, isError, size } = useResActivitiesQuery({
-    keyword,
+    keyword: combinedKeyword,
+    category: category || undefined,
     sort: 'latest',
     page,
   });
@@ -27,6 +32,12 @@ const SearchResults = ({ keyword }: SearchResultProps) => {
     <section className="px-[2.4rem]">
       <p className="mb-4 text-[1.8rem] font-bold text-gray-950 md:text-[2.4rem]">
         <strong>{keyword}</strong>으로 검색한 결과입니다.
+        {region && (
+          <span>
+            {' '}
+            / 지역: {region}, 카테고리: {category}
+          </span>
+        )}
       </p>
       <p className="mb-6 text-[1.4rem] text-gray-700 md:text-[1.8rem]">
         총 <strong>{totalCount}</strong>개의 결과
@@ -56,7 +67,7 @@ const SearchResults = ({ keyword }: SearchResultProps) => {
               <Pagination
                 totalPages={totalPages}
                 currentPage={page}
-                setPage={setPage}
+                setPage={() => {}}
                 className="flex-center mt-[2.4rem] mb-[16.5rem] md:mt-[3rem] md:mb-[27.7rem] lg:mb-[27.1rem]"
               />
             </>
