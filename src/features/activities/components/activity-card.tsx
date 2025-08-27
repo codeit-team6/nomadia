@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
+import { navigateToActivity } from '@/features/activities/libs/utils/navigation';
 import EmptyStarImage from '@/shared/components/empty-star/empty-star';
 import StarImage from '@/shared/components/star/star';
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
@@ -18,6 +19,7 @@ interface ActivityCardProps {
  * @author 김영현
  * @param activity - 액티비티 데이터
  * @param className - 추가 스타일 클래스
+ * @param isPriority - 이미지 우선 로딩 여부
  */
 export const ActivityCard = ({
   activity,
@@ -28,7 +30,7 @@ export const ActivityCard = ({
 
   // 카드 클릭 시 액티비티 상세 페이지로 이동
   const handleCardClick = () => {
-    router.push(`/activities/${activity.id}`);
+    navigateToActivity(activity.id, router);
   };
 
   return (

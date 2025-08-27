@@ -115,6 +115,7 @@ const BestActivities = () => {
                   activity={activity}
                   className="mb-[2.4rem] md:mb-[8rem]"
                   isPriority={index < 4}
+                  // disableNavigation prop 없이 기본값 사용 (false)
                 />
               </SwiperSlide>
             ))}
