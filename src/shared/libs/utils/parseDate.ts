@@ -33,7 +33,7 @@ export const sortDatesAscending = (dates: string[]): string[] => {
  * @author 김영현
  * @returns 내일 날짜 문자열 (예: "2025-08-28") (오늘 날짜 + 1일)
  */
-export const getTodayDateString = (): string => {
+export const getTomorrowDateString = (): string => {
   const today = new Date();
 
   const tomorrow = new Date(

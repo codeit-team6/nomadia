@@ -4,7 +4,7 @@ import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 import { TIME_OPTIONS } from '@/features/activity-registration/libs/constants/formOption';
 import { validateTimeRange } from '@/features/activity-registration/libs/utils';
-import { getTodayDateString } from '@/shared/libs/utils/parseDate';
+import { getTomorrowDateString } from '@/shared/libs/utils/parseDate';
 import {
   ActivityRegistrationFormData,
   Schedule,
@@ -160,7 +160,7 @@ const DateScheduler = ({
                   type="date"
                   {...(register && register(`schedules.${index}.date`))}
                   value={schedule.date}
-                  min={getTodayDateString() || ''}
+                  min={getTomorrowDateString() || ''}
                   onChange={(e) =>
                     updateSchedule(index, 'date', e.target.value)
                   }
