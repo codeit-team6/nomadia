@@ -53,7 +53,7 @@ const SubImages = ({ images }: { images: SubImagesType[] | undefined }) => {
           })}
           {length > 1 && (
             <button
-              className="flex-center btn-action-blue absolute right-[1.6rem] bottom-[1.6rem] gap-[0.4rem] rounded-[0.6rem] bg-white px-[0.8rem] py-[0.4rem] text-[1.2rem] md:right-[2.4rem] md:bottom-[2.4rem] md:gap-[0.6rem] md:rounded-[0.6rem] md:px-[1.2rem] md:py-[0.8rem] md:text-[1.4rem]"
+              className="flex-center btn-action-blue absolute right-[1.6rem] bottom-[1.6rem] cursor-pointer gap-[0.4rem] rounded-[0.6rem] bg-white px-[0.8rem] py-[0.4rem] text-[1.2rem] md:right-[2.4rem] md:bottom-[2.4rem] md:gap-[0.6rem] md:rounded-[0.6rem] md:px-[1.2rem] md:py-[0.8rem] md:text-[1.4rem]"
               onClick={() => openModal('image-modal')}
             >
               <GalleryThumbnails className="size-[1rem] md:size-[1.8rem]" />

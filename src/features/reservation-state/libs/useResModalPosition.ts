@@ -31,7 +31,6 @@ export const useResModalPosition = (
       });
     } else {
       setPosition({ display: 'none' });
-      console.log('setPosition display none');
     }
   }, [date, isDesktop, selectedDate, calendarRef]);
   return position;
