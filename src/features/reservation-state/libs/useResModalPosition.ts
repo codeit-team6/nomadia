@@ -7,12 +7,15 @@ export const useResModalPosition = (
   calendarRef: React.RefObject<HTMLDivElement | null>,
 ): React.CSSProperties | undefined => {
   const { selectedDate, date } = useCalendarStore();
-  const { isDesktop } = useWindowSize();
-  const [position, setPosition] = useState<React.CSSProperties>();
+  const { isDesktop, isMobile, isTablet } = useWindowSize();
+  const [position, setPosition] = useState<React.CSSProperties>({
+    display: 'none',
+  });
 
   useEffect(() => {
-    if (!isDesktop) {
+    if (isMobile || isTablet) {
       setPosition({ display: 'block' });
+      return;
     }
 
     const calendarEl = calendarRef.current;
@@ -32,7 +35,7 @@ export const useResModalPosition = (
     } else {
       setPosition({ display: 'none' });
     }
-  }, [date, isDesktop, selectedDate, calendarRef]);
+  }, [date, isDesktop, selectedDate, calendarRef, isMobile, isTablet]);
   return position;
 };
 
