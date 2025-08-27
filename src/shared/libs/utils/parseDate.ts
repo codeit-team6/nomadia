@@ -28,15 +28,22 @@ export const sortDatesAscending = (dates: string[]): string[] => {
 };
 
 /**
- * @description 오늘 날짜를 YYYY-MM-DD 형식의 문자열로 반환합니다.
+ * @description 내일 날짜를 YYYY-MM-DD 형식의 문자열로 반환합니다.
  *
  * @author 김영현
- * @returns 오늘 날짜 문자열 (예: "2024-01-15")
+ * @returns 내일 날짜 문자열 (예: "2025-08-28") (오늘 날짜 + 1일)
  */
 export const getTodayDateString = (): string => {
   const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const day = String(today.getDate() + 1).padStart(2, '0');
+
+  const tomorrow = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate() + 1,
+  );
+
+  const year = tomorrow.getFullYear();
+  const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
+  const day = String(tomorrow.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
