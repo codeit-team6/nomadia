@@ -10,7 +10,7 @@ import { getReservationsByMonthApi } from '@/features/activities/libs/api/getRes
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import { ContentReservation } from '@/features/reservation-state/components/content-reservation';
 import EmptyReservation from '@/features/reservation-state/components/empty-reservation';
-import { useResStateModalPosition } from '@/features/reservation-state/libs/calcStateModalPosition';
+import { useResModalPosition } from '@/features/reservation-state/libs/useResModalPosition';
 import CalendarWithReservations from '@/shared/components/calendar/components/calendar-with-reservations';
 import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCalendarStore';
 import { MonthReservations } from '@/shared/components/calendar/libs/types/data';
@@ -49,7 +49,8 @@ const ReserveCalendarPage = () => {
   } = useCalendarStore();
   const { accessToken } = useAuthStore();
 
-  const selectedCellRef = useRef<HTMLButtonElement | null>(null);
+  const calendarRef = useRef<HTMLDivElement>(null);
+  const modalPosition = useResModalPosition(calendarRef);
 
   useEffect(() => {
     if (selectedDate && !isDesktop) {
@@ -178,7 +179,6 @@ const ReserveCalendarPage = () => {
     });
   }, [selectedDate, reservationArray]);
 
-  const modalPositionStyle = useResStateModalPosition(selectedCellRef);
   return (
     <div className="flex flex-col items-start">
       <div className="mb-[2.4rem] w-full">
@@ -236,8 +236,31 @@ const ReserveCalendarPage = () => {
               calendarWidth="w-full md:rounded-[2rem] border border-gray-50 shadow-experience-card"
               dayOfWeekStyle="w-[5.35rem] md:w-[6.8rem] lg:w-[9.143rem]"
               onCellClick={handleDateClick}
-              selectedCellRef={selectedCellRef}
-            />
+              calendarRef={calendarRef}
+            >
+              {/* 모달 위치 제어하기 위한 div 태그 */}
+              <div style={modalPosition}>
+                {/* 예약 현황 모달 */}
+                <AdaptiveModal extraClassName="shadow-experience-card category-scroll h-[50.8rem] overflow-scroll border border-gray-50 md:h-[39.7rem] lg:h-[44.4rem] lg:w-[32.3rem]">
+                  <div className="p-4">
+                    {selectedReservationsOfDate.length > 0 ? (
+                      <ContentReservation
+                        teamId="15-6"
+                        activityId={Number(selectedActivityId)}
+                        scheduleId={
+                          selectedScheduleId ? [selectedScheduleId] : []
+                        }
+                        status={'pending'}
+                        selectedDate={selectedDate || ''}
+                        onStatusChange={updateReservationStatus}
+                      />
+                    ) : (
+                      <EmptyReservation />
+                    )}
+                  </div>
+                </AdaptiveModal>
+              </div>
+            </CalendarWithReservations>
           ) : (
             <div className="mt-24 flex flex-col items-center justify-center">
               <Image
@@ -252,27 +275,6 @@ const ReserveCalendarPage = () => {
             </div>
           )}
         </div>
-
-        {selectedActivityId && (
-          <div style={modalPositionStyle}>
-            <AdaptiveModal extraClassName="shadow-experience-card category-scroll h-[50.8rem] overflow-scroll border border-gray-50 md:h-[39.7rem] lg:h-[44.4rem] lg:w-[32.3rem]">
-              <div className="p-4">
-                {selectedReservationsOfDate.length > 0 ? (
-                  <ContentReservation
-                    teamId="15-6"
-                    activityId={Number(selectedActivityId)}
-                    scheduleId={selectedScheduleId ? [selectedScheduleId] : []}
-                    status={'pending'}
-                    selectedDate={selectedDate || ''}
-                    onStatusChange={updateReservationStatus}
-                  />
-                ) : (
-                  <EmptyReservation />
-                )}
-              </div>
-            </AdaptiveModal>
-          </div>
-        )}
       </div>
     </div>
   );

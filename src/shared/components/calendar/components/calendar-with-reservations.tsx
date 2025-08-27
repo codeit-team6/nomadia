@@ -39,14 +39,16 @@ const CalendarWithReservations = ({
   dayOfWeekStyle,
   cellStyle,
   onCellClick,
-  selectedCellRef,
+  calendarRef,
+  children,
 }: {
   reservationArray: MonthReservations[];
   calendarWidth?: string;
   dayOfWeekStyle?: string;
   cellStyle?: string;
   onCellClick?: (dateStr: string, scheduleId: number | null) => void;
-  selectedCellRef: React.RefObject<HTMLButtonElement | null>;
+  calendarRef: React.RefObject<HTMLDivElement | null>;
+  children: React.ReactNode;
 }) => {
   const {
     year,
@@ -89,8 +91,10 @@ const CalendarWithReservations = ({
     <div>
       {/* 캘린더 전체 틀 */}
       <div
+        // ref
+        ref={calendarRef}
         className={cn(
-          'flex-center h-fit w-[37.5rem] flex-wrap bg-white',
+          'flex-center relative h-fit w-[37.5rem] flex-wrap bg-white',
           calendarWidth,
         )}
       >
@@ -126,7 +130,7 @@ const CalendarWithReservations = ({
                 key={day}
                 onKeyDown={(e) => e.key === 'Enter' && handleClick(day)}
                 onClick={() => handleClick(day)}
-                ref={isSelected ? selectedCellRef : undefined}
+                data-date={day}
                 // 이번달 날짜 칸 스타일
                 className={cn(
                   !isSelected ? 'hover:bg-sub' : 'hover:bg-orange-100',
@@ -170,6 +174,7 @@ const CalendarWithReservations = ({
               </button>
             );
           })}
+          {children}
         </DaysOfMonth>
       </div>
     </div>
