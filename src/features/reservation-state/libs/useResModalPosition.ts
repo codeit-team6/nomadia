@@ -11,9 +11,15 @@ export const useResModalPosition = (
   const [position, setPosition] = useState<React.CSSProperties>();
 
   useEffect(() => {
-    if (!isDesktop) return undefined;
-    const calendarRect = calendarRef.current?.getBoundingClientRect();
-    if (selectedDate && calendarRect && date) {
+    if (!isDesktop) {
+      setPosition({ display: 'block' });
+    }
+
+    const calendarEl = calendarRef.current;
+    if (!calendarEl) return;
+    const calendarRect = calendarEl.getBoundingClientRect();
+
+    if (selectedDate) {
       const cell = document.querySelector(`[data-date='${date}']`);
       if (!cell) return;
       const cellRect = cell.getBoundingClientRect();
@@ -23,15 +29,19 @@ export const useResModalPosition = (
         top: calcTop(cellRect, calendarRect) + 'px',
         position: 'absolute',
       });
-    } else setPosition({ display: 'none' });
-  }, [calendarRef, date, isDesktop, selectedDate]);
+    } else {
+      setPosition({ display: 'none' });
+      console.log('setPosition display none');
+    }
+  }, [date, isDesktop, selectedDate, calendarRef]);
   return position;
 };
 
 const MODAL_WIDTH = 333;
 const MODAL_HEIGHT = 444;
 
-const calcLeft = (cellRect: DOMRect, calendarRect: DOMRect) => {
+const calcLeft = (cellRect: DOMRect, calendarRect: DOMRect | undefined) => {
+  if (!calendarRect) return 0;
   const left = cellRect.left - calendarRect.left;
   const hasEnoughSpaceRight = window.innerWidth - cellRect.right >= MODAL_WIDTH;
   if (hasEnoughSpaceRight) {
@@ -40,7 +50,8 @@ const calcLeft = (cellRect: DOMRect, calendarRect: DOMRect) => {
     return left - MODAL_WIDTH;
   }
 };
-const calcTop = (cellRect: DOMRect, calendarRect: DOMRect) => {
+const calcTop = (cellRect: DOMRect, calendarRect: DOMRect | undefined) => {
+  if (!calendarRect) return 0;
   const top = cellRect.top - calendarRect.top;
   const cellTop = cellRect.top + window.scrollY;
   const hasEnoughSpaceBottom =

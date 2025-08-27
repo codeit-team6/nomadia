@@ -37,7 +37,7 @@ const ReserveCalendarPage = () => {
     null,
   );
 
-  const { appear, appearModal, disappearModal } = useModalStore();
+  const { appearModal, disappearModal } = useModalStore();
   const { isDesktop } = useWindowSize();
   const {
     month,
@@ -59,14 +59,6 @@ const ReserveCalendarPage = () => {
       disappearModal();
     }
   }, [selectedDate, appearModal, disappearModal, isDesktop]);
-
-  // 모달 닫히면(disappear) 날짜 선택 해제
-  useEffect(() => {
-    if (!appear && !isDesktop) {
-      resetDate();
-      resetSelectedDate();
-    }
-  }, [appear, isDesktop, resetDate, resetSelectedDate]);
 
   const handleDropdownOpen = () => {
     setShouldFetch(true);

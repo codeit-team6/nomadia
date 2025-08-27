@@ -9,7 +9,9 @@ import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCa
 import { MonthReservations } from '@/shared/components/calendar/libs/types/data';
 import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatDateToYMD';
 import { getMonthRange } from '@/shared/components/calendar/libs/utils/getMonthRange';
+import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 import { cn } from '@/shared/libs/cn';
+import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 
 /**
  * @author 지윤
@@ -60,10 +62,17 @@ const CalendarWithReservations = ({
     resetSelectedDate,
   } = useCalendarStore();
   const { thisMonthDays } = getMonthRange(year, month);
+  const { isDesktop } = useWindowSize();
+  const { appearModal } = useModalStore();
 
   const handleClick = (day: number) => {
-    setDate(day);
-    setSelectedDate(year, month, day);
+    if (!isDesktop && date === day) {
+      appearModal();
+    } else {
+      setDate(day);
+      setSelectedDate(year, month, day);
+    }
+
     if (onCellClick) {
       const dateStr = formatDateToYMD(new Date(year, month, day));
 
@@ -79,7 +88,6 @@ const CalendarWithReservations = ({
   };
 
   //언마운트시 선택한 날짜 리셋
-  //전역함수에 캘린더상태값 전부다 리셋하는 함수 하나 만들까
   useEffect(() => {
     return () => {
       resetDate();
