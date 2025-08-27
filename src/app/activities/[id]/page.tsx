@@ -1,20 +1,18 @@
 'use client';
 
 import { AxiosError } from 'axios';
-import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
+import Header from '@/features/activityId/components/header';
 import AddressWithMap from '@/features/activityId/components/map/address-with-map';
-import OwnerDropdown from '@/features/activityId/components/owner-drop-down';
 import ReservationModal from '@/features/activityId/components/reservation-modal';
 import Reviews from '@/features/activityId/components/reviews';
 import SubImages from '@/features/activityId/components/sub-images';
-import { activityIdStyle } from '@/features/activityId/libs/constants/variants';
+import { textStyle } from '@/features/activityId/libs/constants/variants';
 import { useActivityIdQuery } from '@/features/activityId/libs/hooks/useActivityIdQuery';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
-import StarImage from '@/shared/components/star/star';
 import { cn } from '@/shared/libs/cn';
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 
@@ -52,55 +50,21 @@ const ActivityPage = () => {
       <div
         className={cn(isDesktop && 'grid grid-cols-[1fr_41.9rem] gap-[4rem]')}
       >
-        {/* 체험 상세 */}
         <div>
-          {/* 타이틀 헤더 */}
-
-          <header className="flex flex-col gap-[5rem]">
-            <div>
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-[1.4rem] font-medium text-gray-700">
-                    {data?.category}
-                  </div>
-                  <h1 className={activityIdStyle.h1}>{data?.title}</h1>
-                </div>
-                <OwnerDropdown ownerId={data?.userId} activityId={Number(id)} />
-              </div>
-              {/* 별점 & 후기 & 구분선 */}
-              <div className="mb-[1rem] flex items-center gap-[0.6rem] text-[1.4rem] leading-none text-gray-700">
-                <StarImage />
-                <p>
-                  {data?.rating.toFixed(1)} ({data?.reviewCount})
-                </p>
-              </div>
-              <div className="flex items-center gap-[0.2rem] text-[1.4rem] leading-none text-gray-700">
-                <Image
-                  src="/images/icons/map-spot.svg"
-                  width={16}
-                  height={16}
-                  alt={'address'}
-                />
-                <p>{data?.address}</p>
-              </div>
-            </div>
-          </header>
-
-          {/* 체험 상세 정보 */}
-          <div className="">
-            <hr className="mt-[2rem] mb-[2rem]" />
-            {/* 체험 설명 */}
-            <section>
-              <h2 className={activityIdStyle.h2}>체험 설명</h2>
-              <p className={activityIdStyle.content}>{data?.description}</p>
-            </section>
-            <hr className="mt-[2rem] mb-[2rem]" />
-            {/* 오시는 길 */}
-            <AddressWithMap address={data?.address} />
-            <hr className="mb-[2rem] lg:mb-[4rem]" />
-            {/* 체험 후기 */}
-            <Reviews activityId={Number(id)} />
-          </div>
+          {/* 헤더 영역(분류, 제목, 별점, 주소, 드롭다운) */}
+          <Header data={data} />
+          {/* 체험 설명 */}
+          <hr className="mt-[2rem] mb-[2rem]" />
+          <section>
+            <h2 className={textStyle.h2}>체험 설명</h2>
+            <p className={textStyle.content}>{data?.description}</p>
+          </section>
+          {/* 오시는 길 */}
+          <hr className="mt-[2rem] mb-[2rem]" />
+          <AddressWithMap address={data?.address} />
+          {/* 체험 후기 */}
+          <hr className="mb-[2rem] lg:mb-[4rem]" />
+          <Reviews activityId={Number(id)} />
         </div>
         {/* 체험 예약 캘린더 */}
         <ReservationModal price={data?.price} activityId={Number(id)} />
