@@ -2,7 +2,7 @@
 
 import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { getActListApi } from '@/features/activities/libs/api/getActListApi';
 import { getReservations } from '@/features/activities/libs/api/getReserveDayApi';
@@ -10,12 +10,14 @@ import { getReservationsByMonthApi } from '@/features/activities/libs/api/getRes
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import { ContentReservation } from '@/features/reservation-state/components/content-reservation';
 import EmptyReservation from '@/features/reservation-state/components/empty-reservation';
+import { useResModalPosition } from '@/features/reservation-state/libs/useResModalPosition';
 import CalendarWithReservations from '@/shared/components/calendar/components/calendar-with-reservations';
 import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCalendarStore';
 import { MonthReservations } from '@/shared/components/calendar/libs/types/data';
 import Dropdown from '@/shared/components/dropdown/dropdown';
 import AdaptiveModal from '@/shared/components/modal/components/adaptive-modal/adaptive-modal';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
+import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 import { Activity } from '@/shared/types/activity';
 
 const ReserveCalendarPage = () => {
@@ -31,30 +33,38 @@ const ReserveCalendarPage = () => {
     null,
   );
   const [shouldFetch, setShouldFetch] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedScheduleId, setSelectedScheduleId] = useState<number | null>(
     null,
   );
 
   const { appearModal, disappearModal } = useModalStore();
-  const { month, setYear, setMonth } = useCalendarStore();
+  const { isDesktop } = useWindowSize();
+  const {
+    month,
+    setYear,
+    setMonth,
+    resetDate,
+    resetSelectedDate,
+    selectedDate,
+  } = useCalendarStore();
   const { accessToken } = useAuthStore();
 
+  const calendarRef = useRef<HTMLDivElement>(null);
+  const modalPosition = useResModalPosition(calendarRef);
+
   useEffect(() => {
-    if (selectedActivityId) {
+    if (selectedDate && !isDesktop) {
       appearModal();
     } else {
       disappearModal();
     }
-  }, [selectedActivityId, appearModal, disappearModal]);
+  }, [selectedDate, appearModal, disappearModal, isDesktop]);
 
   const handleDropdownOpen = () => {
     setShouldFetch(true);
   };
 
   const handleDateClick = async (dateStr: string) => {
-    setSelectedDate(dateStr);
-
     if (!selectedActivityId || !accessToken) {
       setSelectedScheduleId(null);
       return;
@@ -100,13 +110,14 @@ const ReserveCalendarPage = () => {
     setSelectedActivityTitle(title);
     const activityId = String(id);
     setSelectedActivityId(activityId);
-    setSelectedDate(null);
     setSelectedScheduleId(null);
+    resetDate();
+    resetSelectedDate();
 
     try {
       const currentYear = new Date().getFullYear();
       const monthsToFetch = 12;
-      let earliestDate: Date | null = null;
+      let earliestDate: Date | null = null; // 이건 뭘 위한 조건인지?
       let allReservations: MonthReservations[] = [];
 
       for (let i = 0; i < monthsToFetch; i++) {
@@ -217,7 +228,31 @@ const ReserveCalendarPage = () => {
               calendarWidth="w-full md:rounded-[2rem] border border-gray-50 shadow-experience-card"
               dayOfWeekStyle="w-[5.35rem] md:w-[6.8rem] lg:w-[9.143rem]"
               onCellClick={handleDateClick}
-            />
+              calendarRef={calendarRef}
+            >
+              {/* 모달 위치 제어하기 위한 div 태그 */}
+              <div style={modalPosition}>
+                {/* 예약 현황 모달 */}
+                <AdaptiveModal extraClassName="shadow-experience-card category-scroll h-[50.8rem] overflow-scroll border border-gray-50 md:h-[39.7rem] lg:h-[44.4rem] lg:w-[32.3rem]">
+                  <div className="p-4">
+                    {selectedReservationsOfDate.length > 0 ? (
+                      <ContentReservation
+                        teamId="15-6"
+                        activityId={Number(selectedActivityId)}
+                        scheduleId={
+                          selectedScheduleId ? [selectedScheduleId] : []
+                        }
+                        status={'pending'}
+                        selectedDate={selectedDate || ''}
+                        onStatusChange={updateReservationStatus}
+                      />
+                    ) : (
+                      <EmptyReservation />
+                    )}
+                  </div>
+                </AdaptiveModal>
+              </div>
+            </CalendarWithReservations>
           ) : (
             <div className="mt-24 flex flex-col items-center justify-center">
               <Image
@@ -232,25 +267,6 @@ const ReserveCalendarPage = () => {
             </div>
           )}
         </div>
-
-        {selectedActivityId && (
-          <AdaptiveModal extraClassName="w-[37.5rem] h-[50.8rem] md:w-[74.4rem] md:h-[39.7rem] lg:w-[34rem] lg:h-[51.9rem] border border-gray-50 shadow-experience-card">
-            <div className="p-4">
-              {selectedReservationsOfDate.length > 0 ? (
-                <ContentReservation
-                  teamId="15-6"
-                  activityId={Number(selectedActivityId)}
-                  scheduleId={selectedScheduleId ? [selectedScheduleId] : []}
-                  status={'pending'}
-                  selectedDate={selectedDate || ''}
-                  onStatusChange={updateReservationStatus}
-                />
-              ) : (
-                <EmptyReservation />
-              )}
-            </div>
-          </AdaptiveModal>
-        )}
       </div>
     </div>
   );

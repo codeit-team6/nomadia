@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import ArrowButton from '@/shared/components/calendar/components/fragments/arrow-button';
 import DaysOfMonth from '@/shared/components/calendar/components/fragments/days-of-month';
 import { cellStyleForCWR } from '@/shared/components/calendar/libs/constants/calendarStyles';
@@ -7,7 +9,9 @@ import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCa
 import { MonthReservations } from '@/shared/components/calendar/libs/types/data';
 import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatDateToYMD';
 import { getMonthRange } from '@/shared/components/calendar/libs/utils/getMonthRange';
+import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 import { cn } from '@/shared/libs/cn';
+import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 
 /**
  * @author 지윤
@@ -37,19 +41,38 @@ const CalendarWithReservations = ({
   dayOfWeekStyle,
   cellStyle,
   onCellClick,
+  calendarRef,
+  children,
 }: {
   reservationArray: MonthReservations[];
   calendarWidth?: string;
   dayOfWeekStyle?: string;
   cellStyle?: string;
   onCellClick?: (dateStr: string, scheduleId: number | null) => void;
+  calendarRef: React.RefObject<HTMLDivElement | null>;
+  children: React.ReactNode;
 }) => {
-  const { year, month, date, setDate, setSelectedDate } = useCalendarStore();
+  const {
+    year,
+    month,
+    date,
+    setDate,
+    setSelectedDate,
+    resetDate,
+    resetSelectedDate,
+  } = useCalendarStore();
   const { thisMonthDays } = getMonthRange(year, month);
+  const { isDesktop } = useWindowSize();
+  const { appearModal } = useModalStore();
 
   const handleClick = (day: number) => {
-    setDate(day);
-    setSelectedDate(year, month, day);
+    if (!isDesktop && date === day) {
+      appearModal();
+    } else {
+      setDate(day);
+      setSelectedDate(year, month, day);
+    }
+
     if (onCellClick) {
       const dateStr = formatDateToYMD(new Date(year, month, day));
 
@@ -64,12 +87,22 @@ const CalendarWithReservations = ({
     }
   };
 
+  //언마운트시 선택한 날짜 리셋
+  useEffect(() => {
+    return () => {
+      resetDate();
+      resetSelectedDate();
+    };
+  }, [resetDate, resetSelectedDate]);
+
   return (
     <div>
       {/* 캘린더 전체 틀 */}
       <div
+        // ref
+        ref={calendarRef}
         className={cn(
-          'flex-center h-fit w-[37.5rem] flex-wrap bg-white',
+          'flex-center relative h-fit w-[37.5rem] flex-wrap bg-white',
           calendarWidth,
         )}
       >
@@ -105,6 +138,7 @@ const CalendarWithReservations = ({
                 key={day}
                 onKeyDown={(e) => e.key === 'Enter' && handleClick(day)}
                 onClick={() => handleClick(day)}
+                data-date={day}
                 // 이번달 날짜 칸 스타일
                 className={cn(
                   !isSelected ? 'hover:bg-sub' : 'hover:bg-orange-100',
@@ -148,6 +182,7 @@ const CalendarWithReservations = ({
               </button>
             );
           })}
+          {children}
         </DaysOfMonth>
       </div>
     </div>
