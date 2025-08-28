@@ -6,7 +6,7 @@ import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 export const useResModalPosition = (
   calendarRef: React.RefObject<HTMLDivElement | null>,
 ): React.CSSProperties | undefined => {
-  const { selectedDate, date } = useCalendarStore();
+  const { date } = useCalendarStore();
   const { isDesktop, isMobile, isTablet } = useWindowSize();
   const [position, setPosition] = useState<React.CSSProperties>({
     display: 'none',
@@ -22,8 +22,8 @@ export const useResModalPosition = (
     if (!calendarEl) return;
     const calendarRect = calendarEl.getBoundingClientRect();
 
-    if (selectedDate) {
-      const cell = document.querySelector(`[data-date='${date}']`);
+    if (date !== null) {
+      const cell = calendarEl.querySelector(`[data-date='${date}']`);
       if (!cell) return;
       const cellRect = cell.getBoundingClientRect();
 
@@ -35,7 +35,7 @@ export const useResModalPosition = (
     } else {
       setPosition({ display: 'none' });
     }
-  }, [date, isDesktop, selectedDate, calendarRef, isMobile, isTablet]);
+  }, [date, isDesktop, calendarRef, isMobile, isTablet]);
   return position;
 };
 
