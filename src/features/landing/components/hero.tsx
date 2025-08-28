@@ -40,7 +40,7 @@ const Hero = ({ swiperRef, ActivityCard, router }: HeroProps) => {
     }
   };
 
-  const activities = data?.activities ?? [];
+  const activities = data?.pages?.flatMap((page) => page.activities) ?? [];
 
   return (
     <div className="bg-background">

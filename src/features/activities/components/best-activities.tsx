@@ -26,10 +26,10 @@ const BestActivities = () => {
   const { data, isLoading, isError } = useActivity({
     sort: 'most_reviewed',
     page: 1,
-    size: 8,
+    size: 4,
   });
 
-  const activities = data?.activities ?? [];
+  const activities = data?.pages?.flatMap((page) => page.activities) ?? [];
 
   const handlePrevSlide = () => {
     swiperRef.current?.slidePrev();
@@ -114,7 +114,7 @@ const BestActivities = () => {
                 <ActivityCard
                   activity={activity}
                   className="mb-[2.4rem] md:mb-[8rem]"
-                  isPriority={index < 4}
+                  isPriority={index === 0}
                   // disableNavigation prop 없이 기본값 사용 (false)
                 />
               </SwiperSlide>

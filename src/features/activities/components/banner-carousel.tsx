@@ -10,8 +10,8 @@ import type { Swiper as SwiperType } from 'swiper';
 import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { ErrorMessage } from '@/shared/components/error-message/error-message';
-import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
+import { navigateToActivity } from '@/features/activities/libs/utils/navigation';
+import { ErrorMessage, LoadingSpinner } from '@/shared/components';
 import useActivity from '@/shared/libs/hooks/useActivityQuery';
 
 /**
@@ -21,18 +21,27 @@ import useActivity from '@/shared/libs/hooks/useActivityQuery';
  * @description 배너 캐러셀을 표시하는 컴포넌트입니다.
  */
 const BannerCarousel = () => {
-  const router = useRouter();
   const swiperRef = useRef<SwiperType | null>(null);
-  const { data, isLoading, isError } = useActivity({
+  const { data, isLoading, isError, hasNextPage, fetchNextPage } = useActivity({
     sort: 'most_reviewed',
     page: 1,
-    size: 8,
+    size: 4,
   });
-  const banners = data?.activities ?? [];
+
+  const router = useRouter();
+
+  const banners = data?.pages?.flatMap((page) => page.activities) ?? [];
+
+  const handleSlideChange = (swiper: SwiperType) => {
+    const currentIndex = swiper.realIndex;
+    if (hasNextPage && currentIndex >= banners.length - 2) {
+      fetchNextPage();
+    }
+  };
 
   // 배너 클릭 시 액티비티 상세 페이지로 이동
   const handleBannerClick = (activityId: number) => {
-    router.push(`/activities/${activityId}`);
+    navigateToActivity(activityId, router);
   };
 
   return (
@@ -48,15 +57,12 @@ const BannerCarousel = () => {
         onBeforeInit={(swiper) => {
           swiperRef.current = swiper;
         }}
+        onSlideChange={handleSlideChange}
         breakpoints={{
           768: {
-            slidesPerView: 1,
-            slidesPerGroup: 1,
             spaceBetween: 24,
           },
           1024: {
-            slidesPerView: 1,
-            slidesPerGroup: 1,
             spaceBetween: 30,
           },
         }}
@@ -99,8 +105,15 @@ const BannerCarousel = () => {
                   fill
                   className="object-cover"
                   priority={idx === 0}
-                  quality={idx === 0 ? 85 : 75}
+                  quality={idx === 0 ? 60 : 50}
+                  loading={idx === 0 ? 'eager' : 'lazy'}
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 112rem"
+                  placeholder={idx === 0 ? undefined : 'blur'}
+                  blurDataURL={
+                    idx === 0
+                      ? undefined
+                      : 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
+                  }
                 />
                 <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/90 to-transparent p-2 transition-opacity duration-700 md:p-8 lg:p-12">
                   <div className="mb-2 text-center text-[1.8rem] font-bold text-white drop-shadow-lg md:text-[2.4rem] lg:text-[3.2rem]">
