@@ -15,7 +15,7 @@ const SubImagesModal = ({ images }: { images: SubImagesType[] }) => {
     <>
       <Modal
         type="custom"
-        extraClassName="relative h-[85vh] w-[90vw] p-0 py-[5rem] md:px-[5rem] md:pt-[2rem] md:pb-[3rem] lg:pb-[2rem]"
+        extraClassName="relative h-[85vh] w-[90vw] p-0 py-[5rem] md:px-[5rem] md:pt-[2rem] md:pb-[3rem]"
       >
         {/* 닫기 버튼 */}
         <button
@@ -46,7 +46,7 @@ const SubImagesModal = ({ images }: { images: SubImagesType[] }) => {
               return (
                 <button
                   key={i}
-                  className="relative size-[6rem] md:size-[7rem]"
+                  className="relative size-[6rem] cursor-pointer md:size-[7rem]"
                   onClick={() => setSelectedImage(i)}
                   onMouseEnter={() => {
                     if (i === selectedImage) return;

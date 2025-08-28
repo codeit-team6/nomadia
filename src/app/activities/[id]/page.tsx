@@ -3,6 +3,7 @@
 import { AxiosError } from 'axios';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 import AddressWithMap from '@/features/activityId/components/map/address-with-map';
 import OwnerDropdown from '@/features/activityId/components/owner-drop-down';
@@ -12,6 +13,7 @@ import SubImages from '@/features/activityId/components/sub-images';
 import { activityIdStyle } from '@/features/activityId/libs/constants/variants';
 import { useActivityIdQuery } from '@/features/activityId/libs/hooks/useActivityIdQuery';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
+import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 import StarImage from '@/shared/components/star/star';
 import { cn } from '@/shared/libs/cn';
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
@@ -32,6 +34,14 @@ const ActivityPage = () => {
       }
     }
   }
+
+  // 언마운트 시 클린업
+  const { closeModal } = useModalStore();
+  useEffect(() => {
+    return () => {
+      closeModal();
+    };
+  }, [closeModal]);
 
   if (isLoading || !data) return <LoadingSpinner />;
 
