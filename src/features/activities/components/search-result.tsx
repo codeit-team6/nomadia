@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 
 import { ActivityCard } from '@/features/activities/components/activity-card';
@@ -9,6 +9,7 @@ import Pagination from '@/shared/components/pagination/pagination';
 
 const SearchResults = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const keyword = searchParams.get('keyword') ?? '';
   const region = searchParams.get('region') ?? '';
@@ -26,6 +27,15 @@ const SearchResults = () => {
   const activities = data?.activities ?? [];
   const totalCount = data?.totalCount ?? 0;
   const totalPages = Math.max(1, Math.ceil(totalCount / size));
+
+  const handlePageChange: React.Dispatch<React.SetStateAction<number>> = (
+    value,
+  ) => {
+    const nextPage = typeof value === 'function' ? value(page) : value;
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', String(nextPage));
+    router.push(`/activities?${params.toString()}`, { scroll: false });
+  };
 
   return (
     <section className="px-[2.4rem]">
@@ -63,7 +73,7 @@ const SearchResults = () => {
               <Pagination
                 totalPages={totalPages}
                 currentPage={page}
-                setPage={() => {}}
+                setPage={handlePageChange}
                 className="flex-center mt-[2.4rem] mb-[16.5rem] md:mt-[3rem] md:mb-[27.7rem] lg:mb-[27.1rem]"
               />
             </>
