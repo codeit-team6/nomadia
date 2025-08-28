@@ -64,11 +64,19 @@ const Search: React.FC<SearchProps> = ({
   }, []);
 
   const handleSearch = () => {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams.toString());
 
-    if (keyword.trim()) params.set('keyword', keyword.trim());
-    if (region.trim()) params.set('region', region.trim());
-    if (category.trim()) params.set('category', category.trim());
+    const k = keyword.trim();
+    const r = region.trim();
+    const c = category.trim();
+
+    [
+      ['keyword', k],
+      ['region', r],
+      ['category', c],
+    ].forEach(([key, value]) =>
+      value ? params.set(key, value) : params.delete(key),
+    );
 
     params.set('page', '1');
     router.push(`/activities?${params.toString()}`);
