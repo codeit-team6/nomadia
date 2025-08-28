@@ -14,17 +14,17 @@ import {
  * @description 랜딩페이지, 메인화면 배너, 인기 체험 컴포넌트에서 사용될 useActivity 훅
  */
 const useActivity = (params: GetActListApiParams) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { page: _page, ...stableParams } = params;
+
   return useInfiniteQuery<GetActListApiResponse>({
-    queryKey: ['activities', params],
+    queryKey: ['activities', stableParams],
     queryFn: ({ pageParam = 1 }) =>
       getActListApi({ ...params, page: pageParam as number }),
-    getNextPageParam: (lastPage, allPages) => {
-      // 다음 페이지가 있는지 확인 (size보다 적은 데이터가 오면 마지막 페이지)
-      if (lastPage.activities.length < (params.size || 10)) {
-        return undefined;
-      }
-      return allPages.length + 1;
-    },
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.activities.length < (params.size || 10)
+        ? undefined
+        : allPages.length + 1,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5,
     retry: 1,

@@ -53,10 +53,9 @@ export const ActivityCard = ({
           alt={activity.title}
           fill
           className="rounded-t-[0.8rem] object-cover md:rounded-t-[1.8rem]"
-          sizes="(max-width: 768px) 50vw, 25vw"
+          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 50vw, 25vw"
           priority={isPriority}
           quality={isPriority ? 60 : 50}
-          loading={isPriority ? 'eager' : 'lazy'}
         />
       </div>
 
@@ -72,6 +71,7 @@ export const ActivityCard = ({
           {/* 별점, 리뷰 정보 - 컴포넌트로 분리 */}
           <div className="mt-[0.3rem] flex min-h-[1.8rem] items-center justify-between">
             <RatingDisplay
+              activityId={activity.id}
               rating={activity.rating}
               reviewCount={activity.reviewCount}
             />

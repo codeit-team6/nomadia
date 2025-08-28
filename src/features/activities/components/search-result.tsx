@@ -49,7 +49,7 @@ const SearchResults = ({ keyword }: SearchResultProps) => {
                   <ActivityCard
                     key={activity.id}
                     activity={activity}
-                    isPriority={index < 8}
+                    isPriority={index < 2}
                   />
                 ))}
               </div>

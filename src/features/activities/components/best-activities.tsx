@@ -26,7 +26,7 @@ const BestActivities = () => {
   const { data, isLoading, isError } = useActivity({
     sort: 'most_reviewed',
     page: 1,
-    size: 4,
+    size: 6, // loop 모드에 충분한 슬라이드 확보 (최소 4개 + 여유분)
   });
 
   const activities = data?.pages?.flatMap((page) => page.activities) ?? [];
@@ -109,13 +109,11 @@ const BestActivities = () => {
             }}
             className="best-activities !overflow-visible !px-0"
           >
-            {activities.map((activity, index) => (
+            {activities.map((activity) => (
               <SwiperSlide key={activity.id}>
                 <ActivityCard
                   activity={activity}
                   className="mb-[2.4rem] md:mb-[8rem]"
-                  isPriority={index === 0}
-                  // disableNavigation prop 없이 기본값 사용 (false)
                 />
               </SwiperSlide>
             ))}

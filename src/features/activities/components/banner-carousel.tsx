@@ -22,6 +22,7 @@ import useActivity from '@/shared/libs/hooks/useActivityQuery';
  */
 const BannerCarousel = () => {
   const swiperRef = useRef<SwiperType | null>(null);
+  const isFetchingRef = useRef(false); // 중복 호출 방지를 위한 뮤텍스
   const { data, isLoading, isError, hasNextPage, fetchNextPage } = useActivity({
     sort: 'most_reviewed',
     page: 1,
@@ -34,8 +35,19 @@ const BannerCarousel = () => {
 
   const handleSlideChange = (swiper: SwiperType) => {
     const currentIndex = swiper.realIndex;
-    if (hasNextPage && currentIndex >= banners.length - 2) {
-      fetchNextPage();
+
+    // 중복 호출 방지 및 near-end 조건 확인
+    if (
+      hasNextPage &&
+      currentIndex >= banners.length - 2 &&
+      !isFetchingRef.current
+    ) {
+      isFetchingRef.current = true; // 뮤텍스 잠금
+
+      fetchNextPage().finally(() => {
+        // API 요청 완료 후 뮤텍스 해제
+        isFetchingRef.current = false;
+      });
     }
   };
 

@@ -18,8 +18,13 @@ const nextConfig: NextConfig = {
   },
 
   experimental: {
-    // 큰 패키지만 최적화
-    optimizePackageImports: ['swiper', '@/shared/components'],
+    // 외부 패키지 최적화
+    optimizePackageImports: [
+      'swiper',
+      'lucide-react',
+      '@radix-ui/react-*',
+      'date-fns',
+    ],
   },
 };
 
