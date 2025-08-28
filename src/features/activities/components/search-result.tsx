@@ -15,10 +15,9 @@ const SearchResults = () => {
   const category = searchParams.get('category') ?? '';
   const page = Number(searchParams.get('page') ?? 1);
 
-  const combinedKeyword = region ? `${region} ${keyword}`.trim() : keyword;
-
   const { data, isLoading, isError, size } = useResActivitiesQuery({
-    keyword: combinedKeyword,
+    keyword: keyword.trim() || undefined,
+    region: region || undefined,
     category: category || undefined,
     sort: 'latest',
     page,
@@ -31,13 +30,10 @@ const SearchResults = () => {
   return (
     <section className="px-[2.4rem]">
       <p className="mb-4 text-[1.8rem] font-bold text-gray-950 md:text-[2.4rem]">
-        <strong>{keyword}</strong>으로 검색한 결과입니다.
-        {region && (
-          <span>
-            {' '}
-            / 지역: {region}, 카테고리: {category}
-          </span>
-        )}
+        <strong>
+          {keyword} [지역: {region}, 카테고리: {category}]
+        </strong>
+        으로 검색한 결과입니다.
       </p>
       <p className="mb-6 text-[1.4rem] text-gray-700 md:text-[1.8rem]">
         총 <strong>{totalCount}</strong>개의 결과
