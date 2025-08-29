@@ -182,8 +182,8 @@ const CalendarWithReservations = ({
               </button>
             );
           })}
-          {children}
         </DaysOfMonth>
+        {children}
       </div>
     </div>
   );
