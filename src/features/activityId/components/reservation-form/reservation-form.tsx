@@ -1,6 +1,6 @@
 'use client';
 import { Minus, Plus } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import NeedLoginModal from '@/features/activityId/components/reservation-form/modal-need-login';
@@ -9,7 +9,6 @@ import ResponsiveHeader from '@/features/activityId/components/reservation-form/
 import SubmitButton from '@/features/activityId/components/reservation-form/submit-button';
 import SubmitInfoMobile from '@/features/activityId/components/reservation-form/submit-info-mobile';
 import { reservationFormStyle } from '@/features/activityId/libs/constants/variants';
-import { useFilterPastSchedule } from '@/features/activityId/libs/hooks/useFilterPastSchedule';
 import { useReservationMutation } from '@/features/activityId/libs/hooks/useReservationMutation';
 import { useSchedulesQuery } from '@/features/activityId/libs/hooks/useSchedulesQuery';
 import { useSelectedDateChanged } from '@/features/activityId/libs/hooks/useSelectedDateChanged';
@@ -24,6 +23,7 @@ import {
 } from '@/features/activityId/libs/utils/addReservation';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCalendarStore';
+import { formatDateToYMD } from '@/shared/components/calendar/libs/utils/formatDateToYMD';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 import { cn } from '@/shared/libs/cn';
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
@@ -62,8 +62,15 @@ const ReservationForm = ({
     formState: { isValid },
   } = useForm<ReservationRequestBody>();
 
-  useFilterPastSchedule(data, setScheduledDate); // 지난 날짜 제거
   useSelectedDateChanged({ data, setSchedulesInDate, resetField }); // selectedDate가 바뀌면, 스케줄 선택지 업데이트
+
+  // 지난 날짜 일정 제거
+  useEffect(() => {
+    if (!data) return;
+    const today = formatDateToYMD(new Date());
+    const notYetPassed = data?.filter((schedule) => schedule.date >= today);
+    setScheduledDate(notYetPassed);
+  }, [data, setScheduledDate]);
 
   // 폼 제출 함수
   const { isLoggedIn } = useAuthStore();
