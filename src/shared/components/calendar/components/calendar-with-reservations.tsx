@@ -118,7 +118,11 @@ const CalendarWithReservations = ({
         {/* 날짜 칸 */}
         <DaysOfMonth
           // 이번달 아닌 날짜 칸 스타일(이번달 날짜 스타일과 동일해야함)
-          inactiveCellStyle={cn(cellStyleForCWR, cellStyle)}
+          inactiveCellStyle={cn(
+            'w-[5.35rem] md:w-[6.8rem] lg:w-[9.143rem]',
+            cellStyleForCWR,
+            cellStyle,
+          )}
           // 요일 칸 스타일
           dayOfWeekStyle={cn(
             'mb-[0.4rem] h-[4rem] w-[5.35rem] text-[1.3rem] font-bold',
@@ -141,6 +145,7 @@ const CalendarWithReservations = ({
                 data-date={day}
                 // 이번달 날짜 칸 스타일
                 className={cn(
+                  'w-[5.35rem] md:w-[6.8rem] lg:w-[9.143rem]',
                   !isSelected ? 'hover:bg-sub' : 'hover:bg-orange-100',
                   cellStyleForCWR,
                   cellStyle,
