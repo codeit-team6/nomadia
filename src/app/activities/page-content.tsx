@@ -33,8 +33,13 @@ const SearchResults = dynamic(
 
 const ActivitiesPageContent = () => {
   const searchParams = useSearchParams();
-  const keyword = searchParams.get('search')?.trim() || '';
-  const isSearching = keyword.trim().length > 0;
+
+  const keyword = searchParams.get('keyword')?.trim() || '';
+  const region = searchParams.get('region')?.trim() || '';
+  const category = searchParams.get('category')?.trim() || '';
+
+  const isSearching =
+    keyword.length > 0 || region.length > 0 || category.length > 0;
 
   return (
     <main className="bg-background flex w-full flex-col gap-10">
@@ -47,6 +52,7 @@ const ActivitiesPageContent = () => {
           <Suspense fallback={<LoadingSpinner />}>
             <SearchResults keyword={keyword} />
           </Suspense>
+
         ) : (
           <>
             {/* 지연 로드: 인기 체험 */}
