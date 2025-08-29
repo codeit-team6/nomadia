@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { notFound } from 'next/navigation';
 import { useEffect } from 'react';
 
 import Header from '@/features/activityId/components/header';
@@ -10,49 +11,48 @@ import Reviews from '@/features/activityId/components/reviews';
 import SubImages from '@/features/activityId/components/sub-images';
 import { getActivityId } from '@/features/activityId/libs/api/getActivityId';
 import { textStyle } from '@/features/activityId/libs/constants/variants';
+import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCalendarStore';
+import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 import { cn } from '@/shared/libs/cn';
-// import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 
 const ActivityPage = ({ id }: { id: string }) => {
-  const { data } = useQuery({
+  const { closeModal } = useModalStore();
+  const { setYear, setMonth, resetSelectedDate, resetDate } =
+    useCalendarStore();
+
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['activityId', id],
     queryFn: () => getActivityId(id),
+    staleTime: 1000 * 60 * 30,
   });
 
-  // const { isDesktop } = useWindowSize();
-  // const router = useRouter();
-  // # notfound페이지로 에러처리
-  // if (isError) {
-  //   if (error instanceof AxiosError && error.response) {
-  //     const status = error.response.status;
-
-  //     if (status === 404 || status === 500) {
-  //       router.push('/not-found');
-  //     } else {
-  //       throw new Error(String(status));
-  //     }
-  //   }
-  // }
+  // notfound 페이지로 에러처리
+  if (isError) {
+    notFound();
+  }
 
   // 언마운트 시 클린업
-  const { closeModal } = useModalStore();
   useEffect(() => {
     return () => {
+      // 모달 닫기
       closeModal();
+      // 캘린더 리셋
+      const today = new Date();
+      setYear(today.getFullYear());
+      setMonth(today.getMonth());
+      resetSelectedDate();
+      resetDate();
     };
-  }, [closeModal]);
+  }, [closeModal, setMonth, setYear, resetDate, resetSelectedDate]);
 
-  // if (isLoading || !data) return <LoadingSpinner />;
+  if (isLoading || !data) return <LoadingSpinner />;
 
   return (
     <div className="mx-auto w-full justify-center p-[2.4rem] md:px-[4rem] lg:max-w-[120rem] lg:pt-[1.6rem]">
       {/* 체험 이미지 */}
       <SubImages images={data?.subImages} />
-      <div
-        // className={cn(isDesktop && 'grid grid-cols-[1fr_41.9rem] gap-[4rem]')}
-        className={cn('lg:grid lg:grid-cols-[1fr_41.9rem] lg:gap-[4rem]')}
-      >
+      <div className={cn('lg:grid lg:grid-cols-[1fr_41.9rem] lg:gap-[4rem]')}>
         <div>
           {/* 헤더 영역(분류, 제목, 별점, 주소, 드롭다운) */}
           <Header data={data} />

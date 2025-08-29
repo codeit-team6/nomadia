@@ -10,3 +10,9 @@ export const textStyle = {
 export const reservationFormStyle = {
   labelFont: 'text-[1.6rem] font-bold text-gray-950 block md:mb-[2rem]',
 };
+
+export const calendarStyle = {
+  calendarWidth: 'md:w-[35.9rem] lg:w-[35rem]',
+  dayOfWeekStyle: 'md:my-[1.36rem] md:w-[5.128rem] lg:my-0 lg:w-[5rem]',
+  cellStyle: 'md:my-[1.36rem] md:w-[5.128rem] lg:my-0 lg:w-[5rem]',
+} as const;
