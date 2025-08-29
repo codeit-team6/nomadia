@@ -3,10 +3,10 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { navigateToActivity } from '@/features/activities/libs/utils/navigation';
-import EmptyStarImage from '@/shared/components/empty-star/empty-star';
-import StarImage from '@/shared/components/star/star';
-import { formatPrice } from '@/shared/libs/utils/formatPrice';
 import { Activity } from '@/shared/types/activity';
+
+import { PriceDisplay } from './price-display';
+import RatingDisplay from './rating-display';
 
 interface ActivityCardProps {
   activity: Activity;
@@ -53,9 +53,9 @@ export const ActivityCard = ({
           alt={activity.title}
           fill
           className="rounded-t-[0.8rem] object-cover md:rounded-t-[1.8rem]"
-          sizes="(max-width: 768px) 50vw, 25vw"
+          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 50vw, 25vw"
           priority={isPriority}
-          quality={75}
+          quality={isPriority ? 60 : 50}
         />
       </div>
 
@@ -68,58 +68,19 @@ export const ActivityCard = ({
             {activity.title}
           </h3>
 
-          {/* 별점, 리뷰 정보 */}
+          {/* 별점, 리뷰 정보 - 컴포넌트로 분리 */}
           <div className="mt-[0.3rem] flex min-h-[1.8rem] items-center justify-between">
-            {/* 왼쪽: 별점과 리뷰 정보 */}
-            <div className="flex items-center gap-[0.2rem]">
-              {/* 별점 */}
-              <div className="flex items-center">
-                {Array.from({ length: 5 }, (_, idx) =>
-                  activity.rating && idx < activity.rating ? (
-                    <StarImage
-                      key={idx}
-                      extraClassName="size-[1.2rem] md:size-[1.6rem]"
-                    />
-                  ) : (
-                    <EmptyStarImage
-                      key={idx}
-                      extraClassName="size-[1.2rem] md:size-[1.6rem]"
-                    />
-                  ),
-                )}
-              </div>
-
-              {/* Dot 구분자 */}
-              <span className="text-[1rem] text-gray-400 md:text-[1.4rem]">
-                •
-              </span>
-
-              {/* 별점 상세 점수 표기(소수점 한자리까지) */}
-              {activity.reviewCount && activity.reviewCount > 0 ? (
-                <span className="text-[1.2rem] font-bold text-gray-800 md:text-[1.4rem]">
-                  {activity.rating.toFixed(1)}
-                </span>
-              ) : (
-                ''
-              )}
-
-              <span className="mr-[0.3rem]">
-                <span className="text-[1.2rem] font-medium text-gray-600 md:text-[1.4rem]">
-                  ({activity.reviewCount})
-                </span>
-              </span>
-            </div>
+            <RatingDisplay
+              activityId={activity.id}
+              rating={activity.rating}
+              reviewCount={activity.reviewCount}
+            />
           </div>
         </div>
 
-        {/* 가격 */}
-        <div className="mt-[2rem] flex justify-start gap-1">
-          <span className="text-[1.5rem] leading-[1.8rem] font-bold text-gray-950 md:text-[1.8rem]">
-            ₩ {formatPrice(activity.price)}{' '}
-            <span className="text-[1.2rem] font-semibold text-gray-400 md:text-[1.6rem]">
-              /인
-            </span>
-          </span>
+        {/* 가격 - 컴포넌트로 분리 */}
+        <div className="mt-[2rem]">
+          <PriceDisplay price={activity.price} />
         </div>
       </div>
     </div>
