@@ -16,7 +16,7 @@ interface RatingDisplayProps {
  * @param reviewCount - fallback 리뷰 개수
  * @param fetchLatest - 최신 데이터 페치 여부 (기본값: false)
  */
-export const RatingDisplay = ({
+const RatingDisplay = ({
   activityId,
   rating,
   reviewCount,
@@ -29,13 +29,19 @@ export const RatingDisplay = ({
     { fetchLatest },
   );
 
-  // 기본값 우선 사용, fetchLatest가 true이고 데이터가 있을 때만 최신값 사용
+  // 숫자 여부로 엄격하게 확인하여 null 값 방지
   const displayRating =
-    fetchLatest && reviewsData?.averageRating !== undefined
+    fetchLatest &&
+    typeof reviewsData?.averageRating === 'number' &&
+    !isNaN(reviewsData.averageRating)
       ? reviewsData.averageRating
       : rating;
+
   const displayReviewCount =
-    fetchLatest && reviewsData?.totalCount !== undefined
+    fetchLatest &&
+    typeof reviewsData?.totalCount === 'number' &&
+    !isNaN(reviewsData.totalCount) &&
+    reviewsData.totalCount >= 0
       ? reviewsData.totalCount
       : reviewCount;
 
@@ -76,3 +82,5 @@ export const RatingDisplay = ({
     </div>
   );
 };
+
+export default RatingDisplay;

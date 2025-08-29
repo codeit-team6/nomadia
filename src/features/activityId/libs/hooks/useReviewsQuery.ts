@@ -10,10 +10,10 @@ export const useReviewsQuery = (
     fetchLatest?: boolean;
   },
 ) => {
-  const { enabled = true, fetchLatest = false } = options || {};
+  const { enabled = true, fetchLatest = true } = options || {};
 
   return useQuery({
-    queryKey: ['reviews', id, fetchLatest],
+    queryKey: ['reviews', id, params.page, params.size, fetchLatest],
     queryFn: () => getReviews(id, params),
     staleTime: 1000 * 60 * 30,
     retry: 1,

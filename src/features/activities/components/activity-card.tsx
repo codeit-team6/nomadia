@@ -6,7 +6,7 @@ import { navigateToActivity } from '@/features/activities/libs/utils/navigation'
 import { Activity } from '@/shared/types/activity';
 
 import { PriceDisplay } from './price-display';
-import { RatingDisplay } from './rating-display';
+import RatingDisplay from './rating-display';
 
 interface ActivityCardProps {
   activity: Activity;

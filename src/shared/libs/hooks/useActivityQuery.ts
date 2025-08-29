@@ -9,18 +9,15 @@ import {
 /**
  * 체험 목록 조회 훅
  * @author 김영현
- * @param params - 체험 목록 조회 파라미터
+ * @param params - 체험 목록 조회 파라미터 (page 제외)
  * @returns 체험 목록 조회 결과
  * @description 랜딩페이지, 메인화면 배너, 인기 체험 컴포넌트에서 사용될 useActivityQuery 훅
  */
 const useActivityQuery = (params: GetActListApiParams) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { page: _page, ...stableParams } = params;
-
   return useInfiniteQuery<GetActListApiResponse>({
-    queryKey: ['activities', stableParams],
+    queryKey: ['activities', params],
     queryFn: ({ pageParam = 1 }) =>
-      getActListApi({ ...stableParams, page: pageParam as number }),
+      getActListApi({ ...params, page: pageParam as number }),
     getNextPageParam: (lastPage, allPages) => {
       const totalCount = lastPage.totalCount;
       const currentTotal = allPages.reduce(

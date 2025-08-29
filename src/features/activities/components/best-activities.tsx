@@ -25,7 +25,6 @@ const BestActivities = () => {
 
   const { data, isLoading, isError } = useActivityQuery({
     sort: 'most_reviewed',
-    page: 1,
     size: 6,
   });
 
