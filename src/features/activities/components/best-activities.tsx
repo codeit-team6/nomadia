@@ -13,7 +13,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { ActivityCard } from '@/features/activities/components/activity-card';
 import { ErrorMessage } from '@/shared/components/error-message/error-message';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
-import useActivity from '@/shared/libs/hooks/useActivityQuery';
+import useActivityQuery from '@/shared/libs/hooks/useActivityQuery';
 
 /**
  * 인기 체험 컴포넌트
@@ -23,13 +23,12 @@ import useActivity from '@/shared/libs/hooks/useActivityQuery';
 const BestActivities = () => {
   const swiperRef = useRef<SwiperType | null>(null);
 
-  const { data, isLoading, isError } = useActivity({
+  const { data, isLoading, isError } = useActivityQuery({
     sort: 'most_reviewed',
-    page: 1,
-    size: 8,
+    size: 6,
   });
 
-  const activities = data?.activities ?? [];
+  const activities = data?.pages?.flatMap((page) => page.activities) ?? [];
 
   const handlePrevSlide = () => {
     swiperRef.current?.slidePrev();
@@ -82,14 +81,13 @@ const BestActivities = () => {
             autoplay={{
               delay: 5000,
               disableOnInteraction: false,
-              waitForTransition: true, // 전환 완료 후 다음 슬라이드
+              waitForTransition: true,
             }}
             spaceBetween={18}
             slidesPerView={2}
             slidesPerGroup={2}
             loop={true}
             speed={500}
-            // 성능 최적화 옵션 추가
             watchSlidesProgress={false}
             watchOverflow={false}
             onBeforeInit={(swiper) => {
@@ -109,13 +107,11 @@ const BestActivities = () => {
             }}
             className="best-activities !overflow-visible !px-0"
           >
-            {activities.map((activity, index) => (
+            {activities.map((activity) => (
               <SwiperSlide key={activity.id}>
                 <ActivityCard
                   activity={activity}
                   className="mb-[2.4rem] md:mb-[8rem]"
-                  isPriority={index < 4}
-                  // disableNavigation prop 없이 기본값 사용 (false)
                 />
               </SwiperSlide>
             ))}
