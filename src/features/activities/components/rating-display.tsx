@@ -6,6 +6,7 @@ interface RatingDisplayProps {
   activityId: number;
   rating: number;
   reviewCount: number;
+  fetchLatest?: boolean; // 최신 데이터 페치 여부
 }
 
 /**
@@ -13,20 +14,30 @@ interface RatingDisplayProps {
  * @param activityId - 체험 ID
  * @param rating - fallback 별점
  * @param reviewCount - fallback 리뷰 개수
+ * @param fetchLatest - 최신 데이터 페치 여부 (기본값: false)
  */
 export const RatingDisplay = ({
   activityId,
   rating,
   reviewCount,
+  fetchLatest = false,
 }: RatingDisplayProps) => {
-  const { data: reviewsData } = useReviewsQuery(activityId, {
-    page: 1,
-    size: 1,
-  });
+  // fetchLatest가 true일 때만 API 호출
+  const { data: reviewsData } = useReviewsQuery(
+    activityId,
+    { page: 1, size: 1 },
+    { fetchLatest },
+  );
 
-  // useReviewsQuery 데이터 우선, 없으면 fallback 데이터 사용
-  const displayRating = reviewsData?.averageRating ?? rating;
-  const displayReviewCount = reviewsData?.totalCount ?? reviewCount;
+  // 기본값 우선 사용, fetchLatest가 true이고 데이터가 있을 때만 최신값 사용
+  const displayRating =
+    fetchLatest && reviewsData?.averageRating !== undefined
+      ? reviewsData.averageRating
+      : rating;
+  const displayReviewCount =
+    fetchLatest && reviewsData?.totalCount !== undefined
+      ? reviewsData.totalCount
+      : reviewCount;
 
   return (
     <div className="flex items-center gap-[0.2rem]">

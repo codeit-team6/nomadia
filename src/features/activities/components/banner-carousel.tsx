@@ -12,7 +12,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { navigateToActivity } from '@/features/activities/libs/utils/navigation';
 import { ErrorMessage, LoadingSpinner } from '@/shared/components';
-import useActivity from '@/shared/libs/hooks/useActivityQuery';
+import useActivityQuery from '@/shared/libs/hooks/useActivityQuery';
 
 /**
  * 배너 캐러셀 컴포넌트
@@ -23,11 +23,12 @@ import useActivity from '@/shared/libs/hooks/useActivityQuery';
 const BannerCarousel = () => {
   const swiperRef = useRef<SwiperType | null>(null);
   const isFetchingRef = useRef(false); // 중복 호출 방지를 위한 뮤텍스
-  const { data, isLoading, isError, hasNextPage, fetchNextPage } = useActivity({
-    sort: 'most_reviewed',
-    page: 1,
-    size: 4,
-  });
+  const { data, isLoading, isError, hasNextPage, fetchNextPage } =
+    useActivityQuery({
+      sort: 'most_reviewed',
+      page: 1,
+      size: 4,
+    });
 
   const router = useRouter();
 

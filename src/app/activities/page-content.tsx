@@ -2,8 +2,9 @@
 
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-// 즉시 로드 (LCP 최우선)
+// 즉시 로드
 import BannerCarousel from '@/features/activities/components/banner-carousel';
 import Search from '@/features/activities/components/search';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
@@ -12,15 +13,13 @@ import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner'
 const BestActivities = dynamic(
   () => import('@/features/activities/components/best-activities'),
   {
-    loading: () => <LoadingSpinner />,
-    ssr: true, // SSR 활성화로 초기 로딩 성능 향상
+    ssr: true,
   },
 );
 
 const AllActivities = dynamic(
   () => import('@/features/activities/components/all-activities'),
   {
-    loading: () => <LoadingSpinner />,
     ssr: true,
   },
 );
@@ -28,7 +27,6 @@ const AllActivities = dynamic(
 const SearchResults = dynamic(
   () => import('@/features/activities/components/search-result'),
   {
-    loading: () => <LoadingSpinner />,
     ssr: true,
   },
 );
@@ -41,19 +39,25 @@ const ActivitiesPageContent = () => {
   return (
     <main className="bg-background flex w-full flex-col gap-10">
       <div className="mx-auto w-full max-w-[120rem]">
-        {/* 즉시 로드: LCP 최우선 */}
+        {/* 즉시 로드*/}
         <BannerCarousel />
         <Search />
 
         {isSearching ? (
-          <SearchResults keyword={keyword} />
+          <Suspense fallback={<LoadingSpinner />}>
+            <SearchResults keyword={keyword} />
+          </Suspense>
         ) : (
           <>
             {/* 지연 로드: 인기 체험 */}
-            <BestActivities />
+            <Suspense fallback={<LoadingSpinner />}>
+              <BestActivities />
+            </Suspense>
 
             {/* 지연 로드: 전체 체험 목록 */}
-            <AllActivities />
+            <Suspense fallback={<LoadingSpinner />}>
+              <AllActivities />
+            </Suspense>
           </>
         )}
       </div>

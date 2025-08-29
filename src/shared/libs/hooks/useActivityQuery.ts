@@ -11,20 +11,26 @@ import {
  * @author 김영현
  * @param params - 체험 목록 조회 파라미터
  * @returns 체험 목록 조회 결과
- * @description 랜딩페이지, 메인화면 배너, 인기 체험 컴포넌트에서 사용될 useActivity 훅
+ * @description 랜딩페이지, 메인화면 배너, 인기 체험 컴포넌트에서 사용될 useActivityQuery 훅
  */
-const useActivity = (params: GetActListApiParams) => {
+const useActivityQuery = (params: GetActListApiParams) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { page: _page, ...stableParams } = params;
 
   return useInfiniteQuery<GetActListApiResponse>({
     queryKey: ['activities', stableParams],
     queryFn: ({ pageParam = 1 }) =>
-      getActListApi({ ...params, page: pageParam as number }),
-    getNextPageParam: (lastPage, allPages) =>
-      lastPage.activities.length < (params.size || 10)
-        ? undefined
-        : allPages.length + 1,
+      getActListApi({ ...stableParams, page: pageParam as number }),
+    getNextPageParam: (lastPage, allPages) => {
+      const totalCount = lastPage.totalCount;
+      const currentTotal = allPages.reduce(
+        (acc, page) => acc + page.activities.length,
+        0,
+      );
+
+      // 현재까지 로드된 개수가 전체 개수보다 적으면 다음 페이지 요청
+      return currentTotal < totalCount ? allPages.length + 1 : undefined;
+    },
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5,
     retry: 1,
@@ -32,4 +38,4 @@ const useActivity = (params: GetActListApiParams) => {
   });
 };
 
-export default useActivity;
+export default useActivityQuery;

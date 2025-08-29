@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import { ErrorMessage } from '@/shared/components/error-message/error-message';
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
-import useActivity from '@/shared/libs/hooks/useActivityQuery';
+import useActivityQuery from '@/shared/libs/hooks/useActivityQuery';
 import type { Activity } from '@/shared/types/activity';
 
 interface HeroProps {
@@ -22,7 +22,7 @@ interface HeroProps {
  * @author 김영현
  */
 const Hero = ({ swiperRef, ActivityCard, router }: HeroProps) => {
-  const { data, isLoading, isError } = useActivity({
+  const { data, isLoading, isError } = useActivityQuery({
     sort: 'most_reviewed',
     page: 1,
     size: 8,
