@@ -12,23 +12,14 @@ import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner'
 // 지연 로드 (성능 최적화) - Next.js dynamic 사용
 const BestActivities = dynamic(
   () => import('@/features/activities/components/best-activities'),
-  {
-    ssr: true,
-  },
 );
 
 const AllActivities = dynamic(
   () => import('@/features/activities/components/all-activities'),
-  {
-    ssr: true,
-  },
 );
 
 const SearchResults = dynamic(
   () => import('@/features/activities/components/search-result'),
-  {
-    ssr: true,
-  },
 );
 
 const ActivitiesPageContent = () => {
