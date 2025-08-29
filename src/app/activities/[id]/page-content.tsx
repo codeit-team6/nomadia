@@ -1,13 +1,12 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
 import { useEffect } from 'react';
 
 import Header from '@/features/activityId/components/header';
 import AddressWithMap from '@/features/activityId/components/map/address-with-map';
-import ReservationModal from '@/features/activityId/components/reservation-modal';
-import Reviews from '@/features/activityId/components/reviews';
 import SubImages from '@/features/activityId/components/sub-images';
 import { getActivityId } from '@/features/activityId/libs/api/getActivityId';
 import { textStyle } from '@/features/activityId/libs/constants/variants';
@@ -15,6 +14,20 @@ import { useCalendarStore } from '@/shared/components/calendar/libs/stores/useCa
 import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 import { cn } from '@/shared/libs/cn';
+const ReservationModal = dynamic(
+  () => import('@/features/activityId/components/reservation-modal'),
+  {
+    ssr: false,
+    loading: () => <LoadingSpinner />,
+  },
+);
+const Reviews = dynamic(
+  () => import('@/features/activityId/components/reviews'),
+  {
+    ssr: false,
+    loading: () => <LoadingSpinner />,
+  },
+);
 
 const ActivityPage = ({ id }: { id: string }) => {
   const { closeModal } = useModalStore();
