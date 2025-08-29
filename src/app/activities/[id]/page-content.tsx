@@ -29,7 +29,7 @@ const Reviews = dynamic(
   },
 );
 
-const ActivityPage = ({ id }: { id: string }) => {
+const ActivityPageContent = ({ id }: { id: string }) => {
   const { closeModal } = useModalStore();
   const { setYear, setMonth, resetSelectedDate, resetDate } =
     useCalendarStore();
@@ -88,4 +88,4 @@ const ActivityPage = ({ id }: { id: string }) => {
     </div>
   );
 };
-export default ActivityPage;
+export default ActivityPageContent;

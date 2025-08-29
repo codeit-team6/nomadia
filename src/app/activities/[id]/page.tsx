@@ -4,7 +4,7 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 
-import ActivityPage from '@/app/activities/[id]/page-content';
+import ActivityPageContent from '@/app/activities/[id]/page-content';
 import { getActivityId } from '@/features/activityId/libs/api/getActivityId';
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
@@ -17,7 +17,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ActivityPage id={id} />
+      <ActivityPageContent id={id} />
     </HydrationBoundary>
   );
 };
