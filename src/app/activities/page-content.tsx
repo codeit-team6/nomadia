@@ -50,9 +50,8 @@ const ActivitiesPageContent = () => {
 
         {isSearching ? (
           <Suspense fallback={<LoadingSpinner />}>
-            <SearchResults keyword={keyword} />
+            <SearchResults />
           </Suspense>
-
         ) : (
           <>
             {/* 지연 로드: 인기 체험 */}
