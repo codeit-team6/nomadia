@@ -205,7 +205,7 @@ const ReserveCalendarPage = () => {
                 {activities.map((act) => (
                   <button
                     key={act.id}
-                    className="block w-full cursor-pointer py-2 text-left hover:bg-gray-100"
+                    className="txt-13-medium block w-full cursor-pointer py-2 text-left hover:bg-gray-50"
                     onClick={() => {
                       handleSelectActivity(act.id, act.title);
                       close();
