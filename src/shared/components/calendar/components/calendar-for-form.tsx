@@ -28,7 +28,6 @@ import { cn } from '@/shared/libs/cn';
  *
  * @example
  * <CalendarForForm
- *   setSelectedId={setScheduleId}
  *   scheduleArray={data}
  *   calendarWidth="md:w-[38rem] lg:w-[40rem]..."
  *   dayOfWeekStyle="text-gray-500 md:w-[2rem]..."
