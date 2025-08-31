@@ -11,6 +11,7 @@ type PaginationProps = {
   currentPage: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   className?: string;
+  isTotalCount?: boolean;
 };
 
 /**
@@ -50,8 +51,12 @@ const Pagination = ({
   currentPage,
   setPage,
   className = '',
+  isTotalCount = false,
 }: PaginationProps) => {
   if (totalPages <= 0) return;
+  if (isTotalCount) {
+    totalPages = Math.ceil(totalPages / 3);
+  }
 
   const PAGE_GROUP_SIZE = 5;
   const pageGroupNum = Math.ceil(currentPage / PAGE_GROUP_SIZE);

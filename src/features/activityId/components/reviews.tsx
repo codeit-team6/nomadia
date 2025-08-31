@@ -91,6 +91,7 @@ const Reviews = ({ activityId }: { activityId: number }) => {
           currentPage={page}
           setPage={setPage}
           className="mb-[7.5rem] justify-center lg:mb-[17rem]"
+          isTotalCount={true}
         />
       )}
     </>
