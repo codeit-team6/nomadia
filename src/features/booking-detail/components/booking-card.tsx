@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
+import { useModalStore } from '@/shared/components';
 import { formatPrice } from '@/shared/libs/utils/formatPrice';
 import {
   generateResponsiveSizes,
@@ -52,6 +53,7 @@ const BookingCard = ({
   const statusLabel = getStatusLabel(reservation.status);
   const statusColorClass = getStatusColorClass(reservation.status);
   const time = formatBookingTime(reservation.startTime, reservation.endTime);
+  const { modalName } = useModalStore();
 
   return (
     <div className="flex w-full max-w-[50rem] flex-col gap-[1.2rem] lg:max-w-[60rem]">
@@ -123,12 +125,14 @@ const BookingCard = ({
       {showDivider && <div className="mt-[3rem] h-[1px] w-full bg-gray-50" />}
 
       {/* 모달 */}
-      <BookingModal
-        reservation={reservation}
-        statusLabel={statusLabel}
-        isOpen={isModalOpen}
-        onClose={onModalClose || (() => {})}
-      />
+      {modalName === 'delete-review-modal' && (
+        <BookingModal
+          reservation={reservation}
+          statusLabel={statusLabel}
+          isOpen={isModalOpen}
+          onClose={onModalClose || (() => {})}
+        />
+      )}
     </div>
   );
 };
