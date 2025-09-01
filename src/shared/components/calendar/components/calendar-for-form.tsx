@@ -77,7 +77,7 @@ const CalendarForForm = ({
       >
         <div className="flex gap-[0.2rem] pl-[1rem] text-[1.8rem] font-medium text-gray-950">
           <div>
-            {year}년 {month}월
+            {year}년 {month + 1}월
           </div>
         </div>
         <div className="flex gap-[1.2rem]">

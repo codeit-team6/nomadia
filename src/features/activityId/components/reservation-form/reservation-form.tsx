@@ -33,7 +33,7 @@ const ReservationForm = ({
   price: number | undefined;
   activityId: number;
 }) => {
-  const { mutate } = useReservationMutation();
+  const { mutate } = useReservationMutation(activityId);
   const { selectedDate, year, month } = useCalendarStore();
   const { appear, openModal, modalName } = useModalStore();
   const { isDesktop, isTablet, isMobile } = useWindowSize();
