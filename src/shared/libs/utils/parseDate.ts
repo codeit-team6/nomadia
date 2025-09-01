@@ -47,3 +47,24 @@ export const getTomorrowDateString = (): string => {
   const day = String(tomorrow.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
+
+/**
+ * @description 날짜가 내일 이후인지 검증합니다.
+ * iOS와 Android에서 일관된 동작을 보장합니다.
+ *
+ * @author 김영현
+ * @param dateString YYYY-MM-DD 형식의 날짜 문자열
+ * @returns 내일 이후인 경우 true, 그렇지 않으면 false
+ */
+export const isDateAfterTomorrow = (dateString: string): boolean => {
+  if (!dateString) return false;
+
+  const selectedDate = new Date(dateString);
+  const tomorrow = new Date(getTomorrowDateString());
+
+  // 시간을 00:00:00으로 설정하여 날짜만 비교
+  selectedDate.setHours(0, 0, 0, 0);
+  tomorrow.setHours(0, 0, 0, 0);
+
+  return selectedDate >= tomorrow;
+};
