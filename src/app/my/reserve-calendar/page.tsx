@@ -1,5 +1,6 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
@@ -20,11 +21,53 @@ import { useModalStore } from '@/shared/components/modal/libs/stores/useModalSto
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 import { Activity } from '@/shared/types/activity';
 
+interface ReservationsByActivity {
+  allReservations: MonthReservations[];
+  earliestDate: Date | null;
+}
+
+const useReservationsByActivity = (activityId: string | null, month: number) =>
+  useQuery<ReservationsByActivity>({
+    queryKey: ['reservationsByActivity', activityId, month],
+    queryFn: async () => {
+      if (!activityId) return { allReservations: [], earliestDate: null };
+
+      const currentYear = new Date().getFullYear();
+      const monthsToFetch = 12;
+      let earliestDate: Date | null = null;
+      let allReservations: MonthReservations[] = [];
+
+      for (let i = 0; i < monthsToFetch; i++) {
+        const fetchYear = currentYear + Math.floor((month + i) / 12);
+        const fetchMonth = (month + i) % 12;
+
+        const reservations = await getReservationsByMonthApi({
+          activityId,
+          year: fetchYear,
+          month: fetchMonth + 1,
+        });
+
+        allReservations = [...allReservations, ...reservations];
+
+        for (const r of reservations) {
+          const resDate = new Date(r.date);
+          if (!earliestDate || resDate < earliestDate) earliestDate = resDate;
+        }
+
+        if (earliestDate) break;
+      }
+
+      return { allReservations, earliestDate };
+    },
+    enabled: !!activityId,
+    staleTime: 1000 * 60 * 5,
+  });
+
 const ReserveCalendarPage = () => {
   const [reservationArray, setReservationArray] = useState<MonthReservations[]>(
     [],
   );
-  const { user } = useAuthStore();
+  const { user, accessToken } = useAuthStore();
   const userId = user?.id;
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivityTitle, setSelectedActivityTitle] =
@@ -47,7 +90,6 @@ const ReserveCalendarPage = () => {
     resetSelectedDate,
     selectedDate,
   } = useCalendarStore();
-  const { accessToken } = useAuthStore();
 
   const calendarRef = useRef<HTMLDivElement>(null);
   const modalPosition = useResModalPosition(calendarRef);
@@ -59,6 +101,23 @@ const ReserveCalendarPage = () => {
       disappearModal();
     }
   }, [selectedDate, appearModal, disappearModal, isDesktop]);
+
+  useEffect(() => {
+    if (!shouldFetch || !userId) return;
+
+    (async () => {
+      try {
+        const data = await getActListApi();
+        const myActivities = (data.activities || []).filter(
+          (act) => act.userId === Number(userId),
+        );
+        setActivities(myActivities);
+      } catch (error) {
+        console.error('내 체험 리스트 조회 실패', error);
+      }
+      setShouldFetch(false);
+    })();
+  }, [shouldFetch, userId]);
 
   const handleDropdownOpen = () => {
     setShouldFetch(true);
@@ -89,67 +148,30 @@ const ReserveCalendarPage = () => {
     }
   };
 
+  // 선택된 체험에 대한 예약 가져오기
+  const { data, refetch } = useReservationsByActivity(
+    selectedActivityId,
+    month,
+  );
+
+  // data가 바뀌면 reservationArray, 캘린더 초기화
   useEffect(() => {
-    if (!shouldFetch || !userId) return;
-
-    (async () => {
-      try {
-        const data = await getActListApi();
-        const myActivities = (data.activities || []).filter(
-          (act) => act.userId === Number(userId),
-        );
-        setActivities(myActivities);
-      } catch (error) {
-        console.error('내 체험 리스트 조회 실패', error);
+    if (data) {
+      setReservationArray(data.allReservations);
+      if (data.earliestDate) {
+        setYear(data.earliestDate.getFullYear());
+        setMonth(data.earliestDate.getMonth());
       }
-      setShouldFetch(false);
-    })();
-  }, [shouldFetch, userId]);
+    }
+  }, [data, setYear, setMonth]);
 
-  const handleSelectActivity = async (id: string | number, title: string) => {
+  const handleSelectActivity = (id: string | number, title: string) => {
     setSelectedActivityTitle(title);
-    const activityId = String(id);
-    setSelectedActivityId(activityId);
+    setSelectedActivityId(String(id));
     setSelectedScheduleId(null);
     resetDate();
     resetSelectedDate();
-
-    try {
-      const currentYear = new Date().getFullYear();
-      const monthsToFetch = 12;
-      let earliestDate: Date | null = null; // 이건 뭘 위한 조건인지?
-      let allReservations: MonthReservations[] = [];
-
-      for (let i = 0; i < monthsToFetch; i++) {
-        const fetchYear = currentYear + Math.floor((month + i) / 12);
-        const fetchMonth = (month + i) % 12;
-
-        const reservations = await getReservationsByMonthApi({
-          activityId,
-          year: fetchYear,
-          month: fetchMonth + 1,
-        });
-
-        allReservations = [...allReservations, ...reservations];
-
-        for (const r of reservations) {
-          const resDate = new Date(r.date);
-          if (!earliestDate || resDate < earliestDate) earliestDate = resDate;
-        }
-
-        if (earliestDate) break;
-      }
-
-      setReservationArray(allReservations);
-
-      if (earliestDate) {
-        setYear(earliestDate.getFullYear());
-        setMonth(earliestDate.getMonth());
-      }
-    } catch (error) {
-      console.error('예약 데이터 조회 실패', error);
-      setReservationArray([]);
-    }
+    refetch(); // useQuery 재실행
   };
 
   const updateReservationStatus = (
@@ -165,10 +187,9 @@ const ReserveCalendarPage = () => {
 
   const selectedReservationsOfDate = React.useMemo(() => {
     if (!selectedDate) return [];
-    return reservationArray.filter((res) => {
-      const rDateStr = res.date.split('T')[0];
-      return rDateStr === selectedDate;
-    });
+    return reservationArray.filter(
+      (res) => res.date.split('T')[0] === selectedDate,
+    );
   }, [selectedDate, reservationArray]);
 
   return (
