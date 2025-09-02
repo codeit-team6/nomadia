@@ -156,6 +156,8 @@ export const FormInput = <T extends FieldValues>({
       case 'address':
         return (
           <div className="relative">
+            {/* 숨겨진 input으로 RHF에 등록 */}
+            <input type="hidden" {...register(name)} />
             <button
               type="button"
               id={name}
@@ -243,12 +245,7 @@ export const FormInput = <T extends FieldValues>({
       {renderInputElement()}
       {error && (
         <p className="text-[1.2rem] font-medium text-red-500">
-          {inputType === 'number' &&
-          (error.message ===
-            'Invalid input: expected number, received undefined' ||
-            error.message === 'Expected number, received nan')
-            ? '금액을 작성해주세요'
-            : error.message}
+          {error.message}
         </p>
       )}
     </div>

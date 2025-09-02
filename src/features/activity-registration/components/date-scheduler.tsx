@@ -15,7 +15,10 @@ import {
   getUsedStartTimes,
   isFieldTouched,
 } from '@/features/activity-registration/libs/utils/schedule-utils';
-import { isDateAfterTomorrow } from '@/shared/libs/utils/parseDate';
+import {
+  getTomorrowDateString,
+  isDateAfterTomorrow,
+} from '@/shared/libs/utils/parseDate';
 import {
   ActivityRegistrationFormData,
   Schedule,
@@ -126,7 +129,7 @@ const ScheduleItem = ({
 
   const usedStartTimes = getUsedStartTimes(schedules, schedule.date, index);
 
-  // === 통합된 onChange 핸들러들 생성 ===
+  // 통합된 onChange 핸들러들 생성
   const handleDateChange = createUnifiedOnChange(
     register,
     `schedules.${index}.date`,
@@ -159,6 +162,7 @@ const ScheduleItem = ({
             {...(register && register(`schedules.${index}.date`))}
             value={schedule.date}
             onChange={handleDateChange}
+            min={getTomorrowDateString()}
             className={`h-[5.4rem] w-full rounded-[1.2rem] border px-[1.6rem] text-[1.4rem] focus:outline-0 md:text-[1.6rem] ${
               formErrors?.schedules?.[index]?.date && dateFieldTouched
                 ? 'border-red-500'
@@ -238,11 +242,24 @@ const ScheduleItem = ({
                 <option value="" disabled>
                   종료 시간
                 </option>
-                {TIME_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
+                {TIME_OPTIONS.map((option) => {
+                  // 시작 시간이 선택된 경우, 종료 시간은 시작 시간보다 큰 값만 표시
+                  const isAfterStartTime =
+                    !schedule.startTime ||
+                    validateTimeRange(schedule.startTime, option.value);
+
+                  return (
+                    <option
+                      key={option.value}
+                      value={option.value}
+                      disabled={!isAfterStartTime || undefined}
+                      style={!isAfterStartTime ? { color: '#ccc' } : {}}
+                    >
+                      {option.label}{' '}
+                      {!isAfterStartTime ? '(시작 시간 이후만 선택 가능)' : ''}
+                    </option>
+                  );
+                })}
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-[1.6rem]">
                 <Image

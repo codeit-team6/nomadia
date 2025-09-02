@@ -1,14 +1,30 @@
 /**
- * @description 날짜 문자열을 Date 객체로 변환합니다. (ex. "2025.07.28" -> "2025-07-28")
+ * @description 날짜 문자열을 Date 객체로 변환합니다.
  *
  * @author 김영현
  * @param date 날짜 문자열
  * @returns Date 객체
+ * 플랫폼 간 일관성을 위해 구성요소로 분해하여 로컬 기준으로 생성합니다.
  */
 export const parseDate = (date: string) => {
-  const normalizedDate = date.replace(/\./g, '-');
-  const parsed = new Date(normalizedDate);
+  if (!date) return new Date(0);
 
+  // 점(.)을 하이픈(-)으로 변환하여 YYYY-MM-DD 형식으로 정규화
+  const normalizedDate = date.replace(/\./g, '-');
+
+  // YYYY-MM-DD 형식을 구성요소로 분해하여 로컬 기준으로 Date 생성
+  const parts = normalizedDate.split('-');
+  if (parts.length !== 3) return new Date(0);
+
+  const [year, month, day] = parts.map(Number);
+
+  // 유효한 숫자인지 확인
+  if (isNaN(year) || isNaN(month) || isNaN(day)) return new Date(0);
+
+  // month는 0-based이므로 1을 빼줌
+  const parsed = new Date(year, month - 1, day);
+
+  // 생성된 날짜가 유효한지 확인
   return isNaN(parsed.getTime()) ? new Date(0) : parsed;
 };
 
@@ -59,8 +75,16 @@ export const getTomorrowDateString = (): string => {
 export const isDateAfterTomorrow = (dateString: string): boolean => {
   if (!dateString) return false;
 
-  const selectedDate = new Date(dateString);
-  const tomorrow = new Date(getTomorrowDateString());
+  // YYYY-MM-DD 형식을 구성요소로 분해하여 로컬 기준으로 Date 생성
+  const [year, month, day] = dateString.split('-').map(Number);
+  const selectedDate = new Date(year, month - 1, day); // month는 0-based
+
+  // 내일 날짜도 동일한 방식으로 생성
+  const tomorrowString = getTomorrowDateString();
+  const [tomorrowYear, tomorrowMonth, tomorrowDay] = tomorrowString
+    .split('-')
+    .map(Number);
+  const tomorrow = new Date(tomorrowYear, tomorrowMonth - 1, tomorrowDay);
 
   // 시간을 00:00:00으로 설정하여 날짜만 비교
   selectedDate.setHours(0, 0, 0, 0);

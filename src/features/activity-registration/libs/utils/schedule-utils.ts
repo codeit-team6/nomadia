@@ -34,7 +34,7 @@ export const getNextHour = (startTime: string): string => {
   if (currentIndex !== -1 && currentIndex < TIME_OPTIONS.length - 1) {
     return TIME_OPTIONS[currentIndex + 1].value;
   }
-  return startTime;
+  return '';
 };
 
 /**
