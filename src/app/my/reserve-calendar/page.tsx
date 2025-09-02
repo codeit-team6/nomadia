@@ -172,7 +172,7 @@ const ReserveCalendarPage = () => {
   }, [selectedDate, reservationArray]);
 
   return (
-    <div className="flex flex-col items-start">
+    <div className="flex flex-col items-start py-[1rem]">
       <div className="mb-[2.4rem] w-full">
         <h2 className="txt-18-bold text-gray-950">예약 현황</h2>
         <p className="txt-14-medium mt-1 text-gray-500">
