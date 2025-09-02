@@ -7,6 +7,7 @@ import {
   FieldValues,
   Path,
   UseFormRegister,
+  UseFormSetValue,
 } from 'react-hook-form';
 
 import Modal from '@/shared/components/modal/components';
@@ -34,7 +35,7 @@ interface FormInputProps<T extends FieldValues> {
   label: string;
   name: Path<T>;
   register: UseFormRegister<T>;
-  setValue?: (name: Path<T>, value: string) => void;
+  setValue?: UseFormSetValue<T>;
   watch?: (name: Path<T>) => string;
   error?: FieldError;
   inputType?: 'input' | 'textarea' | 'select' | 'number' | 'address';
@@ -185,7 +186,11 @@ export const FormInput = <T extends FieldValues>({
                       // 주소 선택 완료 시 입력 필드에 값 설정
                       const fullAddress = data.address;
                       if (setValue) {
-                        setValue(name, fullAddress);
+                        setValue(name, fullAddress as T[Path<T>], {
+                          shouldDirty: true,
+                          shouldTouch: true,
+                          shouldValidate: true,
+                        });
                       }
                       closeModal();
                     }}
