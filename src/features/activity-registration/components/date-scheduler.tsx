@@ -66,6 +66,32 @@ interface ScheduleItemProps {
 }
 
 /**
+ * React Hook Form과 커스텀 핸들러를 통합하는 헬퍼 함수
+ * @param register - RHF의 register 함수
+ * @param fieldName - 폼 필드 이름
+ * @param customHandler - 커스텀 핸들러 함수
+ * @returns 통합된 onChange 핸들러
+ */
+const createUnifiedOnChange = (
+  register: UseFormRegister<ActivityRegistrationFormData> | undefined,
+  fieldName: string,
+  customHandler: (value: string) => void,
+) => {
+  return (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    // 1. RHF의 내부 onChange 호출 (폼 상태 동기화)
+    if (register) {
+      const registeredField = register(
+        fieldName as keyof ActivityRegistrationFormData,
+      );
+      registeredField?.onChange?.(e);
+    }
+
+    // 2. 커스텀 핸들러 호출 (비즈니스 로직 실행)
+    customHandler(e.target.value);
+  };
+};
+
+/**
  * 개별 스케줄 아이템 컴포넌트 (Context 사용으로 props 최소화)
  */
 const ScheduleItem = ({
@@ -100,6 +126,25 @@ const ScheduleItem = ({
 
   const usedStartTimes = getUsedStartTimes(schedules, schedule.date, index);
 
+  // === 통합된 onChange 핸들러들 생성 ===
+  const handleDateChange = createUnifiedOnChange(
+    register,
+    `schedules.${index}.date`,
+    (value) => onDateChange(index, value),
+  );
+
+  const handleStartTimeChange = createUnifiedOnChange(
+    register,
+    `schedules.${index}.startTime`,
+    (value) => onTimeChange(index, 'startTime', value),
+  );
+
+  const handleEndTimeChange = createUnifiedOnChange(
+    register,
+    `schedules.${index}.endTime`,
+    (value) => onTimeChange(index, 'endTime', value),
+  );
+
   return (
     <div className="flex flex-col gap-[1rem]">
       {/* 날짜 및 시간 입력 영역 */}
@@ -113,7 +158,7 @@ const ScheduleItem = ({
             type="date"
             {...(register && register(`schedules.${index}.date`))}
             value={schedule.date}
-            onChange={(e) => onDateChange(index, e.target.value)}
+            onChange={handleDateChange}
             className={`h-[5.4rem] w-full rounded-[1.2rem] border px-[1.6rem] text-[1.4rem] focus:outline-0 md:text-[1.6rem] ${
               formErrors?.schedules?.[index]?.date && dateFieldTouched
                 ? 'border-red-500'
@@ -130,9 +175,7 @@ const ScheduleItem = ({
               <select
                 {...(register && register(`schedules.${index}.startTime`))}
                 value={schedule.startTime}
-                onChange={(e) =>
-                  onTimeChange(index, 'startTime', e.target.value)
-                }
+                onChange={handleStartTimeChange}
                 className={`h-[5.4rem] w-[12.8rem] appearance-none rounded-[1.2rem] border px-[1.6rem] pr-[4.8rem] text-[1.4rem] focus:outline-0 md:w-[12rem] lg:w-[15rem] ${
                   formErrors?.schedules?.[index]?.startTime &&
                   startTimeFieldTouched
@@ -181,7 +224,7 @@ const ScheduleItem = ({
               <select
                 {...(register && register(`schedules.${index}.endTime`))}
                 value={schedule.endTime}
-                onChange={(e) => onTimeChange(index, 'endTime', e.target.value)}
+                onChange={handleEndTimeChange}
                 className={`h-[5.4rem] w-[12.8rem] appearance-none rounded-[1.2rem] border px-[1.6rem] pr-[4.8rem] text-[1.4rem] focus:outline-0 md:w-[12rem] lg:w-[15rem] ${
                   (formErrors?.schedules?.[index]?.endTime &&
                     endTimeFieldTouched) ||
