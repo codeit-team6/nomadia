@@ -21,11 +21,26 @@ export const parseDate = (date: string) => {
   // 유효한 숫자인지 확인
   if (isNaN(year) || isNaN(month) || isNaN(day)) return new Date(0);
 
+  // 유효한 월/일 범위 검증 (롤오버 방지)
+  if (month < 1 || month > 12) return new Date(0);
+  if (day < 1 || day > 31) return new Date(0);
+
   // month는 0-based이므로 1을 빼줌
   const parsed = new Date(year, month - 1, day);
 
   // 생성된 날짜가 유효한지 확인
-  return isNaN(parsed.getTime()) ? new Date(0) : parsed;
+  if (isNaN(parsed.getTime())) return new Date(0);
+
+  // 라운드트립 체크: 원본 입력과 변환된 날짜가 일치하는지 확인
+  const yearStr = parsed.getFullYear().toString();
+  const monthStr = String(parsed.getMonth() + 1).padStart(2, '0');
+  const dayStr = String(parsed.getDate()).padStart(2, '0');
+  const roundTripDate = `${yearStr}-${monthStr}-${dayStr}`;
+
+  // 원본 입력과 라운드트립 결과가 다르면 롤오버가 발생한 것
+  if (normalizedDate !== roundTripDate) return new Date(0);
+
+  return parsed;
 };
 
 /**
@@ -75,9 +90,11 @@ export const getTomorrowDateString = (): string => {
 export const isDateAfterTomorrow = (dateString: string): boolean => {
   if (!dateString) return false;
 
-  // YYYY-MM-DD 형식을 구성요소로 분해하여 로컬 기준으로 Date 생성
-  const [year, month, day] = dateString.split('-').map(Number);
-  const selectedDate = new Date(year, month - 1, day); // month는 0-based
+  // parseDate 함수를 사용하여 유효성 검증과 함께 날짜 파싱
+  const selectedDate = parseDate(dateString);
+
+  // 유효하지 않은 날짜인 경우 false 반환
+  if (selectedDate.getTime() === new Date(0).getTime()) return false;
 
   // 내일 날짜도 동일한 방식으로 생성
   const tomorrowString = getTomorrowDateString();
