@@ -5,40 +5,27 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import { getActListApi } from '@/features/activities/libs/api/getActListApi';
+import { useSearchStore } from '@/features/activities/libs/stores/searchStore';
 import Dropdown from '@/shared/components/dropdown/dropdown';
 import { Button } from '@/shared/components/modal/components/modal-button';
 import { searchVariant } from '@/shared/libs/constants/searchVariant';
 
 interface SearchProps {
   placeholder?: string;
-  setKeyword?: (value: React.SetStateAction<string>) => void;
 }
 
 const Search: React.FC<SearchProps> = ({
   placeholder = '내가 원하는 체험은',
-  setKeyword: externalSetKeyword,
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const defaultValue = searchParams.get('keyword') ?? '';
-  const defaultRegion = searchParams.get('region') ?? '';
-  const defaultCategory = searchParams.get('category') ?? '';
+  const { keyword, setKeyword, region, setRegion, category, setCategory } =
+    useSearchStore();
 
-  // 상태
-  const [keyword, setKeyword] = useState(defaultValue);
-  const [region, setRegion] = useState(defaultRegion);
-  const [category, setCategory] = useState(defaultCategory);
   const [isFocused, setIsFocused] = useState(false);
-
   const [regionOptions, setRegionOptions] = useState<string[]>([]);
   const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (externalSetKeyword) {
-      externalSetKeyword(keyword);
-    }
-  }, [keyword, externalSetKeyword]);
 
   useEffect(() => {
     const fetchData = async () => {
