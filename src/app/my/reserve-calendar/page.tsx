@@ -21,6 +21,14 @@ import { useModalStore } from '@/shared/components/modal/libs/stores/useModalSto
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 import { Activity } from '@/shared/types/activity';
 
+interface Reservation {
+  id: string;
+  scheduleId: number;
+  status: 'pending' | 'confirmed' | 'declined';
+  date: string;
+  [key: string]: unknown;
+}
+
 interface ReservationsByActivity {
   allReservations: MonthReservations[];
   earliestDate: Date | null;
@@ -76,9 +84,7 @@ const ReserveCalendarPage = () => {
     null,
   );
   const [shouldFetch, setShouldFetch] = useState(false);
-  const [selectedScheduleId, setSelectedScheduleId] = useState<number | null>(
-    null,
-  );
+  const [selectedScheduleId, setSelectedScheduleId] = useState<number[]>([]);
 
   const { appearModal, disappearModal } = useModalStore();
   const { isDesktop } = useWindowSize();
@@ -119,32 +125,34 @@ const ReserveCalendarPage = () => {
     })();
   }, [shouldFetch, userId]);
 
-  const handleDropdownOpen = () => {
-    setShouldFetch(true);
-  };
+  const handleDropdownOpen = () => setShouldFetch(true);
 
   const handleDateClick = async (dateStr: string) => {
     if (!selectedActivityId || !accessToken) {
-      setSelectedScheduleId(null);
+      setSelectedScheduleId([]);
       return;
     }
 
     try {
-      const res = await getReservations({
+      const dayReservations: Reservation[] = await getReservations({
         actId: selectedActivityId,
         date: dateStr,
         token: accessToken,
       });
 
-      const scheduleIdFromApi = res?.[0]?.scheduleId ?? null;
-      if (scheduleIdFromApi) {
-        setSelectedScheduleId(scheduleIdFromApi);
-      } else {
-        setSelectedScheduleId(null);
+      if (dayReservations.length === 0) {
+        setSelectedScheduleId([]);
+        return;
       }
+
+      const uniqScheduleIds: number[] = Array.from(
+        new Set(dayReservations.map((r: Reservation) => r.scheduleId)),
+      );
+
+      setSelectedScheduleId(uniqScheduleIds);
     } catch (err) {
-      console.error('[❌] 예약 스케줄 조회 실패:', err);
-      setSelectedScheduleId(null);
+      console.error('[❌] 날짜별 예약 조회 실패:', err);
+      setSelectedScheduleId([]);
     }
   };
 
@@ -168,10 +176,10 @@ const ReserveCalendarPage = () => {
   const handleSelectActivity = (id: string | number, title: string) => {
     setSelectedActivityTitle(title);
     setSelectedActivityId(String(id));
-    setSelectedScheduleId(null);
+    setSelectedScheduleId([]);
     resetDate();
     resetSelectedDate();
-    refetch(); // useQuery 재실행
+    refetch();
   };
 
   const updateReservationStatus = (
@@ -260,9 +268,7 @@ const ReserveCalendarPage = () => {
                       <ContentReservation
                         teamId="15-6"
                         activityId={Number(selectedActivityId)}
-                        scheduleId={
-                          selectedScheduleId ? [selectedScheduleId] : []
-                        }
+                        scheduleId={selectedScheduleId}
                         status={'pending'}
                         selectedDate={selectedDate || ''}
                         onStatusChange={updateReservationStatus}
