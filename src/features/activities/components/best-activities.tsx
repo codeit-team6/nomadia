@@ -12,7 +12,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { ActivityCard } from '@/features/activities/components/activity-card';
 import { ErrorMessage } from '@/shared/components/error-message/error-message';
-import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
+import { ActivityCardSkeleton } from '@/shared/components/skeleton/skeleton';
 import useActivityQuery from '@/shared/libs/hooks/useActivityQuery';
 
 /**
@@ -72,7 +72,18 @@ const BestActivities = () => {
       {/* 컨텐츠: 로딩/에러/데이터 분기 */}
       <div className="overflow-hidden px-0">
         {isLoading ? (
-          <LoadingSpinner />
+          <div className="grid grid-cols-2 gap-[1.8rem] md:gap-[2.4rem] lg:grid-cols-4 lg:gap-[3rem]">
+            {/* 모바일/태블릿: 2개, PC: 4개 */}
+            {Array.from({ length: 2 }, (_, index) => (
+              <ActivityCardSkeleton key={index} />
+            ))}
+            {/* PC에서만 보이는 추가 2개 */}
+            <div className="hidden lg:contents">
+              {Array.from({ length: 2 }, (_, index) => (
+                <ActivityCardSkeleton key={`pc-${index}`} />
+              ))}
+            </div>
+          </div>
         ) : isError ? (
           <ErrorMessage message="인기 체험을 불러오는 중 오류가 발생했습니다." />
         ) : (

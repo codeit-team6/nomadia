@@ -11,7 +11,8 @@ import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { navigateToActivity } from '@/features/activities/libs/utils/navigation';
-import { ErrorMessage, LoadingSpinner } from '@/shared/components';
+import { ErrorMessage } from '@/shared/components';
+import { BannerSkeleton } from '@/shared/components/skeleton/skeleton';
 import useActivityQuery from '@/shared/libs/hooks/useActivityQuery';
 
 /**
@@ -83,9 +84,7 @@ const BannerCarousel = () => {
       >
         {isLoading ? (
           <SwiperSlide>
-            <div className="flex h-[18.1rem] items-center justify-center md:h-[37.5rem] lg:h-[50rem]">
-              <LoadingSpinner />
-            </div>
+            <BannerSkeleton />
           </SwiperSlide>
         ) : isError ? (
           <SwiperSlide>
