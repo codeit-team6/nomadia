@@ -119,6 +119,7 @@ const Header = () => {
               {/* 비로그인 상태일 때 */}
               <li>
                 <button
+                  className="cursor-pointer"
                   onClick={() => {
                     savePathActivityId();
                     router.push('/login');
@@ -129,6 +130,7 @@ const Header = () => {
               </li>
               <li>
                 <button
+                  className="cursor-pointer"
                   onClick={() => {
                     savePathActivityId();
                     router.push('/signup');
