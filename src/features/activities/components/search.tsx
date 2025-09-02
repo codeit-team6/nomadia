@@ -120,16 +120,21 @@ const Search: React.FC<SearchProps> = ({
             }
             dropdownClassName={dropdownMenuClass}
           >
-            {regionOptions.map((option) => (
-              <button
-                key={option}
-                type="button"
-                className={optionBtnClass}
-                onClick={() => setRegion(option)}
-              >
-                {option}
-              </button>
-            ))}
+            {(close) =>
+              regionOptions.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  className={optionBtnClass}
+                  onClick={() => {
+                    setRegion(option);
+                    close();
+                  }}
+                >
+                  {option}
+                </button>
+              ))
+            }
           </Dropdown>
           {region && (
             <button
@@ -154,16 +159,21 @@ const Search: React.FC<SearchProps> = ({
             }
             dropdownClassName={dropdownMenuClass}
           >
-            {categoryOptions.map((option) => (
-              <button
-                key={option}
-                type="button"
-                className={optionBtnClass}
-                onClick={() => setCategory(option)}
-              >
-                {option}
-              </button>
-            ))}
+            {(close) =>
+              categoryOptions.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  className={optionBtnClass}
+                  onClick={() => {
+                    setCategory(option);
+                    close();
+                  }}
+                >
+                  {option}
+                </button>
+              ))
+            }
           </Dropdown>
           {category && (
             <button
