@@ -38,11 +38,12 @@ const BannerCarousel = () => {
   const handleSlideChange = (swiper: SwiperType) => {
     const currentIndex = swiper.realIndex;
 
-    // 중복 호출 방지 및 near-end 조건 확인
+    // 배너는 4개만 필요하므로 더 보수적으로 설정
     if (
       hasNextPage &&
-      currentIndex >= banners.length - 2 &&
-      !isFetchingRef.current
+      currentIndex >= banners.length - 1 &&
+      !isFetchingRef.current &&
+      banners.length < 8 // 최대 8개까지만 로드 (2페이지)
     ) {
       isFetchingRef.current = true; // 뮤텍스 잠금
 
