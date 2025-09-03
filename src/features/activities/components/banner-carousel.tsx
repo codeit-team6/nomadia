@@ -38,8 +38,10 @@ const BannerCarousel = () => {
   const handleSlideChange = (swiper: SwiperType) => {
     const currentIndex = swiper.realIndex;
 
-    // 배너는 4개만 필요하므로 더 보수적으로 설정
+    // 초기 로딩이 완료되고 최소 1개 이상의 배너가 있을 때만 prefetch 실행
     if (
+      !isLoading && // 초기 로딩이 완료된 상태
+      banners.length > 0 && // 최소 1개 이상의 배너가 있는 상태
       hasNextPage &&
       currentIndex >= banners.length - 1 &&
       !isFetchingRef.current &&
