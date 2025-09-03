@@ -84,23 +84,28 @@ const AllActivities = ({ keyword }: AllActivitiesProps) => {
           }
           dropdownClassName="absolute right-0"
         >
-          <div className="border-sub-300 txt-14-medium h-[12.3rem] w-[9.6rem] overflow-hidden rounded-xl border-[0.1rem] bg-white">
-            {SORT_OPTIONS.map(({ label, value }) => (
-              <button
-                key={value}
-                onClick={() =>
-                  handleSortChange(
-                    value as 'latest' | 'price_asc' | 'price_desc',
-                  )
-                }
-                className={`txt-14-medium h-[4.1rem] w-full cursor-pointer px-[1rem] py-[0.6rem] hover:bg-blue-50 ${
-                  selectedSort === value ? 'text-main font-bold' : 'text-black'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
+          {(close) => (
+            <div className="border-sub-300 txt-14-medium h-[12.3rem] w-[9.6rem] overflow-hidden rounded-xl border-[0.1rem] bg-white">
+              {SORT_OPTIONS.map(({ label, value }) => (
+                <button
+                  key={value}
+                  onClick={() => {
+                    handleSortChange(
+                      value as 'latest' | 'price_asc' | 'price_desc',
+                    );
+                    close();
+                  }}
+                  className={`txt-14-medium h-[4.1rem] w-full cursor-pointer px-[1rem] py-[0.6rem] hover:bg-blue-50 ${
+                    selectedSort === value
+                      ? 'text-main font-bold'
+                      : 'text-black'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          )}
         </Dropdown>
       </div>
 
