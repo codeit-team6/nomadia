@@ -28,7 +28,7 @@ const Header = () => {
   const savePathActivityId = useSavePathActivityId();
   const { openModal, closeModal, modalName } = useModalStore();
 
-  if (!hydrated) return null;
+  if (!hydrated) return <div className="h-[4.8rem] md:h-[6rem]"></div>;
 
   const handleLogoutConfirm = () => {
     queryClient.clear();
