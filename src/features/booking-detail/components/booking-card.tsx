@@ -81,7 +81,6 @@ const BookingCard = ({
           />
         </div>
 
-        {/* 흰색 카드 - 세밀한 브레이크포인트 추가 */}
         <div className="relative flex h-full w-[70%] flex-col justify-between gap-[0.8rem] rounded-[2.4rem] bg-white px-[2.2rem] py-[2rem] min-[470px]:w-[75%] sm:w-[75%] md:w-[75%]">
           {/* 상단 정보 영역 */}
           <div className="mb-[0.2rem] flex w-full flex-col">
