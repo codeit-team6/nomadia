@@ -128,10 +128,8 @@ const ReserveCalendarPage = () => {
   const handleDropdownOpen = () => setShouldFetch(true);
 
   const handleDateClick = async (dateStr: string) => {
-    if (!selectedActivityId || !accessToken) {
-      setSelectedScheduleId([]);
-      return;
-    }
+    setSelectedScheduleId([]);
+    if (!selectedActivityId || !accessToken) return;
 
     try {
       const dayReservations: Reservation[] = await getReservations({
