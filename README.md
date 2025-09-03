@@ -1,21 +1,25 @@
-<p align="center"><a href="https://nomadia-two.vercel.app/">
-<img width="130" height="100" alt="logo-text" src="./public/images/icons/logo.svg" />
-<img  width="200" height="100" alt="logo-text" src="./public/images/icons/nomadia.svg" />
-</a>
+<p align="center">
+  <a href="https://nomadia-two.vercel.app/">
+  <img width="200" height="200" alt="logo" src="./public/images/icons/logo.svg" />
+  </a>
 </p>
 
+<div align="center">
+
+# Nomadia : Nomad + Utopia
+### 어디서든 '나답게' 머무는 경험을 시작하세요.
+
+**노마디아 (Nomadia)** 는 노마드를 위한 **액티비티 예약 플랫폼**입니다.  
+사용자가 직접 체험을 등록하고, 다른 노마드의 체험을 예약하며 경험을 공유할 수 있습니다.
+
+</div>
 <p align="center">
 배포 링크: https://nomadia-two.vercel.app/
 </p>
 
-> **Nomadia : Nomad + Utopia** <br>
-> **어디서든 '나답게' 머무는 경험을 시작하세요.**
-
-**노마디아 (Nomadia)** 는 노마드를 위한 **액티비티 예약 플랫폼**입니다.  
-직접 체험 등록과 예약이 가능한, 노마드들이 만들어가는 경험 공유 서비스입니다.
-
+<div align="center">
 <details>
-<summary> Preview Image</summary>
+<summary> 👀 Preview Image</summary>
 
 #### 회원가입/로그인
 
@@ -47,6 +51,7 @@
 
 </details>
 <br>
+</div>
 
 ## 주요 기능
 
@@ -59,7 +64,7 @@
 
 ### **Core Stack**
 
-| 기술            | 버전                | 선택 이유                                   |
+| 기술            | 버전                | 설명                                   |
 | --------------- | ------------------- | ------------------------------------------- |
 | **Next.js**     | 15.3.5 (App Router) | 파일 기반 라우팅, SSR/SSG로 SEO 최적화      |
 | **TypeScript**  | 5.x                 | 정적 타입으로 개발 안정성 향상              |
@@ -101,19 +106,19 @@
 <table>
   <tr>
     <td>
-    <img src="./public/images/icons/logo.svg" alt="노마디아" width="200" />
+    <img src="./public/images/icons/nomadia.svg" alt="노마디아" width="200" />
     </td>
     <td>
-    <img width="700" alt="지윤" src="https://github.com/user-attachments/assets/41a90eb0-dbfa-444e-81d7-7f6f89666b3e" />
+    <img width="700" alt="지윤" src="https://github.com/user-attachments/assets/5dc9a246-7db3-4770-98e2-1c8ca6500c96" />
     </td>
     <td>
-      <img src="https://github.com/user-attachments/assets/510ac20c-de7d-462e-b3fa-586f317ca93b" alt="시은" width="700" />
+    <img width="700" alt="영현" src="https://github.com/user-attachments/assets/7a783360-154a-4bc8-be12-227523f40734" />
     </td>
     <td>
-      <img src="https://github.com/user-attachments/assets/707cb36c-0373-4642-80e8-3391d1157d1f" alt="서연" width="650" />
+    <img width="700" alt="준우" alt="image-2" src="https://github.com/user-attachments/assets/a4e25b3d-5dd7-4579-afdf-f7c7721bf352" />
     </td>
     <td>
-      <img src="https://github.com/user-attachments/assets/5419e3ed-ecf8-4190-81da-5964c27c6e25" alt="재현" width="600"/>
+    <img width="700" alt="동환" alt="image" src="https://github.com/user-attachments/assets/af171698-31e7-4aec-a27f-e91394195e09" />
     </td>
   </tr>
   <tr>
