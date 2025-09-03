@@ -22,7 +22,7 @@ const SubImages = ({ images }: { images: SubImagesType[] | undefined }) => {
       >
         {images.map((image, i) => {
           return (
-            <button
+            <div
               key={i}
               className={cn(
                 'relative size-full',
@@ -36,8 +36,9 @@ const SubImages = ({ images }: { images: SubImagesType[] | undefined }) => {
                 alt="activity-image"
                 fill
                 className="object-cover"
+                priority
               />
-            </button>
+            </div>
           );
         })}
         {length > 1 && <SubImagesButton />}
