@@ -1,4 +1,8 @@
-import { QueryClient } from '@tanstack/react-query';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
 
 import Reviews from '@/features/activityId/components/reviews';
 import { getReviewsInServer } from '@/features/activityId/libs/api/getReviews';
@@ -14,7 +18,7 @@ const ReviewsWrapper = async ({ activityId }: { activityId: number }) => {
   let data: ReviewResponse | undefined;
   try {
     data = await queryClient.fetchQuery({
-      queryKey: ['reviews', activityId, 1],
+      queryKey: ['reviews', activityId, 1, true],
       queryFn: () => getReviewsInServer(activityId, { page: 1, size: 3 }),
     });
   } catch (error) {
@@ -53,7 +57,9 @@ const ReviewsWrapper = async ({ activityId }: { activityId: number }) => {
           </div>
         </h3>
       </section>
-      <Reviews activityId={activityId} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Reviews activityId={activityId} />
+      </HydrationBoundary>
     </>
   );
 };
