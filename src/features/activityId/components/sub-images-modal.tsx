@@ -10,7 +10,6 @@ import { useModalStore } from '@/shared/components/modal/libs/stores/useModalSto
 const SubImagesModal = ({ images }: { images: SubImagesType[] }) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const { closeModal, modalName } = useModalStore();
-  if (!images || images.length === 0) closeModal();
 
   return (
     <>

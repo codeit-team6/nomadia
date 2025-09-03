@@ -8,6 +8,7 @@ import { cn } from '@/shared/libs/cn';
 const SubImages = ({ images }: { images: SubImagesType[] | undefined }) => {
   if (images === undefined) return null;
   const length = images.length;
+  const noImage = !images || images.length === 0;
 
   return (
     <>
@@ -36,14 +37,14 @@ const SubImages = ({ images }: { images: SubImagesType[] | undefined }) => {
                 alt="activity-image"
                 fill
                 className="object-cover"
-                priority
+                priority={i === 0}
               />
             </div>
           );
         })}
         {length > 1 && <SubImagesButton />}
       </div>
-      <SubImagesModal images={images} />
+      {!noImage && <SubImagesModal images={images} />}
     </>
   );
 };

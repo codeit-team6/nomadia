@@ -20,7 +20,7 @@ const Reviews = ({ activityId }: { activityId: number }) => {
   if (isLoading)
     return (
       <div className="shadow-experience-card mb-[1.6rem] h-[11rem] w-full md:h-[11.3rem]">
-        <LoadingSpinner />;
+        <LoadingSpinner />
       </div>
     );
   if (isError) return <ErrorMessage />;
