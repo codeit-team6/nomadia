@@ -9,7 +9,7 @@ import useResActivitiesQuery from '@/features/activities/libs/hooks/useResActivi
 import Dropdown from '@/shared/components/dropdown/dropdown';
 import { ErrorMessage } from '@/shared/components/error-message/error-message';
 import Pagination from '@/shared/components/pagination/pagination';
-import { ActivityCardSkeleton } from '@/shared/components/skeleton/skeleton';
+import { AllActivitiesSkeletonGrid } from '@/shared/components/skeleton/skeleton';
 import { Button } from '@/shared/libs/shadcn/components/ui/button';
 
 import {
@@ -127,18 +127,7 @@ const AllActivities = ({ keyword }: AllActivitiesProps) => {
 
       <div>
         {isLoading ? (
-          <div className="grid grid-cols-2 gap-[1.8rem] md:gap-[2.4rem] lg:grid-cols-4 lg:gap-[3rem]">
-            {/* 모바일/태블릿: 2개, PC: 4개 */}
-            {Array.from({ length: 2 }, (_, index) => (
-              <ActivityCardSkeleton key={index} />
-            ))}
-            {/* PC에서만 보이는 추가 2개 */}
-            <div className="hidden lg:contents">
-              {Array.from({ length: 2 }, (_, index) => (
-                <ActivityCardSkeleton key={`pc-${index}`} />
-              ))}
-            </div>
-          </div>
+          <AllActivitiesSkeletonGrid />
         ) : isError ? (
           <ErrorMessage message="체험을 불러오는 중 오류가 발생했습니다." />
         ) : (

@@ -20,7 +20,7 @@ export const BannerSkeleton = () => {
   );
 };
 
-export const ActivityCardSkeleton = () => {
+const ActivityCardSkeleton = () => {
   return (
     <div className="mb-[2.4rem] flex h-[24.3rem] w-full animate-pulse flex-col overflow-hidden rounded-[0.8rem] bg-white md:mb-[8rem] md:h-[42.3rem] md:rounded-[1.8rem] lg:h-[36.6rem]">
       {/* 이미지 영역 - 실제 ActivityCard와 동일한 비율 */}
@@ -42,6 +42,59 @@ export const ActivityCardSkeleton = () => {
         <div className="mt-[1rem]">
           <div className="h-[1.5rem] w-20 rounded bg-gray-300 md:h-[1.8rem] md:w-24"></div>
         </div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Hero 영역 스켈레톤 그리드 컴포넌트
+ * @description 화면 크기에 따라 다른 개수의 스켈레톤을 보여줍니다
+ * - 모바일 (< 640px): 1개
+ * - 태블릿 (640px ~ 1024px): 2개
+ * - PC (≥ 1024px): 3개
+ */
+export const HeroSkeletonGrid = () => {
+  return (
+    <div className="grid grid-cols-1 gap-[1.8rem] sm:grid-cols-2 sm:gap-[2.4rem] lg:grid-cols-3 lg:gap-[3rem]">
+      {/* 모바일: 1개, 640px~: 2개, PC: 3개 */}
+      {Array.from({ length: 1 }, (_, index) => (
+        <ActivityCardSkeleton key={`mobile-${index}`} />
+      ))}
+      {/* 640px 이상에서만 보이는 추가 1개 */}
+      <div className="hidden sm:contents">
+        {Array.from({ length: 1 }, (_, index) => (
+          <ActivityCardSkeleton key={`sm-${index}`} />
+        ))}
+      </div>
+      {/* PC에서만 보이는 추가 1개 */}
+      <div className="hidden lg:contents">
+        {Array.from({ length: 1 }, (_, index) => (
+          <ActivityCardSkeleton key={`pc-${index}`} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/**
+ * AllActivities 페이지 스켈레톤 그리드 컴포넌트
+ * @description 화면 크기에 따라 다른 개수의 스켈레톤을 보여줍니다
+ * - 모바일/태블릿 (< 1024px): 2개
+ * - PC (≥ 1024px): 4개
+ */
+export const AllActivitiesSkeletonGrid = () => {
+  return (
+    <div className="grid grid-cols-2 gap-[1.8rem] md:gap-[2.4rem] lg:grid-cols-4 lg:gap-[3rem]">
+      {/* 모바일/태블릿: 2개, PC: 4개 */}
+      {Array.from({ length: 2 }, (_, index) => (
+        <ActivityCardSkeleton key={index} />
+      ))}
+      {/* PC에서만 보이는 추가 2개 */}
+      <div className="hidden lg:contents">
+        {Array.from({ length: 2 }, (_, index) => (
+          <ActivityCardSkeleton key={`pc-${index}`} />
+        ))}
       </div>
     </div>
   );
