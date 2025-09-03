@@ -8,7 +8,7 @@ export const BannerSkeleton = () => {
       <div className="h-full w-full bg-gray-300" />
 
       {/* 그라데이션 오버레이와 텍스트 영역 */}
-      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/90 to-transparent p-2 md:p-8 lg:p-12">
+      <div className="absolute inset-0 flex flex-col justify-end p-2 md:p-8 lg:p-12">
         {/* 제목 skeleton */}
         <div className="mb-2 flex justify-center">
           <div className="h-[1.8rem] w-2/3 rounded bg-gray-400 md:h-[2.4rem] lg:h-[3.2rem]" />
@@ -82,7 +82,7 @@ export const HeroSkeletonGrid = () => {
 };
 
 /**
- * AllActivities 페이지 스켈레톤 그리드 컴포넌트
+ * AllActivities, BestActivities 페이지 스켈레톤 그리드 컴포넌트
  * @description 화면 크기에 따라 다른 개수의 스켈레톤을 보여줍니다
  * - 모바일/태블릿 (< 1024px): 2개
  * - PC (≥ 1024px): 4개
@@ -107,35 +107,38 @@ export const AllActivitiesSkeletonGrid = () => {
 // 예약 내역 페이지 스켈레톤
 export const BookingCardSkeleton = () => {
   return (
-    <>
+    <div className="flex flex-col gap-[2rem]">
       {Array.from({ length: 2 }, (_, index) => (
-        <React.Fragment key={`booking-card-skeleton-${index}`}>
-          <div className="relative flex h-[13.6rem] w-[32.7rem] animate-pulse justify-between rounded-[2.4rem] bg-gray-200 md:h-[14rem] md:w-[47.6rem] lg:h-[18.1rem] lg:w-[60rem]" />
-          <div className="flex-center h-[4.1rem] w-[32.7rem] animate-pulse rounded-[0.8rem] bg-gray-200 text-[1.4rem] md:w-[47.6rem] lg:w-[60rem]" />
-        </React.Fragment>
+        <div
+          key={`booking-card-skeleton-${index}`}
+          className="flex flex-col gap-[1.2rem]"
+        >
+          <div className="shadow-experience-card relative flex h-[13.6rem] w-full animate-pulse justify-between rounded-[2.4rem] bg-gray-200 md:h-[14rem] lg:h-[18.1rem]" />
+          <div className="shadow-experience-card flex-center h-[4.1rem] w-full animate-pulse rounded-[0.8rem] bg-gray-200 text-[1.4rem]" />
+        </div>
       ))}
-    </>
+    </div>
   );
 };
 
 // 내 체험 관리 페이지 스켈레톤
 export const MyActivitiesSkeleton = () => {
   return (
-    <div className="h-[17.2rem] w-[32.7rem] animate-pulse rounded-[2.4rem] bg-gray-200 md:w-[47.6rem] lg:w-[63.6rem]" />
+    <div className="shadow-experience-card h-[17.2rem] w-[32.7rem] animate-pulse rounded-[2.4rem] bg-gray-200 md:w-[47.6rem] lg:w-[63.6rem]" />
   );
 };
 
 // 상세 페이지 서브 이미지 스켈레톤
 export const DetailSubImagesSkeleton = () => {
   return (
-    <div className="mb-[2rem] aspect-[5/3] w-full animate-pulse rounded-[1.6rem] bg-gray-200 md:rounded-[2rem] lg:mb-[3.6rem]" />
+    <div className="shadow-experience-card mb-[2rem] aspect-[5/3] w-full animate-pulse rounded-[1.6rem] bg-gray-200 md:rounded-[2rem] lg:mb-[3.6rem]" />
   );
 };
 
 // 상세 페이지 카카오 맵 스켈레톤
 export const DetailKakaoMapSkeleton = () => {
   return (
-    <div className="h-[18rem] w-[32.7rem] animate-pulse rounded-[1.6rem] bg-gray-200 md:h-[38rem] md:w-[68.8rem] lg:h-[45rem] lg:w-[66.1rem]" />
+    <div className="shadow-experience-card h-[18rem] w-[32.7rem] animate-pulse rounded-[1.6rem] bg-gray-200 md:h-[38rem] md:w-[68.8rem] lg:h-[45rem] lg:w-[66.1rem]" />
   );
 };
 
