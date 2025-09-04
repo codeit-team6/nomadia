@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Map, MapMarker, useKakaoLoader } from 'react-kakao-maps-sdk';
 
 import { ErrorMessage } from '@/shared/components/error-message/error-message';
-import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
+import { DetailKakaoMapSkeleton } from '@/shared/components/skeleton/skeleton';
 
 //현재 로컬에 대한 키를 발급 받은거라, 머지할때는 배포 주소로 다시 받아야 함
 const KakaoMap = ({ address }: { address: string | undefined }) => {
@@ -51,7 +51,7 @@ const KakaoMap = ({ address }: { address: string | undefined }) => {
     tryGeocode();
   }, [loading, error, address]);
 
-  if (loading) return <LoadingSpinner />;
+  if (loading) return <DetailKakaoMapSkeleton />;
   if (error) return <ErrorMessage />;
   if (coordinates) {
     return (
