@@ -199,7 +199,7 @@ const ReserveCalendarPage = () => {
   }, [selectedDate, reservationArray]);
 
   return (
-    <div className="flex flex-col items-start py-[1rem]">
+    <div className="flex flex-col py-[1rem]">
       <div className="mb-[2.4rem] w-full">
         <h2 className="txt-18-bold text-gray-950">예약 현황</h2>
         <p className="txt-14-medium mt-1 text-gray-500">
@@ -247,51 +247,49 @@ const ReserveCalendarPage = () => {
         </div>
       </div>
 
-      <div className="flex gap-8">
-        <div className="md:w-[47.6rem] lg:w-[63.6rem]">
-          {selectedActivityId ? (
-            <CalendarWithReservations
-              reservationArray={reservationArray}
-              calendarWidth="w-full md:rounded-[2rem] border border-gray-50 shadow-experience-card"
-              dayOfWeekStyle="w-[5.35rem] md:w-[6.8rem] lg:w-[9.143rem]"
-              onCellClick={handleDateClick}
-              calendarRef={calendarRef}
-            >
-              {/* 모달 위치 제어하기 위한 div 태그 */}
-              <div style={modalPosition}>
-                {/* 예약 현황 모달 */}
-                <AdaptiveModal extraClassName="shadow-experience-card category-scroll h-[50.8rem] overflow-scroll border border-gray-50 md:h-[39.7rem] lg:h-[44.4rem] lg:w-[32.3rem]">
-                  <div className="p-4">
-                    {selectedReservationsOfDate.length > 0 ? (
-                      <ContentReservation
-                        teamId="15-6"
-                        activityId={Number(selectedActivityId)}
-                        scheduleId={selectedScheduleId}
-                        status={'pending'}
-                        selectedDate={selectedDate || ''}
-                        onStatusChange={updateReservationStatus}
-                      />
-                    ) : (
-                      <EmptyReservation />
-                    )}
-                  </div>
-                </AdaptiveModal>
-              </div>
-            </CalendarWithReservations>
-          ) : (
-            <div className="mt-24 flex flex-col items-center justify-center">
-              <Image
-                src="/images/sad-laptop.svg"
-                alt="Sad laptop"
-                width={246}
-                height={200}
-              />
-              <p className="mt-14 text-[1.8rem] font-medium text-gray-600">
-                등록한 체험을 선택해주세요.
-              </p>
+      <div className="md:w-[47.6rem] lg:w-[63.6rem]">
+        {selectedActivityId ? (
+          <CalendarWithReservations
+            reservationArray={reservationArray}
+            calendarWidth="w-full md:rounded-[2rem] border border-gray-50 shadow-experience-card"
+            dayOfWeekStyle="w-[5.35rem] md:w-[6.8rem] lg:w-[9.143rem]"
+            onCellClick={handleDateClick}
+            calendarRef={calendarRef}
+          >
+            {/* 모달 위치 제어하기 위한 div 태그 */}
+            <div style={modalPosition}>
+              {/* 예약 현황 모달 */}
+              <AdaptiveModal extraClassName="shadow-experience-card category-scroll h-[50.8rem] overflow-scroll border border-gray-50 md:h-[39.7rem] lg:h-[44.4rem] lg:w-[32.3rem]">
+                <div className="p-4">
+                  {selectedReservationsOfDate.length > 0 ? (
+                    <ContentReservation
+                      teamId="15-6"
+                      activityId={Number(selectedActivityId)}
+                      scheduleId={selectedScheduleId}
+                      status={'pending'}
+                      selectedDate={selectedDate || ''}
+                      onStatusChange={updateReservationStatus}
+                    />
+                  ) : (
+                    <EmptyReservation />
+                  )}
+                </div>
+              </AdaptiveModal>
             </div>
-          )}
-        </div>
+          </CalendarWithReservations>
+        ) : (
+          <div className="mt-24 flex flex-col items-center justify-center">
+            <Image
+              src="/images/sad-laptop.svg"
+              alt="Sad laptop"
+              width={246}
+              height={200}
+            />
+            <p className="mt-14 text-[1.8rem] font-medium text-gray-600">
+              등록한 체험을 선택해주세요.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
