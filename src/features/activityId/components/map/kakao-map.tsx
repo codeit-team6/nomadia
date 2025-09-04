@@ -52,7 +52,7 @@ const KakaoMap = ({ address }: { address: string | undefined }) => {
   }, [loading, error, address]);
 
   if (loading) return <DetailKakaoMapSkeleton />;
-  if (error) return <ErrorMessage />;
+  if (error) return <ErrorMessage className="h-full" />;
   if (coordinates) {
     return (
       <>
