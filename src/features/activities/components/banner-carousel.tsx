@@ -11,7 +11,8 @@ import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { navigateToActivity } from '@/features/activities/libs/utils/navigation';
-import { ErrorMessage, LoadingSpinner } from '@/shared/components';
+import { ErrorMessage } from '@/shared/components';
+import { BannerSkeleton } from '@/shared/components/skeleton/skeleton';
 import useActivityQuery from '@/shared/libs/hooks/useActivityQuery';
 
 /**
@@ -37,11 +38,14 @@ const BannerCarousel = () => {
   const handleSlideChange = (swiper: SwiperType) => {
     const currentIndex = swiper.realIndex;
 
-    // 중복 호출 방지 및 near-end 조건 확인
+    // 초기 로딩이 완료되고 최소 1개 이상의 배너가 있을 때만 prefetch 실행
     if (
+      !isLoading && // 초기 로딩이 완료된 상태
+      banners.length > 0 && // 최소 1개 이상의 배너가 있는 상태
       hasNextPage &&
-      currentIndex >= banners.length - 2 &&
-      !isFetchingRef.current
+      currentIndex >= banners.length - 1 &&
+      !isFetchingRef.current &&
+      banners.length < 8 // 최대 8개까지만 로드 (2페이지)
     ) {
       isFetchingRef.current = true; // 뮤텍스 잠금
 
@@ -83,9 +87,7 @@ const BannerCarousel = () => {
       >
         {isLoading ? (
           <SwiperSlide>
-            <div className="flex h-[18.1rem] items-center justify-center md:h-[37.5rem] lg:h-[50rem]">
-              <LoadingSpinner />
-            </div>
+            <BannerSkeleton />
           </SwiperSlide>
         ) : isError ? (
           <SwiperSlide>
@@ -121,12 +123,6 @@ const BannerCarousel = () => {
                   quality={idx === 0 ? 60 : 50}
                   loading={idx === 0 ? 'eager' : 'lazy'}
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 112rem"
-                  placeholder={idx === 0 ? undefined : 'blur'}
-                  blurDataURL={
-                    idx === 0
-                      ? undefined
-                      : 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
-                  }
                 />
                 <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/90 to-transparent p-2 transition-opacity duration-700 md:p-8 lg:p-12">
                   <div className="mb-2 text-center text-[1.8rem] font-bold text-white drop-shadow-lg md:text-[2.4rem] lg:text-[3.2rem]">

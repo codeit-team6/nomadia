@@ -2,14 +2,15 @@
 
 import { useRef } from 'react';
 
-import LoadingSpinner from '@/shared/components/loading-spinner/loading-spinner';
 import NoData from '@/shared/components/no-data/no-data';
+import { MyActivitiesSkeleton } from '@/shared/components/skeleton/skeleton';
 import { useItemInfiniteQuery } from '@/shared/libs/hooks/infiniteScroll/useInfiniteQuery';
 import { useInfiniteScroll } from '@/shared/libs/hooks/infiniteScroll/useInfiniteScroll';
 import { Activity } from '@/shared/types/activity';
 
 import MyActivitiesCard from '../components/my-activities-card';
 import { getMyActivities } from '../lib/api/myActivities.api';
+
 export const MyActivitiesList = () => {
   const { data, fetchNextPage, hasNextPage, isLoading, isError, error } =
     useItemInfiniteQuery({
@@ -25,7 +26,7 @@ export const MyActivitiesList = () => {
   if (isLoading) {
     return (
       <>
-        <LoadingSpinner />
+        <MyActivitiesSkeleton />
       </>
     );
   }
