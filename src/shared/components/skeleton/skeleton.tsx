@@ -108,13 +108,13 @@ export const AllActivitiesSkeletonGrid = () => {
 export const BookingCardSkeleton = () => {
   return (
     <div className="flex flex-col gap-[2rem]">
-      {Array.from({ length: 2 }, (_, index) => (
+      {Array.from({ length: 3 }, (_, index) => (
         <div
           key={`booking-card-skeleton-${index}`}
           className="flex flex-col gap-[1.2rem]"
         >
-          <div className="shadow-experience-card relative flex h-[13.6rem] w-full animate-pulse justify-between rounded-[2.4rem] bg-gray-200 md:h-[14rem] lg:h-[18.1rem]" />
-          <div className="shadow-experience-card flex-center h-[4.1rem] w-full animate-pulse rounded-[0.8rem] bg-gray-200 text-[1.4rem]" />
+          <div className="shadow-experience-card h-[2rem] w-1/3 animate-pulse rounded-[2.4rem] bg-gray-200 md:h-[2.7rem]" />
+          <div className="shadow-experience-card flex h-[13.6rem] w-full animate-pulse justify-between rounded-[2.4rem] bg-gray-200 md:h-[14rem] lg:h-[18.1rem]" />
         </div>
       ))}
     </div>
