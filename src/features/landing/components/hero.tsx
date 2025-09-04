@@ -91,10 +91,7 @@ const Hero = ({ swiperRef, ActivityCard, router }: HeroProps) => {
         </div>
         {/* Swiper/로딩/에러 분기 */}
         <div className="relative">
-          <div className="flex items-center justify-between md:mb-6 lg:mt-[5rem]">
-            <p className="ml-[1rem] flex items-center gap-2 text-[1.8rem] font-bold text-gray-800 md:text-[2.6rem]">
-              {/* 인기 체험 */}
-            </p>
+          <div className="flex items-center justify-end md:mb-6 lg:mt-[5rem]">
             <div className="mr-[1rem] flex space-x-2">
               <button
                 onClick={() => swiperRef.current?.slidePrev()}
