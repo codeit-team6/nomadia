@@ -2,7 +2,6 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { ChevronDown } from 'lucide-react';
-import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { getActListApi } from '@/features/activities/libs/api/getActListApi';
@@ -18,6 +17,7 @@ import { MonthReservations } from '@/shared/components/calendar/libs/types/data'
 import Dropdown from '@/shared/components/dropdown/dropdown';
 import AdaptiveModal from '@/shared/components/modal/components/adaptive-modal/adaptive-modal';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
+import NoData from '@/shared/components/no-data/no-data';
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 import { Activity } from '@/shared/types/activity';
 
@@ -199,9 +199,9 @@ const ReserveCalendarPage = () => {
   }, [selectedDate, reservationArray]);
 
   return (
-    <div className="flex flex-col items-start py-[1rem]">
+    <div className="flex flex-col py-[1rem]">
       <div className="mb-[2.4rem] w-full">
-        <h2 className="txt-18-bold text-gray-950">예약 현황</h2>
+        <h1 className="txt-18-bold mb-[0.4rem] text-gray-950">예약 현황</h1>
         <p className="txt-14-medium mt-1 text-gray-500">
           내 체험의 내역들을 한 눈에 확인할 수 있습니다.
         </p>
@@ -279,17 +279,7 @@ const ReserveCalendarPage = () => {
               </div>
             </CalendarWithReservations>
           ) : (
-            <div className="mt-24 flex flex-col items-center justify-center">
-              <Image
-                src="/images/sad-laptop.svg"
-                alt="Sad laptop"
-                width={246}
-                height={200}
-              />
-              <p className="mt-14 text-[1.8rem] font-medium text-gray-600">
-                등록한 체험을 선택해주세요.
-              </p>
-            </div>
+            <NoData message="등록한 체험을 선택해주세요." />
           )}
         </div>
       </div>
