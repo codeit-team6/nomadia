@@ -76,7 +76,7 @@ const Header = () => {
                     <Image
                       src={
                         myData?.profileImageUrl ||
-                        '/images/icons/profile-default.png'
+                        '/images/icons/profile-default.svg'
                       }
                       alt="프로필사진"
                       width={30}
