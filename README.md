@@ -115,10 +115,10 @@
     <img width="700" alt="영현" src="https://github.com/user-attachments/assets/7a783360-154a-4bc8-be12-227523f40734" />
     </td>
     <td>
-    <img width="700" alt="준우" alt="image-2" src="https://github.com/user-attachments/assets/a4e25b3d-5dd7-4579-afdf-f7c7721bf352" />
+    <img width="700" alt="준우" src="https://github.com/user-attachments/assets/a4e25b3d-5dd7-4579-afdf-f7c7721bf352" />
     </td>
     <td>
-    <img width="700" alt="동환" alt="image" src="https://github.com/user-attachments/assets/af171698-31e7-4aec-a27f-e91394195e09" />
+    <img width="700" alt="동환" src="https://github.com/user-attachments/assets/af171698-31e7-4aec-a27f-e91394195e09" />
     </td>
   </tr>
   <tr>
@@ -133,6 +133,7 @@
     <td>
       - 체험 상세 페이지<br>
       - 404 페이지, 에러 페이지<br>
+    </td>
     <td>
       - 랜딩 페이지 기획 및 구현<br>
       - 메인 페이지<br>
@@ -155,7 +156,8 @@
       - Pagination<br>
       - Modal<br>
       - Calendar<br>
-      - Infinite Scroll</td></td>
+      - Infinite Scroll
+    </td>
     <td>      
       - Loading Spinner<br>
       - Skeleton<br>
