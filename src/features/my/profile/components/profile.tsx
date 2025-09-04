@@ -52,7 +52,7 @@ const Profile = () => {
           setPreviewUrl(userData.profileImageUrl);
         }
       } catch {
-        toast.error('사용자 정보를 가져오지 못했습니다.');
+        alert('사용자 정보를 가져오지 못했습니다.');
       } finally {
         setIsLoading(false);
       }
@@ -119,7 +119,7 @@ const Profile = () => {
           return;
         }
       }
-      toast.error('수정 실패');
+      alert('프로필 수정에 실패했습니다. 다시 시도해주세요.');
     },
   });
 
