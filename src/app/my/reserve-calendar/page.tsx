@@ -224,7 +224,7 @@ const ReserveCalendarPage = () => {
                 <ChevronDown className="mr-[2rem] size-[2rem]" />
               </div>
             }
-            dropdownClassName="w-full bg-white shadow-experience-card rounded-[1rem] border border-gray-100 px-[2.6rem]"
+            dropdownClassName="mt-2 w-full bg-white rounded-xl shadow-experience-card rounded-[1rem] border border-gray-100 px-[2.6rem]"
           >
             {(close) => (
               <ul className="py-3">
@@ -232,7 +232,7 @@ const ReserveCalendarPage = () => {
                 {activities.map((act) => (
                   <button
                     key={act.id}
-                    className="txt-13-medium block w-full cursor-pointer py-2 text-left hover:bg-gray-50"
+                    className="txt-13-medium hover:bg-sub w-full cursor-pointer rounded-lg bg-white py-2 text-left transition-all duration-200"
                     onClick={() => {
                       handleSelectActivity(act.id, act.title);
                       close();
