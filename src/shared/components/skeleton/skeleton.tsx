@@ -124,7 +124,13 @@ export const BookingCardSkeleton = () => {
 // 내 체험 관리 페이지 스켈레톤
 export const MyActivitiesSkeleton = () => {
   return (
-    <div className="shadow-experience-card h-[17.2rem] w-[32.7rem] animate-pulse rounded-[2.4rem] bg-gray-200 md:w-[47.6rem] lg:w-[63.6rem]" />
+    <div className="flex flex-col gap-[2.4rem]">
+      {Array.from({ length: 3 }, (_, index) => (
+        <div key={`my-activities-skeleton-${index}`}>
+          <div className="shadow-experience-card h-[17.2rem] w-[32.7rem] animate-pulse rounded-[2.4rem] bg-gray-200 md:w-[47.6rem] lg:h-[20.2rem] lg:w-[63.6rem]" />
+        </div>
+      ))}
+    </div>
   );
 };
 
