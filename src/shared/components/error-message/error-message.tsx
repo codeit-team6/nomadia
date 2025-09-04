@@ -11,7 +11,7 @@ export const ErrorMessage = ({
 }: ErrorMessageProps) => {
   return (
     <div className={`flex-center h-[16rem] flex-col gap-[1.6rem] ${className}`}>
-      <TriangleAlert strokeWidth={2.5} className="size-[10rem] text-gray-200" />
+      <TriangleAlert strokeWidth={2} className="size-[10rem] text-gray-200" />
       <span className="text-[1.6rem] font-semibold text-gray-700 md:text-[1.8rem]">
         {message}
       </span>
