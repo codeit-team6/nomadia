@@ -18,6 +18,7 @@ import Dropdown from '@/shared/components/dropdown/dropdown';
 import AdaptiveModal from '@/shared/components/modal/components/adaptive-modal/adaptive-modal';
 import { useModalStore } from '@/shared/components/modal/libs/stores/useModalStore';
 import NoData from '@/shared/components/no-data/no-data';
+import { cn } from '@/shared/libs/cn';
 import useWindowSize from '@/shared/libs/hooks/useWindowSize';
 import { Activity } from '@/shared/types/activity';
 
@@ -254,8 +255,22 @@ const ReserveCalendarPage = () => {
             onCellClick={handleDateClick}
             calendarRef={calendarRef}
           >
+            {/* 모달 투명 오버레이 - 모달 바깥 클릭 -> closeModal */}
+            {isDesktop && selectedDate && (
+              <div
+                className="fixed inset-0 z-80"
+                onClick={() => {
+                  resetSelectedDate();
+                  resetDate();
+                }}
+                role="presentation"
+              ></div>
+            )}
             {/* 모달 위치 제어하기 위한 div 태그 */}
-            <div style={modalPosition}>
+            <div
+              style={modalPosition}
+              className={cn(isDesktop && selectedDate && 'z-90')}
+            >
               {/* 예약 현황 모달 */}
               <AdaptiveModal extraClassName="shadow-experience-card category-scroll h-[50.8rem] overflow-scroll border border-gray-50 md:h-[39.7rem] lg:h-[44.4rem] lg:w-[32.3rem]">
                 <div className="p-4">

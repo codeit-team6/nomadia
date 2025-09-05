@@ -50,7 +50,7 @@ const Header = () => {
             onClick={(e) => {
               e.preventDefault();
               resetSearch();
-              router.push('/activities');
+              router.push('/activities?page=1');
             }}
           >
             <Image

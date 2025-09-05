@@ -144,7 +144,7 @@ export const DetailSubImagesSkeleton = () => {
 // 상세 페이지 카카오 맵 스켈레톤
 export const DetailKakaoMapSkeleton = () => {
   return (
-    <div className="shadow-experience-card h-[18rem] w-[32.7rem] animate-pulse rounded-[1.6rem] bg-gray-200 md:h-[38rem] md:w-[68.8rem] lg:h-[45rem] lg:w-[66.1rem]" />
+    <div className="shadow-experience-card h-[18rem] w-full animate-pulse rounded-[1.6rem] bg-gray-200 md:h-[38rem] lg:h-[45rem]" />
   );
 };
 
@@ -153,11 +153,11 @@ export const DetailReviewsSkeleton = () => {
   return (
     <div className="animate-pulse">
       {/* 후기 리스트 */}
-      <ul className="space-y-[4rem]">
+      <ul className="mb-[11.5rem] space-y-[4rem] lg:mb-[21rem]">
         {Array.from({ length: 3 }, (_, index) => (
           <li key={`review-skeleton-${index}`}>
             <article
-              className={`shadow-experience-card h-[11rem] rounded-[2.4rem] bg-gray-200 p-[2rem] md:h-[11.3rem] ${index === 2 ? 'mb-[3rem]' : 'mb-[4rem]'}`}
+              className={`shadow-experience-card h-[11rem] rounded-[2.4rem] bg-gray-200 p-[2rem] md:h-[11.3rem]`}
             ></article>
           </li>
         ))}
