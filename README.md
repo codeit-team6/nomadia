@@ -34,25 +34,20 @@
 ---
 
 #### 체험 등록
-
-
+![체험등록](https://github.com/user-attachments/assets/faa8d167-edcf-4e7b-865f-202c49fa1bf2)
 
 #### 마이페이지 내 체험 관리 - 체험 수정
 
 ![체험수정_2배속](https://github.com/user-attachments/assets/8d7843fd-2522-4443-aec8-d6379d2d20a6)
 
-
 #### 마이페이지 내 체험 관리 - 체험 삭제
 ![내체험관리_체험삭제](https://github.com/user-attachments/assets/b8ded43c-53b0-4326-9c6c-ba835170561e)
-
 
 #### 마이페이지 예약 내역 - 취소
 ![예약취소_2배속](https://github.com/user-attachments/assets/00d2a0a5-814d-4444-b0ef-7dc1b91713b4)
 
-
 #### 마이페이지 예약 내역 - 후기 작성
-
-
+![후기작성](https://github.com/user-attachments/assets/931a7f38-b350-4b6d-b31c-4f8784736b69)
 
 #### 마이페이지 내 예약 현황
 
