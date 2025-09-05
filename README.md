@@ -20,7 +20,7 @@
 
 <div align="center">
 <details>
-<summary> 👀 Preview Image</summary>
+<summary> 👀 Preview GIF/MP4</summary>
 
 #### 회원가입/로그인
 ![회원가입_로그인_2배속](https://github.com/user-attachments/assets/27669840-8ad0-4cfc-895b-0731aa1e2e4e)
@@ -34,7 +34,8 @@
 ---
 
 #### 체험 등록
-![체험등록](https://github.com/user-attachments/assets/faa8d167-edcf-4e7b-865f-202c49fa1bf2)
+
+https://github.com/user-attachments/assets/e7392d86-01c6-4a3e-9dea-505839d868ca
 
 #### 마이페이지 내 체험 관리 - 체험 수정
 
@@ -54,6 +55,8 @@
 ---
 
 #### 상세페이지
+
+https://github.com/user-attachments/assets/1dcba629-9388-41bc-a9a5-a5c0f5c12bc1
 
 ---
 
