@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react';
 import { getActListApi } from '@/features/activities/libs/api/getActListApi';
 import { useSearchStore } from '@/features/activities/libs/stores/searchStore';
 import Dropdown from '@/shared/components/dropdown/dropdown';
-import { Button } from '@/shared/components/modal/components/modal-button';
 import { searchVariant } from '@/shared/libs/constants/searchVariant';
 
 interface SearchProps {
@@ -83,7 +82,7 @@ const Search: React.FC<SearchProps> = ({
   return (
     <div className={style.wrapper}>
       <p className={style.title}>무엇을 체험하고 싶으신가요?</p>
-      <div className={style.inputBox + 'flex gap-2'}>
+      <div className={`${style.inputBox} flex items-center`}>
         <input
           type="text"
           value={keyword}
@@ -92,7 +91,7 @@ const Search: React.FC<SearchProps> = ({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           placeholder={isFocused ? '' : placeholder}
-          className={` ${style.input} `}
+          className={`${style.input} flex-1`}
         />
 
         <div className="mr-5 h-12 border-r border-gray-300"></div>
@@ -260,14 +259,13 @@ const Search: React.FC<SearchProps> = ({
           </Dropdown>
         </div>
 
-        <Button
-          color="blue"
-          ariaLabel="검색하기"
+        <button
+          type="button"
           onClick={handleSearch}
-          extraClassName={`${style.button} mx-7 flex items-center justify-center !w-[3rem] !h-[3rem] md:!w-[5rem] md:!h-[5rem] rounded-full`}
+          className="bg-main flex h-[3rem] w-[3rem] items-center justify-center rounded-full text-white transition-colors hover:bg-blue-600 md:h-[5rem] md:w-[5rem]"
         >
-          <SearchIcon className="h-8 w-8" />
-        </Button>
+          <SearchIcon className="h-5 w-5 md:h-6 md:w-6" />
+        </button>
       </div>
     </div>
   );
