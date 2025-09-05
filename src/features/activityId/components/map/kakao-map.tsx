@@ -87,16 +87,10 @@ const KakaoMap = ({ address }: { address: string | undefined }) => {
     );
   } else {
     return (
-      <div className="flex-center inset-0 flex-col gap-[1rem] md:gap-[4rem]">
-        <div className="mt-[0.6rem] text-[1.4rem] text-gray-500 md:mt-[8rem] md:text-[1.6rem] lg:mt-[12rem] lg:text-3xl">
-          해당 주소를 찾을 수 없습니다
+      <div className="flex-center size-full">
+        <div className="text-[1.4rem] text-gray-500 md:text-[1.8rem]">
+          지도를 찾고 있습니다.
         </div>
-        <Image
-          src="/images/sad-laptop.svg"
-          width={200}
-          height={100}
-          alt="failed-load-map"
-        />
       </div>
     );
   }
