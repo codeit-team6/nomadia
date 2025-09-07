@@ -78,7 +78,7 @@ const ActivityRegistrationForm = () => {
   const router = useRouter();
   const { openModal, closeModal, modalName } = useModalStore();
 
-  // 실제 등록 로직을 별도 함수로 분리
+  // 실제 등록 로직
   const handleRegistration = async (data: FormData) => {
     // 모든 스케줄의 시간 유효성 검증
     const hasInvalidSchedules = data.schedules.some((schedule) => {
@@ -119,14 +119,12 @@ const ActivityRegistrationForm = () => {
   };
 
   const onSubmit = () => {
-    // 모달 열기
     openModal('registration-confirm');
   };
 
   // 모달 확인 버튼 핸들러
   const handleConfirmRegistration = async () => {
     closeModal();
-    // 실제 등록 로직 실행
     await handleRegistration(watch());
   };
 

@@ -16,6 +16,7 @@ interface GroupedBookingsProps {
  * @author 김영현
  * @param reservations 예약 정보
  */
+
 const GroupedBookingCards = ({ reservations }: GroupedBookingsProps) => {
   // 날짜별로 예약 그룹화
   const groupedReservations = reservations.reduce(

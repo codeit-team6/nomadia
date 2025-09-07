@@ -30,15 +30,8 @@ interface BookingCardProps {
 
 /**
  * 예약 카드 UI 컴포넌트 - 순수한 렌더링만 담당
- * @description 예약 카드 UI 컴포넌트 - 순수한 렌더링만 담당
+ * @description 예약 카드 UI 컴포넌트
  * @author 김영현
- * @param reservation 예약 정보
- * @param showDate 날짜 표시 여부
- * @param showDivider 구분선 표시 여부
- * @param isModalOpen 모달 열림 여부
- * @param onCancelClick 예약 취소 클릭 시 콜백
- * @param onReviewClick 후기 작성 클릭 시 콜백
- * @param onModalClose 모달 닫기 시 콜백
  */
 const BookingCard = ({
   reservation,

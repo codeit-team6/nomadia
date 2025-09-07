@@ -18,19 +18,12 @@ import { useModalStore } from '@/shared/components/modal/libs/stores/useModalSto
  * 공통 입력 컴포넌트
  * @description 공통 입력 컴포넌트 (input, textarea, select, number, address)
  * @author 김영현, 유동환
- * @param label 창 위에 표시될 라벨 텍스트
- * @param name react-hook-form에 등록할 필드의 이름
- * @param register 부모 폼에서 전달받는 react-hook-form의 register 함수
- * @param setValue 부모 폼에서 전달받는 react-hook-form의 setValue 함수
- * @param watch 부모 폼에서 전달받는 react-hook-form의 watch 함수
- * @param error 해당 필드의 유효성 검사 에러 객체
- * @param inputType 입력 요소의 타입
- * @param options select 타입일 때 사용할 옵션들
- * @param rows textarea 타입일 때 사용할 행 수
- * @param type 입력 요소의 타입
- * @param placeholder 입력 요소의 플레이스홀더
- * @param className 입력 요소의 클래스 이름
- * @param [key: string]: unknown 기타 HTML 속성들
+   
+   @input: 기본 입력 요소
+   @textarea: 문장 텍스트 영역
+   @select: 드롭다운 선택 옵션 - 커스텀 화살표 아이콘 & 옵션 배열로 동적 생성
+   @number: 숫자 입력 요소 - 최대 8자리 제한 (0 ~ 100,000,000 범위 제한)
+   @address: 카카오 주소 검색 API 연동
  */
 interface FormInputProps<T extends FieldValues> {
   label: string;

@@ -18,6 +18,7 @@ import GroupedBookingCards from './group-booking-card';
  * @description 예약 목록 컴포넌트
  * @author 김영현
  */
+
 const BookingList = () => {
   const { data, isLoading, isError } = useBookingQuery() as {
     data: GetBookingResponse | undefined;

@@ -28,7 +28,6 @@ export const ActivityCard = ({
 }: ActivityCardProps) => {
   const router = useRouter();
 
-  // 카드 클릭 시 액티비티 상세 페이지로 이동
   const handleCardClick = () => {
     navigateToActivity(activity.id, router);
   };

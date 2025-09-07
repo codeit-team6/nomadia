@@ -18,7 +18,7 @@ import useActivityQuery from '@/shared/libs/hooks/useActivityQuery';
 /**
  * 인기 체험 컴포넌트
  * @author 김영현
- * @returns 인기 체험 컴포넌트
+ * @description 인기 체험을 표시하는 컴포넌트입니다.
  */
 const BestActivities = () => {
   const swiperRef = useRef<SwiperType | null>(null);
