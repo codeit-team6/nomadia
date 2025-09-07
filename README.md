@@ -211,6 +211,6 @@ https://github.com/user-attachments/assets/1dcba629-9388-41bc-a9a5-a5c0f5c12bc1
 | ---------- | ------------------------ |
 | **전지윤** | (모달) BasicModal 사용법 |
 |            | (모달) BasicModal 설계   |
-| **김영현** |  [공통 컴포넌트 docs](https://www.notion.so/DOCS-204b2ffc607580a4874bee3ab6056d51?source=copy_link)                        |
+| **김영현** |  [공통 컴포넌트 docs](https://dust-radiator-52b.notion.site/DOCS-204b2ffc607580a4874bee3ab6056d51?source=copy_link)  |
 | **김준우** |                          |
 | **유동환** |                          |
