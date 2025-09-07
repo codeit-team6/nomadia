@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { LoginForm } from '@/features/auth/login/components/LoginForm';
+import { LoginForm } from '@/features/auth/login/components/login-form';
 
 const Login = () => {
   return (

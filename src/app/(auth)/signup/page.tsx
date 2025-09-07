@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { SignupForm } from '@/features/auth/signup/components/SignupForm';
+import { SignupForm } from '@/features/auth/signup/components/signup-form';
 
 const Signup = () => {
   return (
