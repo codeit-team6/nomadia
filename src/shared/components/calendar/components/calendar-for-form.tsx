@@ -17,12 +17,10 @@ import { cn } from '@/shared/libs/cn';
  * 모든 프롭은 선택값이며, 필요에 따라 선택적으로 사용해주세요.
  * 스타일 커스터마이징을 위한 프롭을 활용해서 반응형 스타일 등을 추가할수 있습니다.
  *
- * @param {function} [setSelectedId] - 특정 날짜(혹은 셀)의 ID를 선택할 때 호출되는 상태 설정 함수입니다. 날짜 클릭 시 트리거됩니다.
  * @param {Schedules[]} [scheduleArray] - 날짜별 스케줄 정보 배열입니다.
  * @param {string} [calendarWidth] - 캘린더 전체의 가로폭을 조정하는 Tailwind 클래스 문자열입니다. 예:"md:w-[38rem]".
  * @param {string} [dayOfWeekStyle] - 요일(일~토) 셀에 적용할 Tailwind 클래스 문자열입니다. 반응형 스타일도 전달 가능.
  * @param {string} [cellStyle] - 날짜 셀에 적용할 Tailwind 클래스 문자열입니다. 선택 상태, 스케줄 상태 등에 병합되어 사용됩니다.
- * @param {boolean} [isForReservation=false] - 예약 선택 용도로 사용하는지 여부를 나타냅니다. `true`일 경우 스케줄이 있는 날짜가 표시됩니다.(체험상세페이지에서 사용)
  * @param {()=>void} [changeFormValue] - 폼 내부의 value값 업데이트를 selectedDate업데이트 시점과 동시에 하고 싶은 경우
  *
  * @example
@@ -31,7 +29,6 @@ import { cn } from '@/shared/libs/cn';
  *   calendarWidth="md:w-[38rem] lg:w-[40rem]..."
  *   dayOfWeekStyle="text-gray-500 md:w-[2rem]..."
  *   cellStyle="relative h-[10rem] text-[1.4rem]..."
- *   isForReservation={true}
  * />
  */
 
