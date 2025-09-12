@@ -1,15 +1,30 @@
+'use client';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 import SubImagesButton from '@/features/activityId/components/sub-images-button';
 import SubImagesModal from '@/features/activityId/components/sub-images-modal';
 import { SubImages as SubImagesType } from '@/features/activityId/libs/types/activityInfo';
+import { DetailSubImagesSkeleton } from '@/shared/components/skeleton/skeleton';
 import { cn } from '@/shared/libs/cn';
 
 const SubImages = ({ images }: { images: SubImagesType[] | undefined }) => {
-  if (images === undefined) return null;
+  const [loaded, setLoaded] = useState(false);
+
+  // 첫 이미지 프리로드
+  useEffect(() => {
+    if (!images) return;
+    const img = new window.Image();
+    img.src = images[0].imageUrl;
+    img.onload = () => {
+      setLoaded(true); // 스켈레톤 UI off
+    };
+  }, [images]);
+
+  if (!loaded) return <DetailSubImagesSkeleton />;
+  if (!images) return;
   const length = images.length;
   const noImage = !images || images.length === 0;
-
   return (
     <>
       <div
@@ -37,7 +52,6 @@ const SubImages = ({ images }: { images: SubImagesType[] | undefined }) => {
                 alt="activity-image"
                 fill
                 className="object-cover"
-                priority={i === 0}
               />
             </div>
           );
